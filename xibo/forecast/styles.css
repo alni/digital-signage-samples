@@ -1,0 +1,41 @@
+﻿body {
+    font-family:Arial;
+    margin:0;
+    /*padding-top: 5px;*/
+}
+
+.container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.icon {
+    font-size: 36px;
+}
+
+.font-icon {
+    font-size: 62px;
+}
+
+.desc {
+    margin-top: 10px;
+    font-size: 30px;
+}
+
+.powered-by {
+    font-size: 12px;
+    clear: both;
+}
+
+.day {
+    margin-top: 10px;
+    font-size: 48px;
+}
+
+.title {
+  background: rgba(76, 117, 151, 0.5);
+  font-size: 24px;
+  color: #fff;
+
+  padding: 5px 4px;
+}

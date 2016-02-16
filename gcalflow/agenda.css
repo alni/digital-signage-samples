@@ -1,0 +1,109 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic);
+html {
+  font-family: "Open Sans", sans-serif;
+}
+body {
+  overflow: hidden;
+}
+.hidden {
+  display: none;
+}
+#gcf-custom-template {
+  width: 100%;
+  height: 100%;
+  background: transparent !important;
+}
+#gcf-custom-template .gcf-header-block {
+  background: rgba(76, 117, 151, 0.5);
+}
+#gcf-custom-template .gcf-header-block .gcf-title {
+  font-size: 48px;
+}
+#gcf-custom-template .gcf-item-container-block {
+  box-sizing: border-box;
+  border-bottom: solid 80px transparent;
+  height: 100%;
+
+  padding: 10px 20px 0px 20px;
+  border-bottom: 1px solid gray;
+  overflow-y: hidden !important;
+}
+
+#gcf-custom-template .gcf-item-block {
+  margin-bottom: 8px;
+}
+
+#gcf-custom-template .gcf-item-daterange {
+  white-space: normal;
+  
+  font-family: "Open Sans";
+  color: #313131;
+  font-size: 48px;
+  font-weight: 300;
+  font-style: normal;
+  text-decoration: none;
+  background-color: transparent;
+}
+#gcf-custom-template .gcf-item-title {
+  font-family: "Open Sans";
+  color: #4c7597;
+  font-size: 48px;
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+  background-color: transparent;
+  white-space: normal;
+}
+#gcf-custom-template .gcf-item-location {
+  font-family: "Open Sans";
+  color: #313131;
+  font-size: 48px;
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+  background-color: transparent;
+}
+#gcf-custom-template .gcf-item-description {
+  font-family: Verdana;
+  color: black;
+  font-size: 18px;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: none;
+  background-color: transparent;
+
+  margin: 15px 0 0 0;
+
+
+  display: none;
+}
+hr {
+    border: none;
+    height: 2px;
+    /* Set the hr color */
+    color: #333; /* old IE */
+    background-color: #333; /* Modern Browsers */
+}
+html, body {
+  background-color: transparent;
+}
+body {
+  /* Display & Box Model */
+  margin: 0;
+  /* Visual */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  -ms-overflow-style: none;
+}
+ul {
+  /* Display & Box Model */
+  margin: 0;
+  padding: 0 20px;
+  /* Visual */
+  list-style-type: none;
+}
+
+
