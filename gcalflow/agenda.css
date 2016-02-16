@@ -18,6 +18,8 @@ body {
 }
 #gcf-custom-template .gcf-header-block .gcf-title {
   font-size: 48px;
+  font-weight: 600;
+  color: #fff;
 }
 #gcf-custom-template .gcf-item-container-block {
   box-sizing: border-box;
@@ -105,5 +107,3 @@ ul {
   /* Visual */
   list-style-type: none;
 }
-
-

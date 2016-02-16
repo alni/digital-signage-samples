@@ -1,5 +1,7 @@
-﻿body {
-    font-family:Arial;
+﻿@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic);
+
+body {
+    font-family:"Open Sans", sans-serif;
     margin:0;
     /*padding-top: 5px;*/
 }
@@ -35,7 +37,8 @@
 .title {
   background: rgba(76, 117, 151, 0.5);
   font-size: 24px;
+  font-weight: 600;
   color: #fff;
 
-  padding: 5px 4px;
+  padding: 2.5px 2px;
 }
