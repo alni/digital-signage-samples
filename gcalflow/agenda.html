@@ -1,5 +1,17 @@
 ﻿<html>
 <head>
+    <!--
+        Supports the following URI Query Parameters:
+        * CAL_ID : (required) the ID of the Calendar from the Google Calendar
+          Service
+        * DATE_FORMAT : (optional) the Moment.js format to use with the dates
+            * Default : "ddd, ll"
+        * LANG : (optional) the language to use with Moment.js
+            * Default : nb (Norwegian Bokmaal)
+
+        Example:
+            agenda.html?CAL_ID=<my_calendar_id>&LANG=en&DATE_FORMAT=lll
+    -->
     <meta charset="UTF-8">
     <link href="jquery-gcal-flow-3.0.1/jquery.gcal_flow.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -39,7 +51,7 @@
                         return moment(d).format(DATE_FORMAT);
                     } else if (moment(d).diff(moment(), 'days') >= 6) {
                         // If the event is NOT all day, but the date is greater
-                        // than 5 days in the future, then return a date 
+                        // than 5 days in the future, then return a date
                         // formatted string
                         return moment(d).format(DATE_FORMAT);
                     } else {
@@ -52,16 +64,16 @@
                     if (allday_p) {
                         start = moment(start_d); //.format("ddd, ll");
                         if (moment(end_d).diff(start, 'days') > 1) {
-                            // If the end_d is more than a day after start, 
-                            // then initialize end from end_d and subtract 1 
+                            // If the end_d is more than a day after start,
+                            // then initialize end from end_d and subtract 1
                             // day from it (prevents overflow)
                             end = moment(end_d).subtract(1, 'days'); //.format("ddd, ll");
                         }
-                        // Check if event spans from the start of week to the 
+                        // Check if event spans from the start of week to the
                         // end of week (locale-aware)
                         if (start.weekday() == 0 && (end && end.weekday() == 6)) {
                             // If the start is at the first weekday and the end
-                            // is initialized and at the last weekday then 
+                            // is initialized and at the last weekday then
                             // return a string with the current (locale aware)
                             // week number
                             return "Uke " + start.week();
@@ -71,19 +83,19 @@
                             // Only format the end if it is actually initialized
                             end = end && end.format(DATE_FORMAT);
                         }
-                        // Return a string in the format "<start> - <end>" if 
+                        // Return a string in the format "<start> - <end>" if
                         // both start and end is set to a value.
                         // If end is not set to a value only return "<start>"
                         return start + (end ? " - " + end : "");
                         //+ " - " + moment(end_d).subtract(1, 'days').format("ddd, ll");
                     } else if (moment(start_d).diff(moment(), 'days') >= 6) {
                         // If the event is not all day and the start_d is more
-                        // than 5 days in the future, then return a formatted 
+                        // than 5 days in the future, then return a formatted
                         // date string
                         return moment(start_d).format(DATE_FORMAT);
                     } else {
-                        // Otherwise return a calendar formatted start_d + a 
-                        // locale aware time formatted end_d in the form of 
+                        // Otherwise return a calendar formatted start_d + a
+                        // locale aware time formatted end_d in the form of
                         // "<start_d> - <end_d>"
                         return moment(start_d).calendar()
                             + " - " + moment(end_d).format("LT");
@@ -126,12 +138,12 @@
                     <span class="gcf-item-daterange"></span><br />
                     <span class="gcf-item-title"></span><br />
                     <span class="gcf-item-location"></span>
-                    <p class="gcf-item-description"></p>
+                    <p class="gcf-item-description hidden"></p>
                 </div>
                 <hr />
             </li>
         </ul>
-        <div class="gcf-last-update-block">
+        <div class="gcf-last-update-block hidden">
             LastUpdate: <span class="gcf-last-update">2012-02-30 20:58</span>
         </div>
     </div>
