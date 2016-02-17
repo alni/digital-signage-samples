@@ -1,0 +1,17 @@
+﻿p {
+    line-height:93px;
+}
+
+.item:first-child img {
+    position: absolute;
+    left: 0;
+    top: 23px;
+}
+
+#content {
+    margin-left: 140px;
+}
+
+.item:not(:first-child) p:first-child  {
+    display: none !important;
+}
