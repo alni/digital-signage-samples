@@ -1,0 +1,7 @@
+﻿p {
+    line-height:93px;
+}
+
+.item:not(:first-child) p:first-child  {
+    display: none !important;
+}
