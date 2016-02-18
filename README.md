@@ -4,8 +4,10 @@ A repository containing commonly used code samples for my digital signage
 projects.
 
 * [`gcalflow/`](gcalflow/) - contains code, layout and styles for the 
-  `gcalflow` JavaScript library
+  gCalFlow JavaScript library
 * [`xibo/`](xibo/) - contains templates and styles for Xibo modules
+
+Licensed under the [MIT](LICENSE.md) License.
 
 
 ## Links ##
