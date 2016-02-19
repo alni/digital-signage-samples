@@ -22,7 +22,8 @@
         _gCalFlow_debug = true;
     </script>
     <script type="text/javascript" src="lib/moment-with-locales.min.js" charset="UTF-8"></script>
-    <script type="text/javascript" src="jquery-gcal-flow-3.0.1/jquery.gcal_flow.js"></script>
+    <!--<script type="text/javascript" src="jquery-gcal-flow-3.0.1/jquery.gcal_flow.js"></script>-->
+    <script type="text/javascript" src="jquery.gcal_flow_custom.js"></script>
     <script type="text/javascript">
         /**
          * <http://stackoverflow.com/a/5158301>
@@ -37,9 +38,12 @@
             var CAL_ID = getParameterByName("CAL_ID");
             var DATE_FORMAT = getParameterByName("DATE_FORMAT") || "ddd, ll";
             var LANG = getParameterByName("LANG") || "nb";
+            var TYPE = getParameterByName("TYPE") || null;
+            var SCROLL_INTERVAL = getParameterByName("INTERVAL") || 10;
             moment.lang(LANG);
             $('#gcf-custom-template').gCalFlow({
                 //auto_scroll: false,
+                scroll_interval: SCROLL_INTERVAL * 1000,
                 link_title: false,
                 link_item_title: false,
                 calid: CAL_ID || '2dpnd6bnab0bsih2f7fkn45l8o@group.calendar.google.com',
@@ -100,7 +104,27 @@
                         return moment(start_d).calendar()
                             + " - " + moment(end_d).format("LT");
                     }
-                }
+                },
+                callback: (TYPE == "grouped" ? function () {
+                    var found_dates = [];
+                    this.find(".gcf-item-block").each(function (index) {
+                        var $this = $(this);
+                        var _date = $this.find(".gcf-item-daterange").text();
+                        if (found_dates.indexOf(_date) > -1) {
+                            //$this.find(".gcf-item-daterange").text("");
+                            $this.find("hr").remove();
+
+                            $this.prev().find('.gcf-item-title')
+                                .append('<br/>').append($this.find('.gcf-item-title').text());
+                            $this.html("").addClass("hidden");
+                            $this.remove();
+                        } else {
+                            found_dates.push(_date);
+                            $this.find("hr").remove();
+                            $this.prepend("<hr />");
+                        }
+                    });
+                } : null)
             });
         });
     </script>
