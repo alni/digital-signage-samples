@@ -8,9 +8,20 @@
             * Default : "ddd, ll"
         * LANG : (optional) the language to use with Moment.js
             * Default : nb (Norwegian Bokmaal)
+        * TYPE : (optional) type of agenda (normal/grouped)
+            * normal : normal agenda (default)
+            * grouped : group agenda items by date range (supports only date +
+              title)
+        * INTERVAL : (optional) the scroll interval in seconds
+            * Default : 10
 
-        Example:
+        Examples:
             agenda.html?CAL_ID=<my_calendar_id>&LANG=en&DATE_FORMAT=lll
+              * Agenda with English date and time, with a medium length,
+                localized date format
+            agenda.html?CAL_ID=<my_calendar_id>&LANG=da&DATE_FORMAT=lll&TYPE=grouped
+              *  Grouped agenda with Danish date and time, and a medium length,
+                 localized date format
     -->
     <meta charset="UTF-8">
     <link href="jquery-gcal-flow-3.0.1/jquery.gcal_flow.css" rel="stylesheet" type="text/css">
@@ -43,7 +54,7 @@
             moment.lang(LANG);
             $('#gcf-custom-template').gCalFlow({
                 //auto_scroll: false,
-                scroll_interval: SCROLL_INTERVAL * 1000,
+                scroll_interval: parseInt(SCROLL_INTERVAL) * 1000,
                 link_title: false,
                 link_item_title: false,
                 calid: CAL_ID || '2dpnd6bnab0bsih2f7fkn45l8o@group.calendar.google.com',
