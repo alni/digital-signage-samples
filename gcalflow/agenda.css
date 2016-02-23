@@ -5,7 +5,7 @@ html {
 body {
   overflow: hidden;
 }
-.hidden:not(..gcf-item-block) {
+.hidden:not(.gcf-item-block) {
   display: none;
 }
 
@@ -24,7 +24,7 @@ body {
   font-weight: 600;
   color: #fff;
 }
-#gcf-custom-template .gcf-item-container-block {
+#gcf-custom-template:not(.tasks) .gcf-item-container-block {
   box-sizing: border-box;
   border-bottom: solid 80px transparent;
   height: 100%;
@@ -43,6 +43,10 @@ body {
   margin: 0;
   border: none;
   height: 0px;
+}
+
+#gcf-custom-template .gcf-item-block.disabled {
+  opacity: 0.50;
 }
 
 #gcf-custom-template .gcf-item-daterange {
@@ -75,6 +79,18 @@ body {
   text-decoration: none;
   background-color: transparent;
 }
+
+
+#gcf-custom-template.tasks .gcf-item-daterange:after {
+    content: ": ";
+}
+#gcf-custom-template.tasks .gcf-item-location:not(:empty):before {
+    content: " (";
+}
+#gcf-custom-template.tasks .gcf-item-location:not(:empty):after {
+    content: ")";
+}
+
 #gcf-custom-template .gcf-item-description {
   font-family: Verdana;
   color: black;

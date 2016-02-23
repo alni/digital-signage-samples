@@ -146,13 +146,16 @@
         this.target.text("Error: You need to set 'calid' or 'feed_url' option.");
         throw "gCalFlow: calid and feed_url missing";
       }
+      if (this.opts.dtstart) {
+          now = this.opts.dtstart.toJSON();
+      }
       if (this.opts.feed_url) {
         return this.opts.feed_url;
       } else if (this.opts.mode === 'updates') {
-        now = new Date().toJSON();
+        now = now || new Date().toJSON();
         return "https://www.googleapis.com/calendar/v3/calendars/" + this.opts.calid + "/events?key=" + this.opts.apikey + "&maxResults=" + this.opts.maxitem + "&orderBy=updated&timeMin=" + now + "&singleEvents=true";
       } else {
-        now = new Date().toJSON();
+        now = now || new Date().toJSON();
         return "https://www.googleapis.com/calendar/v3/calendars/" + this.opts.calid + "/events?key=" + this.opts.apikey + "&maxResults=" + this.opts.maxitem + "&orderBy=startTime&timeMin=" + now + "&singleEvents=true";
       }
     };

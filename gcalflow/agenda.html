@@ -12,6 +12,8 @@
             * normal : normal agenda (default)
             * grouped : group agenda items by date range (supports only date +
               title)
+            * tasks : use the agenda as a simple tasks/todo list (supports only
+              date, title and location)
         * INTERVAL : (optional) the scroll interval in seconds
             * Default : 10
 
@@ -47,16 +49,71 @@
         var $ = jQuery;
         $(function () {
             var CAL_ID = getParameterByName("CAL_ID");
+            var DATA_URL = getParameterByName("DATA_URL");
             var DATE_FORMAT = getParameterByName("DATE_FORMAT") || "ddd, ll";
             var LANG = getParameterByName("LANG") || "nb";
             var TYPE = getParameterByName("TYPE") || null;
             var SCROLL_INTERVAL = getParameterByName("INTERVAL") || 10;
+            var dtstart = new Date();
+            var callback = null;
+            if (TYPE == "grouped") {
+                callback = function () {
+                    var found_dates = [];
+                    this.find(".gcf-item-block").each(function (index) {
+                        var $this = $(this);
+                        var _date = $this.find(".gcf-item-daterange").text();
+                        if (found_dates.indexOf(_date) > -1) {
+                            //$this.find(".gcf-item-daterange").text("");
+                            $this.find("hr").remove();
+
+                            $this.prev().find('.gcf-item-title')
+                                .append('<br/>').append($this.find('.gcf-item-title').text());
+                            $this.html("").addClass("hidden");
+                            $this.remove();
+                        } else {
+                            found_dates.push(_date);
+                            $this.find("hr").remove();
+                            $this.prepend("<hr />");
+                        }
+                    });
+                };
+            }
+            if (TYPE == "tasks") {
+                dtstart.setHours(0);
+                dtstart.setMinutes(0);
+                dtstart.setSeconds(0);
+                dtstart.setMilliseconds(0);
+                $('#gcf-custom-template').on('click', '.gcf-item-block', function (e) {
+                    $(this).toggleClass("disabled");
+                });
+                $('#gcf-custom-template').addClass("tasks");
+
+                callback = function () {
+                    var found_dates = [];
+                    this.find(".gcf-item-block").each(function (index) {
+                        var $this = $(this);
+                        var _date = $this.find(".gcf-item-daterange").text();
+                        if (found_dates.indexOf(_date) > -1) {
+                            //$this.find(".gcf-item-daterange").text("");
+                            $this.find("hr").remove();
+                        } else {
+                            found_dates.push(_date);
+                            $this.find("hr").remove();
+                            $this.prepend("<hr />");
+                        }
+                        $this.find(".gcf-item-description").addClass("hidden");
+                        $this.find("br").remove();
+                    });
+                };
+            }
             moment.lang(LANG);
             $('#gcf-custom-template').gCalFlow({
-                //auto_scroll: false,
+                auto_scroll: TYPE == "tasks" ? false : true,
                 scroll_interval: parseInt(SCROLL_INTERVAL) * 1000,
                 link_title: false,
                 link_item_title: false,
+                data_url: DATA_URL,
+                dtstart: dtstart, // Custom option
                 calid: CAL_ID || '2dpnd6bnab0bsih2f7fkn45l8o@group.calendar.google.com',
                 maxitem: 50,
                 date_formatter: function (d, allday_p) {
@@ -116,26 +173,7 @@
                             + " - " + moment(end_d).format("LT");
                     }
                 },
-                callback: (TYPE == "grouped" ? function () {
-                    var found_dates = [];
-                    this.find(".gcf-item-block").each(function (index) {
-                        var $this = $(this);
-                        var _date = $this.find(".gcf-item-daterange").text();
-                        if (found_dates.indexOf(_date) > -1) {
-                            //$this.find(".gcf-item-daterange").text("");
-                            $this.find("hr").remove();
-
-                            $this.prev().find('.gcf-item-title')
-                                .append('<br/>').append($this.find('.gcf-item-title').text());
-                            $this.html("").addClass("hidden");
-                            $this.remove();
-                        } else {
-                            found_dates.push(_date);
-                            $this.find("hr").remove();
-                            $this.prepend("<hr />");
-                        }
-                    });
-                } : null)
+                callback: callback
             });
         });
     </script>
