@@ -1,0 +1,12 @@
+﻿.image img { 
+    width:100%;
+}
+.cycle-overlay {
+    color: white;
+    background: rgba(76, 117, 151, 0.5);
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height:100%;
+    padding: 15px;
+}
