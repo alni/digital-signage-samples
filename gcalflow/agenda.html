@@ -14,8 +14,12 @@
               title)
             * tasks : use the agenda as a simple tasks/todo list (supports only
               date, title and location)
+            * ticker : use the agenda as a news ticker (supports only date,
+              title and location)
         * INTERVAL : (optional) the scroll interval in seconds
             * Default : 10
+        * MAX_ITEMS : (optional) the number of max items to fetch from the
+          calendar
 
         Examples:
             agenda.html?CAL_ID=<my_calendar_id>&LANG=en&DATE_FORMAT=lll
@@ -54,6 +58,7 @@
             var LANG = getParameterByName("LANG") || "nb";
             var TYPE = getParameterByName("TYPE") || null;
             var SCROLL_INTERVAL = getParameterByName("INTERVAL") || 10;
+            var MAX_ITEMS = getParameterByName("MAX_ITEMS") || 50;
             var dtstart = new Date();
             var callback = null;
             if (TYPE == "grouped") {
@@ -106,16 +111,30 @@
                     });
                 };
             }
+
+            if (TYPE == "ticker") {
+                $('#gcf-custom-template').addClass("ticker");
+
+                callback = function () {
+                    var found_dates = [];
+                    this.find(".gcf-item-block").each(function (index) {
+                        var $this = $(this);
+                        $this.find("hr").remove();
+                        $this.find(".gcf-item-description").addClass("hidden");
+                        $this.find("br").remove();
+                    });
+                };
+            }
             moment.lang(LANG);
             $('#gcf-custom-template').gCalFlow({
                 auto_scroll: TYPE == "tasks" ? false : true,
-                scroll_interval: parseInt(SCROLL_INTERVAL) * 1000,
+                scroll_interval: +SCROLL_INTERVAL * 1000,
                 link_title: false,
                 link_item_title: false,
                 data_url: DATA_URL,
                 dtstart: dtstart, // Custom option
                 calid: CAL_ID || '2dpnd6bnab0bsih2f7fkn45l8o@group.calendar.google.com',
-                maxitem: 50,
+                maxitem: +MAX_ITEMS,
                 date_formatter: function (d, allday_p) {
                     if (allday_p) {
                         // If the event is all day, then return a date formatted
