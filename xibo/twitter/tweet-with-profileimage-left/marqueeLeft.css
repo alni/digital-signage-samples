@@ -1,0 +1,7 @@
+﻿p.profileimage img {
+    height: 74px;
+    padding-right: 20px;
+    vertical-align:top; 
+}
+
+p { line-height: 74px; }
