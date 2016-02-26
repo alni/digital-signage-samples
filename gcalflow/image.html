@@ -1,0 +1,125 @@
+﻿<html>
+<head>
+    <!--
+        # Calendar aware image slide show #
+
+        ## Calendar Event Format ##
+
+        * Title/Summary : the short description of the image
+        * Description : * First line = The Image URI.
+                        * The other lines are ignored
+
+        ## Supported URI Query Parameters ##
+    
+        Supports the following URI Query Parameters:
+        * CAL_ID : (required) the ID of the Calendar from the Google Calendar
+          Service
+        * INTERVAL : (optional) the scroll interval in seconds
+            * Default : 10
+        * MAX_ITEMS : (optional) the number of max items to fetch from the
+          calendar
+            * Default : 2
+
+        Examples:
+            image.html?CAL_ID=<my_calendar_id>&INTERVAL=60&MAX_ITEMS=4
+              * Slide show with 4 items shown at a 60 seconds interval
+            image.html?CAL_ID=<my_calendar_id>&INTERVAL=300
+              * Slide show with 2 items shown at a 5 minutes interval
+    -->
+    <meta charset="UTF-8">
+    <link href="jquery-gcal-flow-3.0.1/jquery.gcal_flow.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+        google.load("jquery", "1.7.1");
+    </script>
+    <script>
+        _gCalFlow_debug = true;
+    </script>
+    <script type="text/javascript" src="jquery-gcal-flow-3.0.1/jquery.gcal_flow.js"></script>
+    <script type="text/javascript">
+        /**
+         * <http://stackoverflow.com/a/5158301>
+         */
+        function getParameterByName(name) {
+            var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+            return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+        }
+
+        var $ = jQuery;
+        $(function () {
+            var CAL_ID = getParameterByName("CAL_ID");
+            var DATA_URL = getParameterByName("DATA_URL");
+            var SCROLL_INTERVAL = getParameterByName("INTERVAL") || 10;
+            var MAX_ITEMS = getParameterByName("MAX_ITEMS") || 2;
+            var autoscroll = true;
+            var callback = function () {
+                this.find(".gcf-item-block").each(function (index) {
+                    var $this = $(this),
+                        $title = $this.find('.gcf-item-title'),
+                        _text = $this.find(".gcf-item-description").text().split("\n"),
+                        image_uri = _text[0];
+                    $this.find("img").attr("src", image_uri);
+                    $this.find("img").attr("title", $title.text());
+                });
+            };
+            $('#gcf-image-template').gCalFlow({
+                auto_scroll: autoscroll,
+                scroll_interval: +SCROLL_INTERVAL * 1000,
+                link_title: false,
+                link_item_title: false,
+                data_url: DATA_URL,
+                calid: CAL_ID || '2dpnd6bnab0bsih2f7fkn45l8o@group.calendar.google.com',
+                maxitem: +MAX_ITEMS,
+                callback: callback
+            });
+        });
+    </script>
+    <style type="text/css">
+        body {
+            height: 100%;
+        }
+
+        #gcf-image-template {
+            height: 100%;
+            width: 100%;
+            border: none;
+        }
+
+        #gcf-image-template .gcf-item-container-block {
+            height: 100%;
+            width: 100%;
+            padding: 0px;
+            overflow: hidden;
+        }
+
+        #gcf-image-template .gcf-item-block {
+            height: 100%;
+            width: 100%;
+            border: none;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        #gcf-image-template .gcf-item-block img {
+            height: 100%;
+            width: 100%;
+            border: none;
+            padding: 0px;
+            margin: 0px;
+        }
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="agenda.css">
+</head>
+<body style="height: 100%;">
+    <div id="gcf-image-template">
+        <ul class="gcf-item-container-block">
+            <li class="gcf-item-block">
+                <span class="gcf-item-title hidden"></span>
+                <p class="gcf-item-description hidden"></p>
+                <img />
+            </li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -60,74 +60,81 @@
             var SCROLL_INTERVAL = getParameterByName("INTERVAL") || 10;
             var MAX_ITEMS = getParameterByName("MAX_ITEMS") || 50;
             var dtstart = new Date();
+            var autoscroll = true;
             var callback = null;
-            if (TYPE == "grouped") {
-                callback = function () {
-                    var found_dates = [];
-                    this.find(".gcf-item-block").each(function (index) {
-                        var $this = $(this);
-                        var _date = $this.find(".gcf-item-daterange").text();
-                        if (found_dates.indexOf(_date) > -1) {
-                            //$this.find(".gcf-item-daterange").text("");
-                            $this.find("hr").remove();
+            switch (TYPE) {
+                case "grouped":
+                    callback = function () {
+                        var found_dates = [];
+                        this.find(".gcf-item-block").each(function (index) {
+                            var $this = $(this),
+                                $date = $this.find(".gcf-item-daterange"),
+                                _date = $date.text(),
+                                $title = $this.find('.gcf-item-title'),
+                                $prev = $this.prev(),
+                                $prev_title = $prev.find('.gcf-item-title');
+                            if (found_dates.indexOf(_date) > -1) {
+                                //$this.find(".gcf-item-daterange").text("");
+                                //$this.find("hr").remove();
 
-                            $this.prev().find('.gcf-item-title')
-                                .append('<br/>').append($this.find('.gcf-item-title').text());
-                            $this.html("").addClass("hidden");
-                            $this.remove();
-                        } else {
-                            found_dates.push(_date);
-                            $this.find("hr").remove();
-                            $this.prepend("<hr />");
-                        }
+                                $prev_title.append('<br/>')
+                                    .append($title.text());
+                                //$this.html("").addClass("hidden");
+                                $this.remove();
+                            } else {
+                                found_dates.push(_date);
+                                $this.find("hr").remove();
+                                $this.prepend("<hr />");
+                            }
+                        });
+                    };
+                    break;
+                case "tasks":
+                    autoscroll = false;
+                    dtstart.setHours(0);
+                    dtstart.setMinutes(0);
+                    dtstart.setSeconds(0);
+                    dtstart.setMilliseconds(0);
+                    $('#gcf-custom-template').on('click', '.gcf-item-block', function (e) {
+                        $(this).toggleClass("disabled");
                     });
-                };
-            }
-            if (TYPE == "tasks") {
-                dtstart.setHours(0);
-                dtstart.setMinutes(0);
-                dtstart.setSeconds(0);
-                dtstart.setMilliseconds(0);
-                $('#gcf-custom-template').on('click', '.gcf-item-block', function (e) {
-                    $(this).toggleClass("disabled");
-                });
-                $('#gcf-custom-template').addClass("tasks");
+                    $('#gcf-custom-template').addClass("tasks");
 
-                callback = function () {
-                    var found_dates = [];
-                    this.find(".gcf-item-block").each(function (index) {
-                        var $this = $(this);
-                        var _date = $this.find(".gcf-item-daterange").text();
-                        if (found_dates.indexOf(_date) > -1) {
-                            //$this.find(".gcf-item-daterange").text("");
+                    callback = function () {
+                        var found_dates = [];
+                        this.find(".gcf-item-block").each(function (index) {
+                            var $this = $(this);
+                            var _date = $this.find(".gcf-item-daterange").text();
+                            if (found_dates.indexOf(_date) > -1) {
+                                //$this.find(".gcf-item-daterange").text("");
+                                $this.find("hr").remove();
+                            } else {
+                                found_dates.push(_date);
+                                $this.find("hr").remove();
+                                $this.prepend("<hr />");
+                            }
+                            $this.find(".gcf-item-description").addClass("hidden");
+                            $this.find("br").remove();
+                        });
+                    };
+                    break;
+                case "ticker":
+                    $('#gcf-custom-template').addClass("ticker");
+
+                    callback = function () {
+                        var found_dates = [];
+                        this.find(".gcf-item-block").each(function (index) {
+                            var $this = $(this);
                             $this.find("hr").remove();
-                        } else {
-                            found_dates.push(_date);
-                            $this.find("hr").remove();
-                            $this.prepend("<hr />");
-                        }
-                        $this.find(".gcf-item-description").addClass("hidden");
-                        $this.find("br").remove();
-                    });
-                };
-            }
-
-            if (TYPE == "ticker") {
-                $('#gcf-custom-template').addClass("ticker");
-
-                callback = function () {
-                    var found_dates = [];
-                    this.find(".gcf-item-block").each(function (index) {
-                        var $this = $(this);
-                        $this.find("hr").remove();
-                        $this.find(".gcf-item-description").addClass("hidden");
-                        $this.find("br").remove();
-                    });
-                };
+                            $this.find(".gcf-item-description").addClass("hidden");
+                            $this.find("br").remove();
+                        });
+                    };
+                    break;
             }
             moment.lang(LANG);
             $('#gcf-custom-template').gCalFlow({
-                auto_scroll: TYPE == "tasks" ? false : true,
+                auto_scroll: autoscroll,
                 scroll_interval: +SCROLL_INTERVAL * 1000,
                 link_title: false,
                 link_item_title: false,
