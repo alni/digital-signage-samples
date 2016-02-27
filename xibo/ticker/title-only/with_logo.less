@@ -1,0 +1,21 @@
+﻿@import "../../../shared/styles.less";
+
+p {
+    line-height:93px;
+}
+
+.item {
+    &:first-child img {
+        position: absolute;
+        left: 0;
+        top: 23px;
+    }
+
+    &:not(:first-child) p:first-child {
+        display: none !important;
+    }
+}
+
+#content {
+    margin-left: 140px;
+}

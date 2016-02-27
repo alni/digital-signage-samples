@@ -1,0 +1,30 @@
+﻿[
+  {
+    "outputFile": "gcalflow/agenda.css",
+    "inputFile": "gcalflow/agenda.less"
+  },
+  {
+    "outputFile": "xibo/ticker/media-rss-with-left-hand-text/full_width.css",
+    "inputFile": "xibo/ticker/media-rss-with-left-hand-text/full_width.less"
+  },
+  {
+    "outputFile": "xibo/ticker/media-rss-with-title/with_desc.css",
+    "inputFile": "xibo/ticker/media-rss-with-title/with_desc.less"
+  },
+  {
+    "outputFile": "xibo/ticker/title-only/with_logo.css",
+    "inputFile": "xibo/ticker/title-only/with_logo.less"
+  },
+  {
+    "outputFile": "xibo/ticker/title-only/with_name.css",
+    "inputFile": "xibo/ticker/title-only/with_name.less"
+  },
+  {
+    "outputFile": "xibo/twitter/tweet-with-profileimage-left/marqueeLeft.css",
+    "inputFile": "xibo/twitter/tweet-with-profileimage-left/marqueeLeft.less"
+  },
+  {
+    "outputFile": "xibo/forecast/styles.css",
+    "inputFile": "xibo/forecast/styles.less"
+  }
+]

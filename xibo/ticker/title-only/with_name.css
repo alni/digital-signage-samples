@@ -1,7 +1,7 @@
-﻿p {
-    line-height:93px;
+﻿@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic);
+p {
+  line-height: 93px;
 }
-
-.item:not(:first-child) p:first-child  {
-    display: none !important;
+.item:not(:first-child) p:first-child {
+  display: none !important;
 }
