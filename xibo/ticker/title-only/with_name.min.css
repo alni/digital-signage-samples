@@ -1,1 +1,1 @@
-﻿@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic);p{line-height:93px;}.item:not(:first-child) p:first-child{display:none !important;}
+﻿@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic);p{line-height:93px;font-family:"Open Sans",sans-serif;font-size:48px;color:#fff;}.item:not(:first-child) p:first-child{display:none !important;}

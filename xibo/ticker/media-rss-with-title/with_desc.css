@@ -11,3 +11,8 @@
   padding: 15px;
   text-align: center;
 }
+.cycle-overlay p {
+  font-family: "Open Sans", sans-serif;
+  color: #fff;
+  font-size: 48px;
+}
