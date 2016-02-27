@@ -35,7 +35,8 @@
     <script>
         _gCalFlow_debug = true;
     </script>
-    <script type="text/javascript" src="jquery-gcal-flow-3.0.1/jquery.gcal_flow.js"></script>
+    <!--<script type="text/javascript" src="jquery-gcal-flow-3.0.1/jquery.gcal_flow.js"></script>-->
+    <script type="text/javascript" src="jquery.gcal_flow_custom.js"></script>
     <script type="text/javascript">
         /**
          * <http://stackoverflow.com/a/5158301>
@@ -53,13 +54,19 @@
             var MAX_ITEMS = getParameterByName("MAX_ITEMS") || 2;
             var autoscroll = true;
             var callback = function () {
+                var found_images = [];
                 this.find(".gcf-item-block").each(function (index) {
                     var $this = $(this),
                         $title = $this.find('.gcf-item-title'),
                         _text = $this.find(".gcf-item-description").text().split("\n"),
                         image_uri = _text[0];
-                    $this.find("img").attr("src", image_uri);
-                    $this.find("img").attr("title", $title.text());
+                    if (found_images.indexOf(image_uri) > -1) {
+                        $this.remove();
+                    } else {
+                        found_images.push(image_uri);
+                        $this.find("img").attr("src", image_uri);
+                        $this.find("img").attr("title", $title.text());
+                    }
                 });
             };
             $('#gcf-image-template').gCalFlow({
