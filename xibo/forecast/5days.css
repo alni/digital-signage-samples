@@ -1,0 +1,94 @@
+﻿@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic);
+body {
+  font-family: "Open Sans", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+.container {
+  text-align: left;
+  height: 100%;
+  font: bold 64px "Open Sans", sans-serif;
+}
+.daily-forecast {
+  margin-top: 20px;
+  display: table;
+  width: 100%;
+  font: normal 26px/36px "Open Sans", sans-serif;
+}
+.day {
+  display: table-cell;
+  height: 700px;
+  width: 12%;
+  /* for some reason keeps the 'columns' equal */
+  padding: 10px 5px;
+  vertical-align: middle;
+  text-align: center;
+}
+.day:nth-of-type(1) {
+  width: 50%;
+}
+.day:nth-of-type(6),
+.day:nth-of-type(7) {
+  display: none;
+}
+.currentDay {
+  font-size: 48px;
+}
+.day:nth-of-type(1) .currentDay {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: inline-block;
+  padding: 30px;
+  width: 550px;
+  height: 550px;
+}
+.day-icon {
+  font-size: 62px;
+  margin-top: -24px;
+  margin-bottom: 20px;
+}
+.day:nth-of-type(1) .currentDay .day-icon {
+  font-size: 192px;
+  margin: 2% 0 14%;
+}
+.day-icon-seperator {
+  display: none;
+}
+.day:nth-of-type(1) .currentDay .day-icon-seperator {
+  display: block;
+  width: 90%;
+  height: 5px;
+  background-color: #F2F2F2;
+  border: none;
+}
+.weekday {
+  font-size: 48px;
+  display: none;
+  text-transform: uppercase;
+}
+.day:nth-of-type(1) .currentDay .weekday {
+  display: block;
+  margin: 28px auto 10px;
+}
+.day:nth-of-type(1) .currentDay .maxTemp {
+  font-size: 154px;
+  margin-top: 72px;
+}
+.unitTemp {
+  display: none;
+}
+.day:nth-of-type(1) .currentDay .unitTemp {
+  display: inline;
+}
+.weekday-short {
+  margin-top: 10%;
+}
+.day:nth-of-type(1) .currentDay .weekday-short {
+  display: none;
+}
+.powered-by {
+  font-size: 18px;
+  clear: both;
+  float: right;
+  margin-right: 4%;
+}

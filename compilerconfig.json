@@ -26,5 +26,9 @@
   {
     "outputFile": "xibo/forecast/styles.css",
     "inputFile": "xibo/forecast/styles.less"
+  },
+  {
+    "outputFile": "xibo/forecast/5days.css",
+    "inputFile": "xibo/forecast/5days.less"
   }
 ]
