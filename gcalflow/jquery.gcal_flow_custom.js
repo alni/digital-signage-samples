@@ -147,7 +147,12 @@
         throw "gCalFlow: calid and feed_url missing";
       }
       if (this.opts.dtstart) {
+          // Added by @alni
           now = this.opts.dtstart.toJSON();
+      }
+      if (this.opts.dtend) {
+          // Added by @alni
+          now = now + "&timeMax=" + this.opts.dtend.toJSON();
       }
       if (this.opts.feed_url) {
         return this.opts.feed_url;
@@ -244,6 +249,8 @@
           ent = _ref2[_j];
           log.debug("formatting entry:", ent);
           ci = it.clone();
+          
+          ci.attr("data-event-id", ent.id); // Added by @alni
           if (ent.start) {
             if (ent.start.dateTime) {
               st = ent.start.dateTime;

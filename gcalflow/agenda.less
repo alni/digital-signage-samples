@@ -55,7 +55,13 @@ ul {
             color: #fff;
         }
     }
-    &:not(.tasks), &:not(.ticker) {
+    .gcf-item-container-block {
+        box-sizing: border-box;
+        border-bottom: solid 80px transparent;
+        height: 100%;
+        overflow-y: auto;
+    }
+    &:not(.tasks):not(.ticker) {
         .gcf-item-container-block {
             box-sizing: border-box;
             border-bottom: solid 80px transparent;

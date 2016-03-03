@@ -60,6 +60,7 @@
             var SCROLL_INTERVAL = getParameterByName("INTERVAL") || 10;
             var MAX_ITEMS = getParameterByName("MAX_ITEMS") || 50;
             var dtstart = new Date();
+            var dtend = null;
             var autoscroll = true;
             var callback = null;
             switch (TYPE) {
@@ -95,8 +96,14 @@
                     dtstart.setMinutes(0);
                     dtstart.setSeconds(0);
                     dtstart.setMilliseconds(0);
+                    dtend = moment(dtstart).endOf('day').toDate();
                     $('#gcf-custom-template').on('click', '.gcf-item-block', function (e) {
-                        $(this).toggleClass("disabled");
+                        var $this = $(this);
+                        var key = "agenda-tasks-" + $this.data("event-id") + "_done";
+                        $this.toggleClass("disabled");
+                        // Store the serialized task done state (has "disabled"
+                        // class) in localStorage
+                        localStorage.setItem(key, JSON.stringify($this.hasClass("disabled")));
                     });
                     $('#gcf-custom-template').addClass("tasks");
 
@@ -104,16 +111,37 @@
                         var found_dates = [];
                         this.find(".gcf-item-block").each(function (index) {
                             var $this = $(this);
+                            var key = "agenda-tasks-" + $this.data("event-id") + "_done";
+                            // Check if key exists in localStorage
+                            if (key in localStorage) {
+                                // Then check its parsed value
+                                if (!!JSON.parse(localStorage.getItem(key))) {
+                                    // If the parsed value validates to true,
+                                    // then set the task as already done (add
+                                    // "disabled" class)
+                                    $this.addClass("disabled");
+                                }
+                            }
                             var _date = $this.find(".gcf-item-daterange").text();
                             if (found_dates.indexOf(_date) > -1) {
-                                //$this.find(".gcf-item-daterange").text("");
+                                // If the date/time has already been found,
+                                // then remove the HR element to group it with 
+                                // the previous (same) items
                                 $this.find("hr").remove();
                             } else {
+                                // Otherwise, add the date/time as a new entry
+                                // with the found_dates array
                                 found_dates.push(_date);
-                                $this.find("hr").remove();
-                                $this.prepend("<hr />");
+                                // Remove the bottom HR element and add another
+                                // at the top of the element
+                                $this.find("hr").remove(); // Remove bottom
+                                $this.prepend("<hr />"); // Add at top
                             }
+                            // Hide the description as it is not supported with
+                            // tasks
                             $this.find(".gcf-item-description").addClass("hidden");
+                            // Remove the BR elements to keep all elements on
+                            // the same line within the item
                             $this.find("br").remove();
                         });
                     };
@@ -140,6 +168,7 @@
                 link_item_title: false,
                 data_url: DATA_URL,
                 dtstart: dtstart, // Custom option
+                dtend: dtend, // Custom option
                 calid: CAL_ID || '2dpnd6bnab0bsih2f7fkn45l8o@group.calendar.google.com',
                 maxitem: +MAX_ITEMS,
                 date_formatter: function (d, allday_p) {
@@ -232,7 +261,7 @@
             </div>
         </div>
         <ul class="gcf-item-container-block">
-            <li class="gcf-item-block">
+            <li class="gcf-item-block" data-event-id="null">
                 <div class="gcf-item-header-block">
                     <span class="gcf-item-daterange"></span><br />
                     <span class="gcf-item-title"></span><br />
