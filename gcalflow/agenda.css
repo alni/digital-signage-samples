@@ -51,7 +51,7 @@ ul {
   font-weight: 600;
   color: #fff;
 }
-#gcf-custom-template .gcf-item-container-block {
+#gcf-custom-template:not(.ticker) .gcf-item-container-block {
   box-sizing: border-box;
   border-bottom: solid 80px transparent;
   height: 100%;
