@@ -53,6 +53,10 @@
             var SCROLL_INTERVAL = getParameterByName("INTERVAL") || 10;
             var MAX_ITEMS = getParameterByName("MAX_ITEMS") || 2;
             var autoscroll = true;
+            var dtend = new Date();
+            dtend.setHours(23);
+            dtend.setMinutes(59);
+            dtend.setSeconds(59);
             var callback = function () {
                 var found_images = [];
                 this.find(".gcf-item-block").each(function (index) {
@@ -61,7 +65,7 @@
                         _text = $this.find(".gcf-item-description").text().split("\n"),
                         image_uri = _text[0];
                     if (found_images.indexOf(image_uri) > -1) {
-                        $this.remove();
+                        //$this.remove();
                     } else {
                         found_images.push(image_uri);
                         $this.find("img").attr("src", image_uri);
@@ -75,6 +79,7 @@
                 link_title: false,
                 link_item_title: false,
                 data_url: DATA_URL,
+                dtend: dtend,
                 calid: CAL_ID || '2dpnd6bnab0bsih2f7fkn45l8o@group.calendar.google.com',
                 maxitem: +MAX_ITEMS,
                 callback: callback

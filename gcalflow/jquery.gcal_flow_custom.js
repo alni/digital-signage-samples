@@ -149,6 +149,8 @@
       if (this.opts.dtstart) {
           // Added by @alni
           now = this.opts.dtstart.toJSON();
+      } else {
+          now = new Date().toJSON();
       }
       if (this.opts.dtend) {
           // Added by @alni
