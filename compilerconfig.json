@@ -30,5 +30,9 @@
   {
     "outputFile": "xibo/forecast/5days.css",
     "inputFile": "xibo/forecast/5days.less"
+  },
+  {
+    "outputFile": "xibo/ticker/media-rss-with-title/flickr.css",
+    "inputFile": "xibo/ticker/media-rss-with-title/flickr.less"
   }
 ]
