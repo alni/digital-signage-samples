@@ -1,0 +1,35 @@
+﻿<!-- HTML to Embed -->
+<h1 id="main" style="font-size: 72px; "></h1>
+<!-- /HTML to Embed -->
+
+<!-- Custom Style Sheets -->
+<style type="text/css">
+
+</style>
+<!-- /Custom Style Sheets -->
+
+<!-- HEAD content to Embed (including script tags) -->
+<script type="text/javascript">
+function EmbedInit()
+{
+    // Init will be called when this page is loaded in the client.
+
+    // Test if localStorage is supported    
+    var _returned = (function () {
+        // http://stackoverflow.com/a/11214467
+        var mod = 'modernizr';
+        try {
+            localStorage.setItem(mod, mod);
+            localStorage.removeItem(mod);
+            return true;
+        } catch(e) {
+            return false;
+        }
+    })() + "";
+
+    document.getElementById("main").innerHTML = _returned;
+
+    return;
+}
+</script>
+<!-- /HEAD content to Embed (including script tags) -->
