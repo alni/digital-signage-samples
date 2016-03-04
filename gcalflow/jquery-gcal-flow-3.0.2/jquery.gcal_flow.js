@@ -145,23 +145,13 @@
         this.target.text("Error: You need to set 'calid' or 'data_url' option.");
         throw "gCalFlow: calid and data_url missing";
       }
-      if (this.opts.dtstart) {
-        // Added by @alni
-        now = this.opts.dtstart.toJSON();
-      } else {
-        now = new Date().toJSON();
-      }
-      if (this.opts.dtend) {
-        // Added by @alni
-        now = now + "&timeMax=" + this.opts.dtend.toJSON();
-      }
       if (this.opts.data_url) {
         return this.opts.data_url;
       } else if (this.opts.mode === 'updates') {
-        now = now || new Date().toJSON();
+        now = new Date().toJSON();
         return "https://www.googleapis.com/calendar/v3/calendars/" + this.opts.calid + "/events?key=" + this.opts.apikey + "&maxResults=" + this.opts.maxitem + "&orderBy=updated&timeMin=" + now + "&singleEvents=true";
       } else {
-        now = now || new Date().toJSON();
+        now = new Date().toJSON();
         return "https://www.googleapis.com/calendar/v3/calendars/" + this.opts.calid + "/events?key=" + this.opts.apikey + "&maxResults=" + this.opts.maxitem + "&orderBy=startTime&timeMin=" + now + "&singleEvents=true";
       }
     };
@@ -251,8 +241,6 @@
           ent = ref2[k];
           log.debug("formatting entry:", ent);
           ci = it.clone();
-          
-          ci.attr("data-event-id", ent.id); // Added by @alni
           if (ent.start) {
             if (ent.start.dateTime) {
               st = ent.start.dateTime;
@@ -327,8 +315,7 @@
       state = {
         idx: 0
       };
-      scroller = function () {
-        scroll_children = scroll_container.find(".gcf-item-block"); // Added by @alni
+      scroller = function() {
         var scroll_to;
         log.debug("current scroll position:", scroll_container.scrollTop());
         log.debug("scroll capacity:", scroll_container[0].scrollHeight - scroll_container[0].clientHeight);

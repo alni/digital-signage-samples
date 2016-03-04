@@ -1,0 +1,69 @@
+== v3.0.1 (2014-11-21)
+
+ * Fix logging function (it breaks all by js error)
+
+== v3.0.0 (2014-11-20)
+
+ * Updates to use Google Calendar API v3
+ * Timezone fix (show event date in browser local timezone)
+ * Add link_item_location option
+
+== v1.2.7 (2013-08-13)
+
+ * Set futureevents and singleevents to true on updates mode.
+
+== v1.2.6 (2013-12-13)
+
+ * Fix minor typo on default item_description_as_html option.
+ * Add minified version on dist archive.
+ * Documentation fixes
+   * Fix typo on sample code of documentation (gcf-simple).
+   * Add globalize example.
+   * Add docs for item_description_as_html and no_items_html
+
+== v1.2.5 (2013-07-18)
+
+ * Fix timezone issue on all day event.
+   (Wrong date was shown on all day event with Firefox
+    and Chrome when system has negative timezone offset.)
+
+== v1.2.4 (2013-05-25)
+
+ * Null update to fix download URL on jQuery Plugin Registry.
+
+== v1.2.3 (2013-05-25)
+
+ * Add gh-pages branch as document.
+
+== v1.2.2 (2013-05-25)
+
+ * Add date format feature with Globalize.
+ * Fix design for IE8 & 10.
+ * Add .gcf-item-location. (By torque)
+ * Fix document typos. (By torque)
+ * Add no_items_html option.
+
+== v1.2.1 (2012-04-19)
+
+ * Fix timezone, end date on all day.
+
+== v1.2.0 (2012-04-16)
+
+ * Fix date parser.
+ * Add date range formatter.
+
+== v1.1.0 (2012-04-13)
+
+ * More js and template options
+
+== v1.0.0 (2012-04-06)
+
+ * Add upcoming mode.
+
+== v0.2.0 (2012-04-05)
+
+ * Add autoscroll.
+
+== v0.1.0 (2012-04-05)
+
+ * Initial version.
