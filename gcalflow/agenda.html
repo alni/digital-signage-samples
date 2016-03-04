@@ -20,6 +20,13 @@
             * Default : 10
         * MAX_ITEMS : (optional) the number of max items to fetch from the
           calendar
+            * Default : 50
+        * NUM_DAYS : (optional) the number of days in the future to fetch
+          events from the calendar.
+          - If this is not specified, then MAX_ITEMS is used instead.
+          - The value must to be greater than "0". If not, the value will be
+            forced to "1"
+          
 
         Examples:
             agenda.html?CAL_ID=<my_calendar_id>&LANG=en&DATE_FORMAT=lll
@@ -59,10 +66,14 @@
             var TYPE = getParameterByName("TYPE") || null;
             var SCROLL_INTERVAL = getParameterByName("INTERVAL") || 10;
             var MAX_ITEMS = getParameterByName("MAX_ITEMS") || 50;
+            var NUM_DAYS = getParameterByName("NUM_DAYS") || null;
             var dtstart = new Date();
             var dtend = null;
             var autoscroll = true;
             var callback = null;
+            if (NUM_DAYS !== null && +NUM_DAYS < 1) {
+                NUM_DAYS = 1;
+            }
             switch (TYPE) {
                 case "grouped":
                     callback = function () {
@@ -96,7 +107,8 @@
                     dtstart.setMinutes(0);
                     dtstart.setSeconds(0);
                     dtstart.setMilliseconds(0);
-                    dtend = moment(dtstart).endOf('day').toDate();
+                    //dtend = moment(dtstart).endOf('day').toDate();
+                    NUM_DAYS = NUM_DAYS || 1;
                     $('#gcf-custom-template').on('click', '.gcf-item-block', function (e) {
                         var $this = $(this);
                         var key = "agenda-tasks-" + $this.data("event-id") + "_done";
@@ -125,7 +137,7 @@
                             var _date = $this.find(".gcf-item-daterange").text();
                             if (found_dates.indexOf(_date) > -1) {
                                 // If the date/time has already been found,
-                                // then remove the HR element to group it with 
+                                // then remove the HR element to group it with
                                 // the previous (same) items
                                 $this.find("hr").remove();
                             } else {
@@ -160,7 +172,10 @@
                     };
                     break;
             }
-            moment.lang(LANG);
+            moment.locale(LANG);
+            if (!!NUM_DAYS && +NUM_DAYS > 0) {
+                dtend = moment().endOf('day').add(+NUM_DAYS - 1, 'days');
+            }
             $('#gcf-custom-template').gCalFlow({
                 auto_scroll: autoscroll,
                 scroll_interval: +SCROLL_INTERVAL * 1000,
