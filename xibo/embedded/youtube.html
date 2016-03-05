@@ -1,0 +1,78 @@
+﻿<!-- 
+    # Autoplay Embedded Youtube Videos #
+
+    Original Source: 
+    - https://community.xibo.org.uk/t/autoplay-embedded-youtube-videos/5228
+-->
+<!-- HTML to Embed -->
+<div id="player"></div>
+<!-- /HTML to Embed -->
+
+<!-- Custom Style Sheets -->
+<style type="text/css">
+    html, body {
+        margin: 0;
+        padding: 0;
+        pointer-events: none;
+    }
+</style>
+<!-- /Custom Style Sheets -->
+
+<!-- HEAD content to Embed (including script tags) -->
+<script>
+      var tag = document.createElement('script');
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+      var height = document.documentElement.clientHeight;
+      var width = document.documentElement.clientWidth;
+      var player;
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+          height: height + '', // **Replace with the height of the region**
+          width: width + '', // **Replace with the width of the region**
+          videoId: '981n7G1kV3I', //'onldzSzdqlM', // **Replace with ID of the desired video**
+          playerVars: {
+              'controls': '0'
+          },
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+      }
+      function onPlayerReady(event) {
+        console.log(event.target.getAvailablePlaybackRates());
+        event.target.mute()
+        event.target.setPlaybackRate(0.5);
+        event.target.playVideo();
+      }
+
+      // 5. The API calls this function when the player's state changes.
+      //    The function indicates that when playback ended a video (state=0),
+      //    the player should be destroyed.
+      function onPlayerStateChange(event) {
+          if (event.data == YT.PlayerState.ENDED) {
+              setTimeout(destroyPlayer, 0);
+          }
+      }
+      function destroyPlayer() {
+          player.destroy();
+      }
+</script>
+<!-- /HEAD content to Embed (including script tags) -->
+<!--
+    In the script above, you'll need to adjust the parameters to play the video
+    you want and the size of the region it's to be shown in.
+    
+    So carefully adjust the following section:
+    
+        height: '720',
+        width: '1280',
+        videoId: 'onldzSzdqlM',
+    
+    The height and width are the size to show the video on your actual display.
+    The videoId is from the Youtube URL for that video. So for example if your 
+    video's URL was http://www.youtube.com/watch?v=onldzSzdqlM1, the videoId 
+    parameter would be onldzSzdqlM
+-->
