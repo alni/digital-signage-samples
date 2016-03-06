@@ -12,7 +12,7 @@
     <title>Coin Slider: jQuery Image Slider Plugin with Unique Effects</title>
 </head>
 <body>
-
+    <div id="header"></div>
     <div id="games"></div>
     <script>
         /** 
@@ -23,14 +23,18 @@
             return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
         }
 
+        $(window).on("resize", function () {
+            $("#games").css("zoom", document.documentElement.clientHeight / 270);
+        });
+
         var TAGS = getParameterByName("TAGS") || "wild";
-        TAGS = "easter,holiday,celebration";
         var NUM_ITEMS = getParameterByName("NUM_ITEMS") || 10;
 
         $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?",
             {
                 tags: TAGS || "wild", tagmode: "all", format: "json"
             }, function (data) {
+                $("#header").text(data.title);
                 $.each(data.items, function (i, item) {
                     console.log(item)
                     var $elem = $("<a/>");
@@ -38,10 +42,12 @@
                     //.appendTo("#games");
                     $elem.append("<span><b>" + item.title + "</b><br /> by " + item.author);
                     $elem.appendTo("#games");
-                    if (i == 10) {
+                    if (i == NUM_ITEMS) {
+                        $("#games").css("zoom", document.documentElement.clientHeight / 270);
                         $('#games').coinslider({
                             hoverPause: false,
                             navigation: false,
+                            opacity: 1.0, // opacity of title and navigation
                             //delay: 3000 * 1000,
                             width: 480, // width of slider panel
                             height: 270, // height of slider panel

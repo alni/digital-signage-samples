@@ -1,4 +1,31 @@
-﻿#games {
+﻿@import "../shared/styles.less";
+
+html, body {
+    padding: 0;
+    margin: 0;
+    font-family: @font-family;
+
+    pointer-events: none;
+}
+
+#header {
+    background-color: @header-bgcolor;
+    color: @header-fgcolor;
+    font-family: @font-family;
+    font-size: @font-size;
+    padding: @header-padding;
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.coin-slider {
+    z-index: 0;
+}
+
+#games {
     background-repeat: no-repeat;
     background-size: 480px auto;
     a.cs-games {
@@ -8,5 +35,10 @@
     .cs-title {
         width: 100%;
         box-sizing: border-box;
+
+        background: @header-bgcolor;
+        color: @header-fgcolor;
+
+        font-size: @font-size / 4;
     }
 }

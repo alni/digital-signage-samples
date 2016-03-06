@@ -1,4 +1,27 @@
-﻿#games {
+﻿@import url(//fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic);
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Open Sans", sans-serif;
+  pointer-events: none;
+}
+#header {
+  background-color: rgba(76, 117, 151, 0.5);
+  color: #fff;
+  font-family: "Open Sans", sans-serif;
+  font-size: 48px;
+  padding: 5px 4px;
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.coin-slider {
+  z-index: 0;
+}
+#games {
   background-repeat: no-repeat;
   background-size: 480px auto;
 }
@@ -8,4 +31,7 @@
 #games .cs-title {
   width: 100%;
   box-sizing: border-box;
+  background: rgba(76, 117, 151, 0.5);
+  color: #fff;
+  font-size: 12px;
 }
