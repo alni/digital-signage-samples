@@ -1,43 +1,53 @@
 ﻿@import "../../shared/styles.less";
 body {
-    font-family:"Open Sans", sans-serif;
+    font-family:@font-family;
     margin:0;
     /*padding-top: 5px;*/
 }
 
 .container {
     text-align: center;
-    margin-top: 20px;
+    //margin-top: 20px;
+    margin-top: 40px;
 }
 
 .icon {
-    font-size: 36px;
+    //font-size: 36px;
+    font-size: @font-size * 1.5;
 }
 
 .font-icon {
-    font-size: 62px;
+    //font-size: 62px;
+    font-size: @font-size * 2.58;
 }
 
 .desc {
-    margin-top: 10px;
-    font-size: 30px;
+    //margin-top: 10px;
+    //font-size: 30px;
+    margin-top: 20px;
+    font-size: @font-size * 1.25;
 }
 
 .powered-by {
-    font-size: 12px;
+    //font-size: 12px;
+    font-size: @font-size / 2;
     clear: both;
 }
 
 .day {
-    margin-top: 10px;
-    font-size: 48px;
+    //margin-top: 10px;
+    //font-size: 48px;
+    margin-top: 20px;
+    font-size: @font-size * 2;
 }
 
 .title {
   background: @header-bgcolor;
-  font-size: 24px;
+  //font-size: 24px;
+  font-size: @font-size;
   font-weight: 600;
-  color: #fff;
+  color: @header-fgcolor;
 
-  padding: 2.5px 2px;
+  //padding: 2.5px 2px;
+  padding: @header-padding;
 }
