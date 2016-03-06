@@ -34,5 +34,9 @@
   {
     "outputFile": "xibo/ticker/media-rss-with-title/flickr.css",
     "inputFile": "xibo/ticker/media-rss-with-title/flickr.less"
+  },
+  {
+    "outputFile": "xibo/forecast/current.css",
+    "inputFile": "xibo/forecast/current.less"
   }
 ]
