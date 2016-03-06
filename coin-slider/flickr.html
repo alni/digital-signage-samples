@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="coin-slider/coin-slider.js"></script>
+
+    <link rel="stylesheet" href="coin-slider/coin-slider-styles.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+
+
+    <title>Coin Slider: jQuery Image Slider Plugin with Unique Effects</title>
+</head>
+<body>
+
+    <div id="games"></div>
+    <script>
+        /** 
+          * <http://stackoverflow.com/a/5158301>
+          */
+        function getParameterByName(name) {
+            var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+            return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+        }
+
+        var TAGS = getParameterByName("TAGS") || "wild";
+        TAGS = "easter,holiday,celebration";
+        var NUM_ITEMS = getParameterByName("NUM_ITEMS") || 10;
+
+        $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?",
+            {
+                tags: TAGS || "wild", tagmode: "all", format: "json"
+            }, function (data) {
+                $.each(data.items, function (i, item) {
+                    console.log(item)
+                    var $elem = $("<a/>");
+                    $("<img/>").attr({ src: item.media.m.replace('_m.', '.') }).appendTo($elem);
+                    //.appendTo("#games");
+                    $elem.append("<span><b>" + item.title + "</b><br /> by " + item.author);
+                    $elem.appendTo("#games");
+                    if (i == 10) {
+                        $('#games').coinslider({
+                            hoverPause: false,
+                            navigation: false,
+                            //delay: 3000 * 1000,
+                            width: 480, // width of slider panel
+                            height: 270, // height of slider panel
+                            //spw: 7, // squares per width
+                            //sph: 5, // squares per height
+                            //width: document.documentElement.clientWidth,
+                            //height: document.documentElement.clientHeight
+                        });
+                        return false;
+                    }
+                });
+            });
+        //$('#games').coinslider();
+    </script>
+
+</body>
+
+</html>

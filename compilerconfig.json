@@ -38,5 +38,9 @@
   {
     "outputFile": "xibo/forecast/current.css",
     "inputFile": "xibo/forecast/current.less"
+  },
+  {
+    "outputFile": "coin-slider/styles.css",
+    "inputFile": "coin-slider/styles.less"
   }
 ]
