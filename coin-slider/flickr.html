@@ -62,20 +62,38 @@
         var TAGS = getParameterByName("TAGS") || "wild";
         var NUM_ITEMS = getParameterByName("NUM_ITEMS") || 10;
         var INTERVAL = getParameterByName("INTERVAL") || 3;
-
-        $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?",
-            {
-                tags: TAGS || "wild", tagmode: "all", format: "json"
+        var API_KEY = getParameterByName("API_KEY");
+        if (!!API_KEY) {
+            $.getJSON("https://api.flickr.com/services/rest/?jsoncallback=?", {
+                method: "flickr.photos.search",
+                api_key: API_KEY,
+                tags: TAGS,
+                tag_mode: "all",
+                format: "json",
+                license: [ // Commercial use allowed
+                    4, // Attribution License
+                    5, // Attribution-ShareAlike License
+                    6, // Attribution-NoDerivs License
+                    9, // Public Domain Dedication (CC0)
+                    10 // Public Domain Mark
+                ].join(","),
+                sort: "relevance",
+                extras: "owner_name,date_taken"
             }, function (data) {
                 $("#header").text(data.title);
-                $.each(data.items, function (i, item) {
+                $.each(data.photos.photo, function (i, item) {
                     console.log(item)
                     var $elem = $("<a/>");
-                    $("<img/>").attr({ src: item.media.m.replace('_m.', '.') }).appendTo($elem);
+                    var src = [
+                        "https://farm", item.farm,
+                        ".staticflickr.com/", item.server,
+                        "/", item.id, "_", item.secret, ".jpg"
+                    ].join("");
+                    $("<img/>").attr({ src: src }).appendTo($elem);
                     //.appendTo("#games");
-                    $elem.append("<span><b>" + item.title + "</b><br /> by " + item.author);
+                    $elem.append("<span><b>" + item.title + " (" + item.datetaken + ")</b><br /> by " + item.ownername);
                     $elem.appendTo("#games");
-                    if (i == NUM_ITEMS) {
+                    if (i == NUM_ITEMS || i + 1 == data.photos.photo.length) {
                         $(window).trigger("resize");
                         //$("#games").css("zoom", document.documentElement.clientHeight / 270);
                         $('#games').coinslider({
@@ -86,15 +104,46 @@
                             //delay: 3000 * 1000,
                             width: 480, // width of slider panel
                             height: 270, // height of slider panel
-                            //spw: 7, // squares per width
-                            //sph: 5, // squares per height
-                            //width: document.documentElement.clientWidth,
-                            //height: document.documentElement.clientHeight
                         });
                         return false;
                     }
-                });
+                })
             });
+        } else {
+
+            $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?",
+                {
+                    tags: TAGS || "wild", tagmode: "all", format: "json"
+                }, function (data) {
+                    $("#header").text(data.title);
+                    $.each(data.items, function (i, item) {
+                        console.log(item)
+                        var $elem = $("<a/>");
+                        $("<img/>").attr({ src: item.media.m.replace('_m.', '.') }).appendTo($elem);
+                        //.appendTo("#games");
+                        $elem.append("<span><b>" + item.title + "</b><br /> by " + item.author);
+                        $elem.appendTo("#games");
+                        if (i == NUM_ITEMS || i + 1 == data.items.length) {
+                            $(window).trigger("resize");
+                            //$("#games").css("zoom", document.documentElement.clientHeight / 270);
+                            $('#games').coinslider({
+                                hoverPause: false,
+                                navigation: false,
+                                opacity: 1.0, // opacity of title and navigation
+                                delay: +INTERVAL * 1000,
+                                //delay: 3000 * 1000,
+                                width: 480, // width of slider panel
+                                height: 270, // height of slider panel
+                                //spw: 7, // squares per width
+                                //sph: 5, // squares per height
+                                //width: document.documentElement.clientWidth,
+                                //height: document.documentElement.clientHeight
+                            });
+                            return false;
+                        }
+                    });
+                });
+        }
         //$('#games').coinslider();
     </script>
 
