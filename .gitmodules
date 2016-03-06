@@ -1,0 +1,3 @@
+[submodule "coin-slider/coin-slider"]
+	path = coin-slider/coin-slider
+	url = https://github.com/kopipejst/coin-slider.git
