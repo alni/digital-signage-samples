@@ -20,17 +20,24 @@ html, body {
                                     not supported by any browser */
 }
 
-#header {
-    background-color: @header-bgcolor;
-    color: @header-fgcolor;
-    font-family: @font-family;
-    font-size: @font-size;
-    padding: @header-padding;
-    z-index: 1;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+body {
+    &.flickr {
+        #header:after {
+            content: " (Images from Flickr)"
+        }
+    }
+    #header {
+        background-color: @header-bgcolor;
+        color: @header-fgcolor;
+        font-family: @font-family;
+        font-size: @font-size;
+        padding: @header-padding;
+        z-index: 1;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+    }
 }
 
 .coin-slider {

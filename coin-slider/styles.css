@@ -23,7 +23,10 @@ body {
   /* non-prefixed version, currently
                                     not supported by any browser */
 }
-#header {
+body.flickr #header:after {
+  content: " (Images from Flickr)";
+}
+body #header {
   background-color: rgba(76, 117, 151, 0.5);
   color: #fff;
   font-family: "Open Sans", sans-serif;

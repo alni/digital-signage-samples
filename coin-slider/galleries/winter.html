@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="private.js"></script>
+    <script>
+        var params = {
+            TAGS: "winter,snow,landscape",
+            INTERVAL: 3,
+            NUM_ITEMS: 50,
+            TITLE: "Vinter",
+            API_KEY: FLICKR_API_KEY // Defined in "private.js"
+        }
+        window.location = "../flickr.html?" + $.param(params);
+    </script>
+</head>
+<body>
+
+</body>
+</html>

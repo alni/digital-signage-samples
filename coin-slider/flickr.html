@@ -15,6 +15,10 @@
         * NUM_ITEMS : (optional) the number of images to include with the
           slide show
             * Default : 10
+        * TITLE ; (optional) the title to use for the slide show
+        * API_KEY : (optional) a Flickr API Key. Specify this if more fine-
+          grained filtering is required (like only "Commercial use allowed")
+            * Uses the "flickr.photos.search" API instead of the Feed Service
 
         Examples:
             flickr.html?TAGS=national%2Cday%2Cnorway&INTERVAL=10&MAX_ITEMS=10
@@ -35,7 +39,7 @@
 
     <title>Coin Slider: jQuery Image Slider Plugin with Unique Effects</title>
 </head>
-<body>
+<body class="flickr">
     <div id="header"></div>
     <div id="games"></div>
     <script>
@@ -46,6 +50,17 @@
             var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
             return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
         }
+        var baseUrl = "https://api.flickr.com/services/";
+        var initCoinSlider = null;
+
+        var createItem = function (src, title, datetaken, ownername) {
+            var sDate = new Date(datetaken).toLocaleString();
+            var $elem = $("<a/>");
+            $("<img/>").attr({ src: src }).appendTo($elem);
+            //.appendTo("#games");
+            $elem.append("<span><b>" + title + " (" + sDate + ")</b><br /> by " + ownername);
+            $elem.appendTo("#games");
+        };
 
         var onResizeWindow = function () {
             var h = document.documentElement.clientHeight,
@@ -63,13 +78,32 @@
         var NUM_ITEMS = getParameterByName("NUM_ITEMS") || 10;
         var INTERVAL = getParameterByName("INTERVAL") || 3;
         var API_KEY = getParameterByName("API_KEY");
+        var TITLE = getParameterByName("TITLE");
+        initCoinSlider = function () {
+            $(window).trigger("resize");
+            //$("#games").css("zoom", document.documentElement.clientHeight / 270);
+            $('#games').coinslider({
+                hoverPause: false,
+                navigation: false,
+                opacity: 1.0, // opacity of title and navigation
+                delay: +INTERVAL * 1000,
+                //delay: 3000 * 1000,
+                width: 480, // width of slider panel
+                height: 270, // height of slider panel
+                //spw: 7, // squares per width
+                //sph: 5, // squares per height
+                //width: document.documentElement.clientWidth,
+                //height: document.documentElement.clientHeight
+            });
+        }
         if (!!API_KEY) {
-            $.getJSON("https://api.flickr.com/services/rest/?jsoncallback=?", {
+            $.getJSON(baseUrl + "rest/?jsoncallback=?", {
                 method: "flickr.photos.search",
                 api_key: API_KEY,
                 tags: TAGS,
                 tag_mode: "all",
                 format: "json",
+                orientation: "landscape",
                 license: [ // Commercial use allowed
                     4, // Attribution License
                     5, // Attribution-ShareAlike License
@@ -77,72 +111,41 @@
                     9, // Public Domain Dedication (CC0)
                     10 // Public Domain Mark
                 ].join(","),
-                sort: "relevance",
+                sort: "date-posted-desc",
                 extras: "owner_name,date_taken"
             }, function (data) {
-                $("#header").text(data.title);
+                $("#header").text(TITLE || "");
                 $.each(data.photos.photo, function (i, item) {
                     console.log(item)
-                    var $elem = $("<a/>");
                     var src = [
                         "https://farm", item.farm,
                         ".staticflickr.com/", item.server,
                         "/", item.id, "_", item.secret, ".jpg"
                     ].join("");
-                    $("<img/>").attr({ src: src }).appendTo($elem);
-                    //.appendTo("#games");
-                    $elem.append("<span><b>" + item.title + " (" + item.datetaken + ")</b><br /> by " + item.ownername);
-                    $elem.appendTo("#games");
+                    createItem(src, item.title, item.datetaken, item.ownername);
                     if (i == NUM_ITEMS || i + 1 == data.photos.photo.length) {
-                        $(window).trigger("resize");
-                        //$("#games").css("zoom", document.documentElement.clientHeight / 270);
-                        $('#games').coinslider({
-                            hoverPause: false,
-                            navigation: false,
-                            opacity: 1.0, // opacity of title and navigation
-                            delay: +INTERVAL * 1000,
-                            //delay: 3000 * 1000,
-                            width: 480, // width of slider panel
-                            height: 270, // height of slider panel
-                        });
+                        initCoinSlider();
                         return false;
                     }
                 })
             });
         } else {
-
-            $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?",
-                {
-                    tags: TAGS || "wild", tagmode: "all", format: "json"
-                }, function (data) {
-                    $("#header").text(data.title);
-                    $.each(data.items, function (i, item) {
-                        console.log(item)
-                        var $elem = $("<a/>");
-                        $("<img/>").attr({ src: item.media.m.replace('_m.', '.') }).appendTo($elem);
-                        //.appendTo("#games");
-                        $elem.append("<span><b>" + item.title + "</b><br /> by " + item.author);
-                        $elem.appendTo("#games");
-                        if (i == NUM_ITEMS || i + 1 == data.items.length) {
-                            $(window).trigger("resize");
-                            //$("#games").css("zoom", document.documentElement.clientHeight / 270);
-                            $('#games').coinslider({
-                                hoverPause: false,
-                                navigation: false,
-                                opacity: 1.0, // opacity of title and navigation
-                                delay: +INTERVAL * 1000,
-                                //delay: 3000 * 1000,
-                                width: 480, // width of slider panel
-                                height: 270, // height of slider panel
-                                //spw: 7, // squares per width
-                                //sph: 5, // squares per height
-                                //width: document.documentElement.clientWidth,
-                                //height: document.documentElement.clientHeight
-                            });
-                            return false;
-                        }
-                    });
+            $.getJSON(baseUrl + "feeds/photos_public.gne?jsoncallback=?", {
+                tags: TAGS || "wild",
+                tagmode: "all",
+                format: "json"
+            }, function (data) {
+                $("#header").text(TITLE  || data.title);
+                $.each(data.items, function (i, item) {
+                    console.log(item)
+                    var src = item.media.m.replace("_m.", ".");
+                    createItem(src, item.title, item.date_taken, item.author);
+                    if (i == NUM_ITEMS || i + 1 == data.items.length) {
+                        initCoinSlider();
+                        return false;
+                    }
                 });
+            });
         }
         //$('#games').coinslider();
     </script>
