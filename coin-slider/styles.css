@@ -42,6 +42,10 @@ body #header {
   z-index: 0;
 }
 #games {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
   background-repeat: no-repeat;
   background-size: 480px auto;
 }

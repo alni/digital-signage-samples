@@ -50,26 +50,56 @@
             var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
             return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
         }
+
+        function getOrientation() {
+            var h = window.innerHeight,
+                w = window.innerWidth;
+            if (h < w) {
+                return "landscape";
+            }
+            if (h > w) {
+                return "portrait";
+            }
+            return "square";
+        }
+
         var baseUrl = "https://api.flickr.com/services/";
+        var baseHeight = 270,
+            baseWidth = 480;
+        var sliderHeight = baseHeight + 0,
+            sliderWidth = baseWidth + 0;
+        var orientation = getOrientation(),
+            imageOrientation = [orientation];
         var initCoinSlider = null;
+        if (orientation == "square") {
+            imageOrientation.push("landscape", "portrait");
+            baseWidth = 270;
+        } else if (orientation == "portrait") {
+            baseWidth = 270 * (window.innerWidth / window.innerHeight);
+            baseHeight = 480 * (window.innerWidth / window.innerHeight);
+        } else {
+            baseWidth = 480;
+            baseHeight = 270;
+        }
 
         var createItem = function (src, title, datetaken, ownername) {
             var sDate = new Date(datetaken).toLocaleString();
+            var heading = title + " (" + sDate + ")";
+            var desc = "by " + ownername;
             var $elem = $("<a/>");
             $("<img/>").attr({ src: src }).appendTo($elem);
-            //.appendTo("#games");
-            $elem.append("<span><b>" + title + " (" + sDate + ")</b><br /> by " + ownername);
+            $elem.append("<span><b>" + heading + "</b><br /> " + desc);
             $elem.appendTo("#games");
         };
 
         var onResizeWindow = function () {
-            var h = document.documentElement.clientHeight,
-                w = document.documentElement.clientWidth;
-            if (h < w) {
-                $("#games").css("zoom", h / 270);
-            } else {
-                $("#games").css("zoom", w / 270);
-            }
+            var h = window.innerHeight,
+                w = window.innerWidth;
+            //if (h < w) {
+                $("#games").css("zoom", h / baseHeight);
+            //} else {
+                //$("#games").css("zoom", w / baseWidth);
+            //}
         };
 
         $(window).on("resize", onResizeWindow);
@@ -88,8 +118,8 @@
                 opacity: 1.0, // opacity of title and navigation
                 delay: +INTERVAL * 1000,
                 //delay: 3000 * 1000,
-                width: 480, // width of slider panel
-                height: 270, // height of slider panel
+                width: baseWidth, // width of slider panel
+                height: baseHeight, // height of slider panel
                 //spw: 7, // squares per width
                 //sph: 5, // squares per height
                 //width: document.documentElement.clientWidth,
@@ -103,7 +133,9 @@
                 tags: TAGS,
                 tag_mode: "all",
                 format: "json",
-                orientation: "landscape",
+                orientation: imageOrientation.join(","),
+                content_type: '1', // photos only
+                media: 'photos', // Do not include videos
                 license: [ // Commercial use allowed
                     4, // Attribution License
                     5, // Attribution-ShareAlike License
