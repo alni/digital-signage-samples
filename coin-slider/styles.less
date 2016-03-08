@@ -5,52 +5,58 @@ html, body {
     margin: 0;
     font-family: @font-family;
     //height: 100%;
-
     pointer-events: none;
-
     /* 
         DIsable Text Selection 
         <https://stackoverflow.com/a/4407335>
     */
     -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none;   /* Chrome/Safari/Opera */
-    -khtml-user-select: none;    /* Konqueror */
-    -moz-user-select: none;      /* Firefox */
-    -ms-user-select: none;       /* IE/Edge */
-    user-select: none;           /* non-prefixed version, currently
+    -webkit-user-select: none; /* Chrome/Safari/Opera */
+    -khtml-user-select: none; /* Konqueror */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE/Edge */
+    user-select: none; /* non-prefixed version, currently
                                     not supported by any browser */
 }
 
 body {
-    &.flickr {
-        &, &[data-lang="en"] {
+    .ownername {
+        span {
+            border-bottom: 1px solid @header-fgcolor;
+        }
+    }
+
+    &, &[data-lang="en"] {
+        &.flickr {
             #header:after {
                 content: " (Images from Flickr)";
             }
-
-            .ownername:before {
-                content: "by ";
-            }
         }
 
-        &[data-lang="nb"] {
+        .ownername:before {
+            content: "by ";
+        }
+    }
+    
+    &[data-lang="nb"] {
+        &.flickr {
             #header:after {
                 content: " (bilder fra Flickr)";
             }
-
-            .ownername:before {
-                content: "av ";
-            }
         }
-
-        &[data-lang="nn"] {
+        .ownername:before {
+            content: "av ";
+        }
+    }
+    
+    &[data-lang="nn"] {
+        &.flickr {
             #header:after {
                 content: " (bilder frå Flickr)";
             }
-
-            .ownername:before {
-                content: "av ";
-            }
+        }
+        .ownername:before {
+            content: "av ";
         }
     }
 
@@ -65,6 +71,11 @@ body {
         top: 0;
         left: 0;
         right: 0;
+        font-weight: bold;
+
+        &:before, &:after {
+            font-weight: normal;
+        }
     }
 }
 
@@ -75,23 +86,21 @@ body {
 }
 
 #games {
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: auto;
-    margin-bottom: auto;
+    margin: 0 auto;
     background-repeat: no-repeat;
     background-size: 480px auto;
+
     a.cs-games {
         background-size: 480px auto;
     }
 
     .cs-title {
         width: 100%;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
         box-sizing: border-box;
-
         background: @header-bgcolor;
         color: @header-fgcolor;
-
         font-size: @font-size / 4;
     }
 }

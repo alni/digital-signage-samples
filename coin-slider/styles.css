@@ -23,24 +23,27 @@ body {
   /* non-prefixed version, currently
                                     not supported by any browser */
 }
+body .ownername span {
+  border-bottom: 1px solid #fff;
+}
 body.flickr #header:after,
-body.flickr[data-lang="en"] #header:after {
+body[data-lang="en"].flickr #header:after {
   content: " (Images from Flickr)";
 }
-body.flickr .ownername:before,
-body.flickr[data-lang="en"] .ownername:before {
+body .ownername:before,
+body[data-lang="en"] .ownername:before {
   content: "by ";
 }
-body.flickr[data-lang="nb"] #header:after {
+body[data-lang="nb"].flickr #header:after {
   content: " (bilder fra Flickr)";
 }
-body.flickr[data-lang="nb"] .ownername:before {
+body[data-lang="nb"] .ownername:before {
   content: "av ";
 }
-body.flickr[data-lang="nn"] #header:after {
+body[data-lang="nn"].flickr #header:after {
   content: " (bilder frå Flickr)";
 }
-body.flickr[data-lang="nn"] .ownername:before {
+body[data-lang="nn"] .ownername:before {
   content: "av ";
 }
 body #header {
@@ -54,15 +57,17 @@ body #header {
   top: 0;
   left: 0;
   right: 0;
+  font-weight: bold;
+}
+body #header:before,
+body #header:after {
+  font-weight: normal;
 }
 .coin-slider {
   z-index: 0;
 }
 #games {
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: auto;
-  margin-bottom: auto;
+  margin: 0 auto;
   background-repeat: no-repeat;
   background-size: 480px auto;
 }
@@ -71,6 +76,8 @@ body #header {
 }
 #games .cs-title {
   width: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   background: rgba(76, 117, 151, 0.5);
   color: #fff;

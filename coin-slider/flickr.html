@@ -37,6 +37,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script type="text/javascript" src="coin-slider/coin-slider.js"></script>
+    <script type="text/javascript" src="../shared/lib/moment-with-locales.min.js" charset="UTF-8"></script>
 
     <link rel="stylesheet" href="coin-slider/coin-slider-styles.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="styles.css" />
@@ -88,12 +89,12 @@
         }
 
         var createItem = function (src, title, datetaken, ownername) {
-            var sDate = new Date(datetaken).toLocaleString();
-            var heading = title + " (" + sDate + ")";
-            var desc = "<span class=\"ownername\">" + ownername + "</span>"; //"by " +ownername;
+            var sDate = moment(datetaken).calendar();
+            var heading = "<b>" + title + "</b> <span>(" + sDate + ")</span>";
+            var desc = "<span class=\"ownername\"><span>" + ownername + "<span></span>"; //"by " +ownername;
             var $elem = $("<a/>");
             $("<img/>").attr({ src: src }).appendTo($elem);
-            $elem.append("<span><b>" + heading + "</b><br /> " + desc);
+            $elem.append("<span>" + heading + "<br /> " + desc + "</span>");
             $elem.appendTo("#games");
         };
 
@@ -115,6 +116,7 @@
         var API_KEY = getParameterByName("API_KEY");
         var TITLE = getParameterByName("TITLE");
         var LANG = getParameterByName("LANG") || "en";
+        moment.locale(LANG);
         $("body").attr("data-lang", LANG);
         initCoinSlider = function () {
             $(window).trigger("resize");
@@ -161,7 +163,8 @@
                         ".staticflickr.com/", item.server,
                         "/", item.id, "_", item.secret, ".jpg"
                     ].join("");
-                    createItem(src, item.title, item.datetaken, item.ownername);
+                    var title = item.title || ("-" + item.id + "-");
+                    createItem(src, title, item.datetaken, item.ownername);
                     if (i == NUM_ITEMS || i + 1 == data.photos.photo.length) {
                         initCoinSlider();
                         return false;
