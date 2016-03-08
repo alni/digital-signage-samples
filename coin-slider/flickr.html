@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <!--
@@ -15,7 +15,12 @@
         * NUM_ITEMS : (optional) the number of images to include with the
           slide show
             * Default : 10
-        * TITLE ; (optional) the title to use for the slide show
+        * TITLE : (optional) the title to use for the slide show
+        * LANG : (optional) the language to use for slide show text (like the
+          "Images from Flickr" and "by {ownername}" texts)
+            * "en" - English (Default)
+            * "nb" - Norwegian Bokmål
+            * "nn" - Norwegian Nynorsk
         * API_KEY : (optional) a Flickr API Key. Specify this if more fine-
           grained filtering is required (like only "Commercial use allowed")
             * Uses the "flickr.photos.search" API instead of the Feed Service
@@ -39,7 +44,7 @@
 
     <title>Coin Slider: jQuery Image Slider Plugin with Unique Effects</title>
 </head>
-<body class="flickr">
+<body class="flickr" data-lang="en">
     <div id="header"></div>
     <div id="games"></div>
     <script>
@@ -85,7 +90,7 @@
         var createItem = function (src, title, datetaken, ownername) {
             var sDate = new Date(datetaken).toLocaleString();
             var heading = title + " (" + sDate + ")";
-            var desc = "by " + ownername;
+            var desc = "<span class=\"ownername\">" + ownername + "</span>"; //"by " +ownername;
             var $elem = $("<a/>");
             $("<img/>").attr({ src: src }).appendTo($elem);
             $elem.append("<span><b>" + heading + "</b><br /> " + desc);
@@ -96,9 +101,9 @@
             var h = window.innerHeight,
                 w = window.innerWidth;
             //if (h < w) {
-                $("#games").css("zoom", h / baseHeight);
+            $("#games").css("zoom", h / baseHeight);
             //} else {
-                //$("#games").css("zoom", w / baseWidth);
+            //$("#games").css("zoom", w / baseWidth);
             //}
         };
 
@@ -109,6 +114,8 @@
         var INTERVAL = getParameterByName("INTERVAL") || 3;
         var API_KEY = getParameterByName("API_KEY");
         var TITLE = getParameterByName("TITLE");
+        var LANG = getParameterByName("LANG") || "en";
+        $("body").attr("data-lang", LANG);
         initCoinSlider = function () {
             $(window).trigger("resize");
             //$("#games").css("zoom", document.documentElement.clientHeight / 270);
@@ -167,7 +174,7 @@
                 tagmode: "all",
                 format: "json"
             }, function (data) {
-                $("#header").text(TITLE  || data.title);
+                $("#header").text(TITLE || data.title);
                 $.each(data.items, function (i, item) {
                     console.log(item)
                     var src = item.media.m.replace("_m.", ".");

@@ -23,10 +23,37 @@ html, body {
 
 body {
     &.flickr {
-        #header:after {
-            content: " (Images from Flickr)"
+        &, &[data-lang="en"] {
+            #header:after {
+                content: " (Images from Flickr)";
+            }
+
+            .ownername:before {
+                content: "by ";
+            }
+        }
+
+        &[data-lang="nb"] {
+            #header:after {
+                content: " (bilder fra Flickr)";
+            }
+
+            .ownername:before {
+                content: "av ";
+            }
+        }
+
+        &[data-lang="nn"] {
+            #header:after {
+                content: " (bilder frå Flickr)";
+            }
+
+            .ownername:before {
+                content: "av ";
+            }
         }
     }
+
     #header {
         background-color: @header-bgcolor;
         color: @header-fgcolor;
