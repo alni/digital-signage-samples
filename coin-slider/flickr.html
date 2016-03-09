@@ -79,13 +79,13 @@
         var initCoinSlider = null;
         if (orientation == "square") {
             imageOrientation.push("landscape", "portrait");
-            baseWidth = 270;
+            sliderWidth = baseHeight + 0;
         } else if (orientation == "portrait") {
-            baseWidth = 270 * (window.innerWidth / window.innerHeight);
-            baseHeight = 480 * (window.innerWidth / window.innerHeight);
+            sliderWidth = baseHeight * (window.innerWidth / window.innerHeight);
+            sliderHeight = baseWidth * (window.innerWidth / window.innerHeight);
         } else {
-            baseWidth = 480;
-            baseHeight = 270;
+            sliderWidth = baseWidth;
+            sliderHeight = baseHeight;
         }
 
         var createItem = function (src, title, datetaken, ownername) {
@@ -127,8 +127,8 @@
                 opacity: 1.0, // opacity of title and navigation
                 delay: +INTERVAL * 1000,
                 //delay: 3000 * 1000,
-                width: baseWidth, // width of slider panel
-                height: baseHeight, // height of slider panel
+                width: sliderWidth, //baseWidth, // width of slider panel
+                height: sliderHeight, //baseHeight, // height of slider panel
                 //spw: 7, // squares per width
                 //sph: 5, // squares per height
                 //width: document.documentElement.clientWidth,
@@ -161,7 +161,7 @@
                     var src = [
                         "https://farm", item.farm,
                         ".staticflickr.com/", item.server,
-                        "/", item.id, "_", item.secret, ".jpg"
+                        "/", item.id, "_", item.secret, "_b.jpg"
                     ].join("");
                     var title = item.title || ("-" + item.id + "-");
                     createItem(src, title, item.datetaken, item.ownername);
@@ -180,7 +180,7 @@
                 $("#header").text(TITLE || data.title);
                 $.each(data.items, function (i, item) {
                     console.log(item)
-                    var src = item.media.m.replace("_m.", ".");
+                    var src = item.media.m.replace("_m.", "_b.");
                     createItem(src, item.title, item.date_taken, item.author);
                     if (i == NUM_ITEMS || i + 1 == data.items.length) {
                         initCoinSlider();
