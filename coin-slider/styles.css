@@ -51,7 +51,7 @@ body #header {
   color: #fff;
   font-family: "Open Sans", sans-serif;
   font-size: 48px;
-  padding: 5px 4px;
+  padding: 5px 4px 5px 4px;
   z-index: 1;
   position: absolute;
   top: 0;

@@ -6,30 +6,33 @@ body {
 }
 .container {
   text-align: center;
-  margin-top: 40px;
+  margin-top: 20px;
 }
 .icon {
-  font-size: 72px;
+  font-size: 36px;
 }
 .font-icon {
-  font-size: 123.84px;
+  font-size: 61.92px;
 }
 .desc {
-  margin-top: 20px;
-  font-size: 60px;
+  margin-top: 10px;
+  font-size: 30px;
 }
 .powered-by {
-  font-size: 24px;
+  font-size: 12px;
   clear: both;
 }
 .day {
-  margin-top: 20px;
-  font-size: 96px;
+  margin-top: 10px;
+  font-size: 48px;
 }
 .title {
   background: rgba(76, 117, 151, 0.5);
-  font-size: 48px;
+  font-size: 24px;
   font-weight: 600;
   color: #fff;
-  padding: 5px 4px;
+  padding-top: 2.5px;
+  padding-right: 2px;
+  padding-bottom: 2.5px;
+  padding-left: 2px;
 }

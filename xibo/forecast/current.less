@@ -1,4 +1,9 @@
 ﻿@import "../../shared/styles.less";
+@w-font-size: @font-size / 2;
+@w-header-padding-top: @header-padding-top / 2;
+@w-header-padding-bottom: @header-padding-bottom / 2;
+@w-header-padding-right: @header-padding-right / 2;
+@w-header-padding-left: @header-padding-left / 2;
 body {
     font-family:@font-family;
     margin:0;
@@ -7,47 +12,50 @@ body {
 
 .container {
     text-align: center;
-    //margin-top: 20px;
-    margin-top: 40px;
+    margin-top: 20px;
+    //margin-top: 40px;
 }
 
 .icon {
     //font-size: 36px;
-    font-size: @font-size * 1.5;
+    font-size: @w-font-size * 1.5;
 }
 
 .font-icon {
     //font-size: 62px;
-    font-size: @font-size * 2.58;
+    font-size: @w-font-size * 2.58;
 }
 
 .desc {
-    //margin-top: 10px;
+    margin-top: 10px;
     //font-size: 30px;
-    margin-top: 20px;
-    font-size: @font-size * 1.25;
+    //margin-top: 20px;
+    font-size: @w-font-size * 1.25;
 }
 
 .powered-by {
     //font-size: 12px;
-    font-size: @font-size / 2;
+    font-size: @w-font-size / 2;
     clear: both;
 }
 
 .day {
-    //margin-top: 10px;
+    margin-top: 10px;
     //font-size: 48px;
-    margin-top: 20px;
-    font-size: @font-size * 2;
+    //margin-top: 20px;
+    font-size: @w-font-size * 2;
 }
 
 .title {
   background: @header-bgcolor;
   //font-size: 24px;
-  font-size: @font-size;
+  font-size: @w-font-size;
   font-weight: 600;
   color: @header-fgcolor;
 
   //padding: 2.5px 2px;
-  padding: @header-padding;
+  padding-top: @w-header-padding-top;
+  padding-right: @w-header-padding-right;
+  padding-bottom: @w-header-padding-bottom;
+  padding-left: @w-header-padding-left;
 }

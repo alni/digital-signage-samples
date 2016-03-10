@@ -45,7 +45,7 @@ ul {
 }
 #gcf-custom-template .gcf-header-block {
   background: rgba(76, 117, 151, 0.5);
-  padding: 5px 4px;
+  padding: 5px 4px 5px 4px;
 }
 #gcf-custom-template .gcf-header-block .gcf-title {
   font-size: 48px;
