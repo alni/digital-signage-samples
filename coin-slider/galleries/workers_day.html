@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="private.js"></script>
+    <script>
+        var params = {
+            TAGS: "international,workers,day",
+            INTERVAL: 5,
+            NUM_ITEMS: 20,
+            TITLE: "Den internasjonale arbeiderdagen",
+            LANG: "nb",
+            API_KEY: FLICKR_API_KEY // Defined in "private.js" (not included)
+        }
+        window.location = "../flickr.html?" + $.param(params);
+    </script>
+</head>
+<body>
+
+</body>
+</html>
