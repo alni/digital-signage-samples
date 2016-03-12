@@ -26,6 +26,19 @@ actually be set at `24px` to make it be rendered at the correct size.
 This is easy when using `LESS` (or `SCSS/SASS`) stylesheets and 
 compiling them into `CSS` stylesheets.
 
+#### Alernative solution: ###
+
+Create a override style and set the `#content` zoom to `1.0`:
+
+```css
+#content {
+    zoom: 1.0 !important;
+}
+```
+
+With that change, the preferred dimensions (font sizes etc.) does not need to 
+be halved to appear correctly on the screen.
+
 ### How to add new languages? ###
 
 1. Go to <https://developer.forecast.io/docs/v2#options> to check for supported
