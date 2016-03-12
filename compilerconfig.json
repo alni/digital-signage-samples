@@ -42,5 +42,9 @@
   {
     "outputFile": "coin-slider/styles.css",
     "inputFile": "coin-slider/styles.less"
+  },
+  {
+    "outputFile": "coin-slider/galleries/styles.css",
+    "inputFile": "coin-slider/galleries/styles.less"
   }
 ]
