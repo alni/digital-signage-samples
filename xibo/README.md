@@ -15,6 +15,17 @@
 
 ## Forecast ##
 
+### The styles need to be half the displayed scale! ###
+
+The Forecast is rendered at 2x the scale. Therefor, the style dimensions need 
+to be at half of the needed dimensions/scale.
+
+For example, if the preferred font size is at `48px`, the font size need to 
+actually be set at `24px` to make it be rendered at the correct size.
+
+This is easy when using `LESS` (or `SCSS/SASS`) stylesheets and 
+compiling them into `CSS` stylesheets.
+
 ### How to add new languages? ###
 
 1. Go to <https://developer.forecast.io/docs/v2#options> to check for supported
