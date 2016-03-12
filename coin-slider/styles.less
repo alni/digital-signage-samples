@@ -5,6 +5,7 @@
 @scaleRatio: 1080 / @baseHeight;
 
 html, body {
+    height: 100%;
     padding: 0;
     margin: 0;
     font-family: @font-family;
@@ -40,6 +41,10 @@ body {
         .ownername:before {
             content: "by ";
         }
+
+        #games:empty {
+            background-image: url("./no-images-en.jpg");
+        }
     }
     
     &[data-lang="nb"] {
@@ -51,6 +56,10 @@ body {
         .ownername:before {
             content: "av ";
         }
+
+        #games:empty {
+            background-image: url("./no-images-nb.jpg");
+        }
     }
     
     &[data-lang="nn"] {
@@ -61,6 +70,10 @@ body {
         }
         .ownername:before {
             content: "av ";
+        }
+
+        #games:empty {
+            background-image: url("./no-images-nb.jpg");
         }
     }
 
@@ -93,6 +106,11 @@ body {
     margin: 0 auto;
     background-repeat: no-repeat;
     background-size: @baseWidth auto; //480px auto;
+    
+    &:empty {
+        background-size: 100%;
+        height: 100%;
+    }
 
     a.cs-games {
         background-size: @baseWidth auto; //480px auto;

@@ -108,6 +108,23 @@
             //}
         };
 
+        var createPlaceholderImages = function (num, lang) {
+            var placeholders = {
+                "en": "no-images-en.jpg",
+                "nb": "no-images-nb.jpg",
+                "nn": "no-images-nb.jpg"
+            }
+            var placeholder = placeholders[lang] || placeholders["en"];
+            console.log(placeholder);
+            $("body").css("background-image", 'url("' + placeholder + '")');
+            $("body").css("background-size", "100%");
+            //$("body").css("height", window.innerHeight + "px");
+            //$("body").css("width", window.innerWidth + "px");
+            //for (var i = 0; i < num; i++) {
+            //    createItem(placeholder, "", new Date(), "-no-name-");
+            //}
+        };
+
         $(window).on("resize", onResizeWindow);
 
         var TAGS = getParameterByName("TAGS") || "wild";
@@ -135,60 +152,75 @@
                 //height: document.documentElement.clientHeight
             });
         }
-        if (!!API_KEY) {
-            $.getJSON(baseUrl + "rest/?jsoncallback=?", {
-                method: "flickr.photos.search",
-                api_key: API_KEY,
-                tags: TAGS,
-                tag_mode: "all",
-                format: "json",
-                orientation: imageOrientation.join(","),
-                content_type: '1', // photos only
-                media: 'photos', // Do not include videos
-                license: [ // Commercial use allowed
-                    4, // Attribution License
-                    5, // Attribution-ShareAlike License
-                    6, // Attribution-NoDerivs License
-                    9, // Public Domain Dedication (CC0)
-                    10 // Public Domain Mark
-                ].join(","),
-                sort: "date-posted-desc",
-                extras: "owner_name,date_taken"
-            }, function (data) {
-                $("#header").text(TITLE || "");
-                $.each(data.photos.photo, function (i, item) {
-                    console.log(item)
-                    var src = [
-                        "https://farm", item.farm,
-                        ".staticflickr.com/", item.server,
-                        "/", item.id, "_", item.secret, "_b.jpg"
-                    ].join("");
-                    var title = item.title || ("-" + item.id + "-");
-                    createItem(src, title, item.datetaken, item.ownername);
-                    if (i == NUM_ITEMS || i + 1 == data.photos.photo.length) {
-                        initCoinSlider();
-                        return false;
-                    }
-                })
-            });
-        } else {
-            $.getJSON(baseUrl + "feeds/photos_public.gne?jsoncallback=?", {
-                tags: TAGS || "wild",
-                tagmode: "all",
-                format: "json"
-            }, function (data) {
-                $("#header").text(TITLE || data.title);
-                $.each(data.items, function (i, item) {
-                    console.log(item)
-                    var src = item.media.m.replace("_m.", "_b.");
-                    createItem(src, item.title, item.date_taken, item.author);
-                    if (i == NUM_ITEMS || i + 1 == data.items.length) {
-                        initCoinSlider();
-                        return false;
+        var createGallery = function() {
+            if (!!API_KEY) {
+                $.getJSON(baseUrl + "rest/?jsoncallback=?", {
+                    method: "flickr.photos.search",
+                    api_key: API_KEY,
+                    tags: TAGS,
+                    tag_mode: "all",
+                    format: "json",
+                    orientation: imageOrientation.join(","),
+                    content_type: '1', // photos only
+                    media: 'photos', // Do not include videos
+                    license: [ // Commercial use allowed
+                        4, // Attribution License
+                        5, // Attribution-ShareAlike License
+                        6, // Attribution-NoDerivs License
+                        9, // Public Domain Dedication (CC0)
+                        10 // Public Domain Mark
+                    ].join(","),
+                    sort: "date-posted-desc",
+                    extras: "owner_name,date_taken"
+                }, function (data) {
+                    $("#header").text(TITLE || "");
+                    if (data.photos.photo.length > 0) {
+                        $.each(data.photos.photo, function (i, item) {
+                            console.log(item)
+                            var src = [
+                                "https://farm", item.farm,
+                                ".staticflickr.com/", item.server,
+                                "/", item.id, "_", item.secret, "_b.jpg"
+                            ].join("");
+                            var title = item.title || ("-" + item.id + "-");
+                            createItem(src, title, item.datetaken, item.ownername);
+                            if (i == NUM_ITEMS || i + 1 == data.photos.photo.length) {
+                                initCoinSlider();
+                                return false;
+                            }
+                        });
+                    } else {
+                        //createPlaceholderImages(NUM_ITEMS, LANG);
+                        //setTimeout(createGallery, 30000);
+                        //initCoinSlider();
                     }
                 });
-            });
+            } else {
+                $.getJSON(baseUrl + "feeds/photos_public.gne?jsoncallback=?", {
+                    tags: TAGS || "wild",
+                    tagmode: "all",
+                    format: "json"
+                }, function (data) {
+                    $("#header").text(TITLE || data.title);
+                    if (data.photos.photo.length > 0) {
+                        $.each(data.items, function (i, item) {
+                            console.log(item)
+                            var src = item.media.m.replace("_m.", "_b.");
+                            createItem(src, item.title, item.date_taken, item.author);
+                            if (i == NUM_ITEMS || i + 1 == data.items.length) {
+                                initCoinSlider();
+                                return false;
+                            }
+                        });
+                    } else {
+                        //createPlaceholderImages(NUM_ITEMS, LANG);
+                        //setTimeout(createGallery, 30000);
+                        //initCoinSlider();
+                    }
+                });
+            }
         }
+        createGallery();
         //$('#games').coinslider();
     </script>
 
