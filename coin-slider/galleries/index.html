@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="../coin-slider/coin-slider.js"></script>
+
+    <link rel="stylesheet" href="../coin-slider/coin-slider-styles.css" type="text/css" />
+
+
+    <title>Coin Slider: jQuery Image Slider Plugin with Unique Effects</title>
+
+    <style>
+        body, html, #games, iframe {
+            width: 100%;
+            height: 100%;
+
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+
+            border: none;
+        }
+
+        .cs-title {
+            position: fixed;
+        }
+
+        .cs-title {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+
+            height: 100%;
+            width: 100%;
+
+            background: #000;
+
+            padding: 0;
+        }
+
+        .cs-title p {
+            z-index: 10;
+
+            position: absolute;
+            margin: 0;
+
+            bottom: 0;
+            width: 100%;
+
+            background: rgba(0, 0, 0, 0.5);
+
+            font-size: 1.5rem;
+        }
+
+        .cs-title iframe {
+            z-index: 5;
+            position: absolute;
+            top: 0;
+        }
+
+        img {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="games">
+
+        <a href="easter.html" target="_blank">
+            <img />
+            <span>
+                <iframe src="easter.html" alt="Easter"></iframe>
+                <p>
+                    <b>Easter Gallery</b>
+                </p>
+            </span>
+        </a>
+
+        <a href="spring.html" target="_blank">
+            <img />
+            <span>
+                <iframe src="spring.html" alt="Spring"></iframe>
+                <p>
+                    <b>Spring Gallery</b>
+                </p>
+            </span>
+        </a>
+
+        <a href="summer.html" target="_blank">
+            <img />
+            <span>
+                <iframe src="summer.html" alt="Summer"></iframe>
+                <p>
+                    <b>Summer Gallery</b>
+                </p>
+            </span>
+        </a>
+
+        <a href="winter.html" target="_blank">
+            <img />
+            <span>
+                <iframe src="winter.html" alt="Winter"> </iframe>
+                <p>
+                    <b>Winter Gallery</b>
+                </p>
+            </span>
+        </a>
+
+    </div>
+    <script>
+        $('#games').coinslider({
+            width: window.innerWidth,
+            height: window.innerHeight,
+            hoverPause: true,
+            navigation: true,
+            opacity: 1.0, // opacity of title and navigation
+            delay: 60000
+        });
+    </script>
+
+</body>
+
+</html>

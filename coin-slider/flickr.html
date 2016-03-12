@@ -202,7 +202,7 @@
                     format: "json"
                 }, function (data) {
                     $("#header").text(TITLE || data.title);
-                    if (data.photos.photo.length > 0) {
+                    if (data.items.length > 0) {
                         $.each(data.items, function (i, item) {
                             console.log(item)
                             var src = item.media.m.replace("_m.", "_b.");
