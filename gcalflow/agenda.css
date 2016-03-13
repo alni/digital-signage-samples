@@ -43,6 +43,13 @@ ul {
   background: transparent !important;
   border: none;
 }
+#gcf-custom-template .week:before,
+#gcf-custom-template[data-lang="en"] .week:before {
+  content: "Week ";
+}
+#gcf-custom-template[data-lang="nb"] .week:before {
+  content: "Uke ";
+}
 #gcf-custom-template .gcf-header-block {
   background: rgba(76, 117, 151, 0.5);
   padding: 5px 4px 5px 4px;

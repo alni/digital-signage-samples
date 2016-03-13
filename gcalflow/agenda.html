@@ -38,11 +38,11 @@
     -->
     <meta charset="UTF-8">
     <link href="jquery-gcal-flow-3.0.2/jquery.gcal_flow.css" rel="stylesheet" type="text/css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script>
         _gCalFlow_debug = true;
     </script>
-    <script type="text/javascript" src="lib/moment-with-locales.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../shared/lib/moment-with-locales.min.js" charset="UTF-8"></script>
     <!--<script type="text/javascript" src="jquery-gcal-flow-3.0.1/jquery.gcal_flow.js"></script>-->
     <script type="text/javascript" src="jquery.gcal_flow_custom.js"></script>
     <script type="text/javascript">
@@ -170,6 +170,7 @@
                     break;
             }
             moment.locale(LANG);
+            $("#gcf-custom-template").attr("data-lang", LANG);
             if (!!NUM_DAYS && +NUM_DAYS > 0) {
                 dtend = moment().endOf('day').add(+NUM_DAYS - 1, 'days');
             }
@@ -215,7 +216,7 @@
                             // is initialized and at the last weekday then
                             // return a string with the current (locale aware)
                             // week number
-                            return "Uke " + start.week();
+                            return "<span class=\"week\">" + start.week() + "</span>"; //"Uke " + start.week();
                         } else {
                             // Otherwise format the start and the end
                             start = start.format(DATE_FORMAT);
@@ -266,7 +267,7 @@
     <link rel="stylesheet" type="text/css" href="agenda.css">
 </head>
 <body>
-    <div id="gcf-custom-template">
+    <div id="gcf-custom-template" data-lang="en">
         <div class="gcf-header-block">
             <div class="gcf-title-block">
                 <span class="gcf-title">Your calendar name</span>

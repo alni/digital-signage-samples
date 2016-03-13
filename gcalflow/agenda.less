@@ -45,6 +45,18 @@ ul {
     background: transparent !important;
     
     border: none;
+
+    &, &[data-lang="en"] {
+        .week:before {
+            content: "Week ";
+        }
+    }
+
+    &[data-lang="nb"] {
+        .week:before {
+            content: "Uke ";
+        }
+    }
     
     .gcf-header-block {
         background: @header-bgcolor;
