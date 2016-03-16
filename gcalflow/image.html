@@ -32,6 +32,7 @@
     <script>
         _gCalFlow_debug = true;
     </script>
+    <script type="text/javascript" src="private.js" charset="utf-8"></script>
     <!--<script type="text/javascript" src="jquery-gcal-flow-3.0.1/jquery.gcal_flow.js"></script>-->
     <script type="text/javascript" src="jquery.gcal_flow_custom.js"></script>
     <script type="text/javascript">
@@ -45,6 +46,8 @@
 
         var $ = jQuery;
         $(function () {
+            var API_KEY = window.GOOGLE_CALENDAR_API_KEY || null;
+
             var CAL_ID = getParameterByName("CAL_ID");
             var DATA_URL = getParameterByName("DATA_URL");
             var SCROLL_INTERVAL = getParameterByName("INTERVAL") || 10;
@@ -71,6 +74,7 @@
                 });
             };
             $('#gcf-image-template').gCalFlow({
+                apikey: API_KEY, // Defined in "private.js" (not included)
                 auto_scroll: autoscroll,
                 scroll_interval: +SCROLL_INTERVAL * 1000,
                 link_title: false,

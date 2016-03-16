@@ -54,7 +54,9 @@ ul {
   background: rgba(76, 117, 151, 0.5);
   padding: 5px 4px 5px 4px;
 }
+#gcf-custom-template .gcf-header-block .fa,
 #gcf-custom-template .gcf-header-block .gcf-title {
+  display: inline;
   font-size: 48px;
   font-weight: 600;
   color: #fff;

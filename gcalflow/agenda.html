@@ -26,7 +26,10 @@
           - If this is not specified, then MAX_ITEMS is used instead.
           - The value must to be greater than "0". If not, the value will be
             forced to "1"
-          
+        * FA_ICON : (optional) the Font Awesome icon to use together with the
+          Title/Header block. This could be any name or alias of an icon that
+          is included with Font Awesome 4.5.0 (like "calendar").
+
 
         Examples:
             agenda.html?CAL_ID=<my_calendar_id>&LANG=en&DATE_FORMAT=lll
@@ -37,12 +40,14 @@
                  localized date format
     -->
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link href="jquery-gcal-flow-3.0.2/jquery.gcal_flow.css" rel="stylesheet" type="text/css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script>
         _gCalFlow_debug = true;
     </script>
     <script type="text/javascript" src="../shared/lib/moment-with-locales.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="private.js" charset="utf-8"></script>
     <!--<script type="text/javascript" src="jquery-gcal-flow-3.0.1/jquery.gcal_flow.js"></script>-->
     <script type="text/javascript" src="jquery.gcal_flow_custom.js"></script>
     <script type="text/javascript">
@@ -56,6 +61,8 @@
 
         var $ = jQuery;
         $(function () {
+            var API_KEY = window.GOOGLE_CALENDAR_API_KEY || null;
+
             var CAL_ID = getParameterByName("CAL_ID");
             var DATA_URL = getParameterByName("DATA_URL");
             var DATE_FORMAT = getParameterByName("DATE_FORMAT") || "ddd, ll";
@@ -64,12 +71,16 @@
             var SCROLL_INTERVAL = getParameterByName("INTERVAL") || 10;
             var MAX_ITEMS = getParameterByName("MAX_ITEMS") || 50;
             var NUM_DAYS = getParameterByName("NUM_DAYS") || null;
+            var FA_ICON = getParameterByName("FA_ICON") || null;
             var dtstart = new Date();
             var dtend = null;
             var autoscroll = true;
             var callback = null;
             if (NUM_DAYS !== null && +NUM_DAYS < 1) {
                 NUM_DAYS = 1;
+            }
+            if (FA_ICON) {
+                $(".gcf-title-block").prepend("<i class=\"fa fa-" + FA_ICON + "\">&nbsp;</i>");
             }
             switch (TYPE) {
                 case "grouped":
@@ -175,6 +186,7 @@
                 dtend = moment().endOf('day').add(+NUM_DAYS - 1, 'days');
             }
             $('#gcf-custom-template').gCalFlow({
+                apikey: API_KEY, // Defined in "private.js" (not included)
                 auto_scroll: autoscroll,
                 scroll_interval: +SCROLL_INTERVAL * 1000,
                 link_title: false,
