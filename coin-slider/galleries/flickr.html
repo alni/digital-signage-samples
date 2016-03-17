@@ -14,7 +14,7 @@
     <script>
         var GALLERY = getParameterByName("GALLERY");
         var FLICKR_API_KEY = window.FLICKR_API_KEY || "";
-        $.getScript(GALLERY + ".js").done(function () {
+        $.getJSON(GALLERY).done(function (params) {
             params.API_KEY = FLICKR_API_KEY; // Defined in "private.js" (not included)
             $("#games").attr("src", "../flickr.html?" + $.param(params));
         });

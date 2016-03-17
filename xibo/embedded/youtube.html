@@ -20,18 +20,18 @@
 <script>
     /**
       * # CONFIGURATION #
-      *  
+      *
       * Supported options:
       * - HEIGHT, WIDTH : the size of the player,
       *   * Either a numeric value of pixels
       *   * or "fill" to fill the player size to the available space
       * - VIDEO_ID : the ID of the YouTube video
-      *   * So for example if your video's URL was 
+      *   * So for example if your video's URL was
       *     http://www.youtube.com/watch?v=onldzSzdqlM1, the VIDEO_ID option
       *     would be 'onldzSzdqlM'
       * - CONTROLS : Should controls be displayed
       *   * 0 = hide them
-      *   * 1 = display immediately 
+      *   * 1 = display immediately
       *   * 2 = display after the user initiates the video playback
       * - MUTE : Should the sound be muted?
       *   * 0 = no
@@ -51,6 +51,9 @@
     var MUTE = 0
     var PLAYBACK_RATE = 1
     var HIDE_AFTER_ENDED = 1
+</script>
+<script>
+function EmbedInit() { }
 </script>
 <script>
     if (HEIGHT == 'fill') {
