@@ -46,5 +46,9 @@
   {
     "outputFile": "coin-slider/galleries/styles.css",
     "inputFile": "coin-slider/galleries/styles.less"
+  },
+  {
+    "outputFile": "gcalflow/boards/styles.css",
+    "inputFile": "gcalflow/boards/styles.less"
   }
 ]

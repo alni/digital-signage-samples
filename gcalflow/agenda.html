@@ -91,16 +91,36 @@
                                 $date = $this.find(".gcf-item-daterange"),
                                 _date = $date.text(),
                                 $title = $this.find('.gcf-item-title'),
+                                $location = $this.find('.gcf-item-location'),
                                 $prev = $this.prev(),
-                                $prev_title = $prev.find('.gcf-item-title');
+                                $prev_title = $prev.find('.gcf-item-title'),
+                                $prev_location = $prev.find('.gcf-item-location');
                             if (found_dates.indexOf(_date) > -1) {
                                 //$this.find(".gcf-item-daterange").text("");
                                 //$this.find("hr").remove();
 
-                                $prev_title.append('<br/>')
-                                    .append($title.text());
+                                if ($prev_title.text() != $title.text() && 
+                                    $location.text() == $prev_location.text()) {
+                                    // The title is different from previous,
+                                    // but the location is the same:
+                                    // - append the title to the previous
+                                    $prev_title.append('<br/>')
+                                        .append($title.text());
+                                    $this.remove();
+                                } else if ($prev_title.text() == $title.text() &&
+                                    $location.text() != $prev_location.text()) {
+                                    // The location is different from previous,
+                                    // but the title is the same:
+                                    // - append the location to the previous
+                                    $prev_location.append('<br/>')
+                                        .append($location.text());
+                                    $this.remove();
+                                } else {
+                                    // Both title AND location is different 
+                                    // from the previous - Do nothing...
+                                }
                                 //$this.html("").addClass("hidden");
-                                $this.remove();
+                                //$this.remove();
                             } else {
                                 found_dates.push(_date);
                                 $this.find("hr").remove();
@@ -194,7 +214,7 @@
                 data_url: DATA_URL,
                 dtstart: dtstart, // Custom option
                 dtend: dtend, // Custom option
-                calid: CAL_ID || '2dpnd6bnab0bsih2f7fkn45l8o@group.calendar.google.com',
+                calid: encodeURIComponent(CAL_ID || '2dpnd6bnab0bsih2f7fkn45l8o@group.calendar.google.com'),
                 maxitem: +MAX_ITEMS,
                 date_formatter: function (d, allday_p) {
                     if (allday_p) {

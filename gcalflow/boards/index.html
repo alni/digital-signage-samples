@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="../../shared/code.js"></script>
+</head>
+<body>
+    <iframe id="agenda" allowtransparency="true"></iframe>
+
+    <script>
+        var BOARD = getParameterByName("BOARD");
+        $.getJSON(BOARD).done(function (params) {
+            $("#agenda").attr("src", "../agenda.html?" + $.param(params));
+        });
+    </script>
+</body>
+</html>

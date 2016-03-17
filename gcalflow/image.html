@@ -81,7 +81,7 @@
                 link_item_title: false,
                 data_url: DATA_URL,
                 dtend: dtend,
-                calid: CAL_ID || '2dpnd6bnab0bsih2f7fkn45l8o@group.calendar.google.com',
+                calid: encodeURIComponent(CAL_ID || '2dpnd6bnab0bsih2f7fkn45l8o@group.calendar.google.com'),
                 maxitem: +MAX_ITEMS,
                 callback: callback
             });
