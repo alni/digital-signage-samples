@@ -50,11 +50,19 @@ ul {
         .week:before {
             content: "Week ";
         }
+
+        .gcf-title:empty:before {
+            content: "Loading...";
+        }
     }
 
     &[data-lang="nb"] {
         .week:before {
             content: "Uke ";
+        }
+
+        .gcf-title:empty:before {
+            content: "Laster...";
         }
     }
     

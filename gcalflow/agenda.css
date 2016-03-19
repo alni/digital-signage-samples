@@ -47,8 +47,15 @@ ul {
 #gcf-custom-template[data-lang="en"] .week:before {
   content: "Week ";
 }
+#gcf-custom-template .gcf-title:empty:before,
+#gcf-custom-template[data-lang="en"] .gcf-title:empty:before {
+  content: "Loading...";
+}
 #gcf-custom-template[data-lang="nb"] .week:before {
   content: "Uke ";
+}
+#gcf-custom-template[data-lang="nb"] .gcf-title:empty:before {
+  content: "Laster...";
 }
 #gcf-custom-template .gcf-header-block {
   background: rgba(76, 117, 151, 0.5);

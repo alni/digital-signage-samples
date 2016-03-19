@@ -35,8 +35,8 @@ body .ownername:before,
 body[data-lang="en"] .ownername:before {
   content: "by ";
 }
-body #games:empty,
-body[data-lang="en"] #games:empty {
+body #games.no-images:empty,
+body[data-lang="en"] #games.no-images:empty {
   background-image: url("no-images-en.jpg");
 }
 body[data-lang="nb"].flickr #header:after {
@@ -45,7 +45,7 @@ body[data-lang="nb"].flickr #header:after {
 body[data-lang="nb"] .ownername:before {
   content: "av ";
 }
-body[data-lang="nb"] #games:empty {
+body[data-lang="nb"] #games.no-images:empty {
   background-image: url("no-images-nb.jpg");
 }
 body[data-lang="nn"].flickr #header:after {
@@ -54,7 +54,7 @@ body[data-lang="nn"].flickr #header:after {
 body[data-lang="nn"] .ownername:before {
   content: "av ";
 }
-body[data-lang="nn"] #games:empty {
+body[data-lang="nn"] #games.no-images:empty {
   background-image: url("no-images-nb.jpg");
 }
 body #header {

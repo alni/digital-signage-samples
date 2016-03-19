@@ -96,6 +96,8 @@
                                 $prev_title = $prev.find('.gcf-item-title'),
                                 $prev_location = $prev.find('.gcf-item-location');
                             if (found_dates.indexOf(_date) > -1) {
+                                // If the date of the current item is already 
+                                // fouund, then group it with the previous
                                 //$this.find(".gcf-item-daterange").text("");
                                 //$this.find("hr").remove();
 
@@ -122,7 +124,12 @@
                                 //$this.html("").addClass("hidden");
                                 //$this.remove();
                             } else {
+                                // If the date of the current item is not already 
+                                // found, then add it as a new entry to the
+                                // "found_dates" array
                                 found_dates.push(_date);
+                                // Remove the HR from the item and prepend a new
+                                // HR to the item
                                 $this.find("hr").remove();
                                 $this.prepend("<hr />");
                             }
@@ -131,15 +138,19 @@
                     break;
                 case "tasks":
                     autoscroll = false;
+                    // Set the dtstart to the start of the day
                     dtstart.setHours(0);
                     dtstart.setMinutes(0);
                     dtstart.setSeconds(0);
                     dtstart.setMilliseconds(0);
                     //dtend = moment(dtstart).endOf('day').toDate();
+                    // Default NUM_DAYS to 1 of not already set to a value
                     NUM_DAYS = NUM_DAYS || 1;
                     $('#gcf-custom-template').on('click', '.gcf-item-block', function (e) {
-                        var $this = $(this);
+                        var $this = $(this); // The task item
+                        // The key to use with localStorage
                         var key = "agenda-tasks-" + $this.data("event-id") + "_done";
+                        // Toogle DONE state of the task item when clicked/tapped
                         $this.toggleClass("disabled");
                         // Store the serialized task done state (has "disabled"
                         // class) in localStorage
@@ -150,7 +161,10 @@
                     callback = function () {
                         var found_dates = [];
                         this.find(".gcf-item-block").each(function (index) {
-                            var $this = $(this);
+                            // Loop through each task item and check for stored
+                            // DONE state
+                            var $this = $(this); // The task item
+                            // The key to use with localStorage
                             var key = "agenda-tasks-" + $this.data("event-id") + "_done";
                             // Check if key exists in localStorage
                             if (key in localStorage) {
@@ -193,24 +207,31 @@
                         var found_dates = [];
                         this.find(".gcf-item-block").each(function (index) {
                             var $this = $(this);
+                            // Remove all HR and BR from item to keep all at
+                            // the same line (inline)
                             $this.find("hr").remove();
-                            $this.find(".gcf-item-description").addClass("hidden");
                             $this.find("br").remove();
+                            // Hide the description to keep all at the same line
+                            $this.find(".gcf-item-description").addClass("hidden");
                         });
                     };
                     break;
             }
-            moment.locale(LANG);
+            moment.locale(LANG); // Use the current LANG as the moment locale
+            // Use the current LANG as the preferred language of the commonly 
+            // used texts
             $("#gcf-custom-template").attr("data-lang", LANG);
             if (!!NUM_DAYS && +NUM_DAYS > 0) {
+                // If NUM_DAYS is set to a value AND it is greater than 0, then
+                // Set "dtend" to the end of day of "NUM_DAYS - 1"
                 dtend = moment().endOf('day').add(+NUM_DAYS - 1, 'days');
             }
             $('#gcf-custom-template').gCalFlow({
                 apikey: API_KEY, // Defined in "private.js" (not included)
                 auto_scroll: autoscroll,
                 scroll_interval: +SCROLL_INTERVAL * 1000,
-                link_title: false,
-                link_item_title: false,
+                link_title: false, // Do not use links with title
+                link_item_title: false, // Do not use links with item title
                 data_url: DATA_URL,
                 dtstart: dtstart, // Custom option
                 dtend: dtend, // Custom option
@@ -302,7 +323,7 @@
     <div id="gcf-custom-template" data-lang="en">
         <div class="gcf-header-block">
             <div class="gcf-title-block">
-                <span class="gcf-title">Your calendar name</span>
+                <span class="gcf-title"></span>
             </div>
         </div>
         <ul class="gcf-item-container-block">
