@@ -29,6 +29,13 @@
         * FA_ICON : (optional) the Font Awesome icon to use together with the
           Title/Header block. This could be any name or alias of an icon that
           is included with Font Awesome 4.5.0 (like "calendar").
+        * HIDE : (optional) what event item parts should be hidden? A comma
+          separated value list of parts to hide.
+            * "title" : hide the event title/summary
+            * "location" : hide the event location
+            * "daterange" : hide the start and end date/time of the event
+            * "description" : hide the event description
+            * Default : "description" (hide the description if not set)
 
 
         Examples:
@@ -72,6 +79,7 @@
             var MAX_ITEMS = getParameterByName("MAX_ITEMS") || 50;
             var NUM_DAYS = getParameterByName("NUM_DAYS") || null;
             var FA_ICON = getParameterByName("FA_ICON") || null;
+            var HIDE = (getParameterByName("HIDE") || "description").split(",");
             var dtstart = new Date();
             var dtend = null;
             var autoscroll = true;
@@ -82,26 +90,48 @@
             if (FA_ICON) {
                 $(".gcf-title-block").prepend("&nbsp;<i class=\"fa fa-" + FA_ICON + "\">&nbsp;</i>");
             }
+            $.each(HIDE, function (index, hide) {
+                switch (hide) {
+                    case "title":
+                        $(".gcf-item-title").addClass("hidden");
+                        break;
+                    case "location":
+                        $(".gcf-item-location").addClass("hidden");
+                        break;
+                    case "daterange":
+                        $(".gcf-item-daterange").addClass("hidden");
+                        break;
+                    case "description":
+                        $(".gcf-item-description").addClass("hidden");
+                        break;
+                }
+            });
+
             switch (TYPE) {
                 case "grouped":
                     callback = function () {
                         var found_dates = [];
-                        this.find(".gcf-item-block").each(function (index) {
+                        var $items = this.find(".gcf-item-block");
+                        $items.each(function (index) {
                             var $this = $(this),
                                 $date = $this.find(".gcf-item-daterange"),
                                 _date = $date.text(),
                                 $title = $this.find('.gcf-item-title'),
                                 $location = $this.find('.gcf-item-location'),
+                                $desc = $this.find(".gcf-item-description"),
                                 $prev = $this.prev(),
                                 $prev_title = $prev.find('.gcf-item-title'),
                                 $prev_location = $prev.find('.gcf-item-location');
+                            if ($desc.text()) {
+                                $desc.html($.parseHTML($desc.text()));
+                            }
                             if (found_dates.indexOf(_date) > -1) {
-                                // If the date of the current item is already 
+                                // If the date of the current item is already
                                 // fouund, then group it with the previous
                                 //$this.find(".gcf-item-daterange").text("");
                                 //$this.find("hr").remove();
 
-                                if ($prev_title.text() != $title.text() && 
+                                if ($prev_title.text() != $title.text() &&
                                     $location.text() == $prev_location.text()) {
                                     // The title is different from previous,
                                     // but the location is the same:
@@ -118,13 +148,13 @@
                                         .append($location.text());
                                     $this.remove();
                                 } else {
-                                    // Both title AND location is different 
+                                    // Both title AND location is different
                                     // from the previous - Do nothing...
                                 }
                                 //$this.html("").addClass("hidden");
                                 //$this.remove();
                             } else {
-                                // If the date of the current item is not already 
+                                // If the date of the current item is not already
                                 // found, then add it as a new entry to the
                                 // "found_dates" array
                                 found_dates.push(_date);
@@ -132,6 +162,11 @@
                                 // HR to the item
                                 $this.find("hr").remove();
                                 $this.prepend("<hr />");
+                            }
+                            if (NUM_DAYS == 1) {
+                                $date.addClass("hidden");
+                                $this.find("hr").remove();
+                                $this.find("br:first").remove();
                             }
                         });
                     };
@@ -218,7 +253,7 @@
                     break;
             }
             moment.locale(LANG); // Use the current LANG as the moment locale
-            // Use the current LANG as the preferred language of the commonly 
+            // Use the current LANG as the preferred language of the commonly
             // used texts
             $("#gcf-custom-template").attr("data-lang", LANG);
             if (!!NUM_DAYS && +NUM_DAYS > 0) {
@@ -332,7 +367,7 @@
                     <span class="gcf-item-daterange"></span><br />
                     <span class="gcf-item-title"></span><br />
                     <span class="gcf-item-location"></span>
-                    <p class="gcf-item-description hidden"></p>
+                    <div class="gcf-item-description"></div>
                 </div>
                 <hr />
             </li>

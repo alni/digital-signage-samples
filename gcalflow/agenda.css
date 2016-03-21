@@ -114,6 +114,7 @@ ul {
   text-decoration: none;
   background-color: transparent;
   white-space: normal;
+  line-height: 1.125;
 }
 #gcf-custom-template .gcf-item-location {
   font-family: "Open Sans", sans-serif;
@@ -149,6 +150,9 @@ ul {
   text-decoration: none;
   background-color: transparent;
   margin: 15px 0 0 0;
+}
+#gcf-custom-template .gcf-item-description table {
+  font-size: 36px;
 }
 #gcf-custom-template.ticker {
   height: 74px;
