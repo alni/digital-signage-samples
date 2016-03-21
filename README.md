@@ -5,6 +5,9 @@ projects.
 
 * [`coin-slider/`](coin-slider/) - contains code, layout and styles for the 
   Coin Slider JavaScript library
+* [`gapps-script/`](gapps-script/) - contains code for integrating different 
+  Google services (and/or other services) with each-other through Google Apps 
+  Script
 * [`gcalflow/`](gcalflow/) - contains code, layout and styles for the 
   gCalFlow JavaScript library
 * [`xibo/`](xibo/) - contains templates and styles for Xibo modules
@@ -21,3 +24,5 @@ Licensed under the [MIT](LICENSE.md) License.
 * [gCalFlow](http://sugi.github.io/jquery-gcal-flow/): jQuery Google Calendar 
   Event List Plug-in
 * [Moment.js](http://momentjs.com/) JavaScript library
+* [Google Apps Script](https://www.google.com/script/start/) JavaScript cloud 
+  scripting language
