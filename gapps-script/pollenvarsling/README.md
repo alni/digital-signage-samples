@@ -69,6 +69,9 @@ Now that you've connected the app, you can create a script by following just the
 4. Under **Events**, select **Time-driven**.
 5. Select and configure the type of trigger you want to create (for example, an
    **Hour timer** that runs **Every hour**).
+    * Make sure that the trigger also runs after the time the alert email 
+      usually is received to the Gmail inbox (for example checking 
+      **every 4 hour** may be enough).
 6. Optionally, click **Notifications** to configure how and when you will be
    contacted by email if your triggered function fails.
 7. Click **Save**.
