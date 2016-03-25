@@ -111,7 +111,7 @@ function parsePollenvarslingEmail(email) {
  */
 function createCalendarEvent(obj) {
     //var obj = parsePollenvarslingEmail();
-    var cals = CalendarApp.getCalendarsByName("Pollenvarsling")[0];
+    var cal = CalendarApp.getCalendarsByName("Pollenvarsling")[0];
     var events = cal && cal.getEventsForDay(obj.date);
     var calEvent = null;
     if (events && events.length > 0) {
