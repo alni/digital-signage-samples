@@ -97,6 +97,9 @@
                         break;
                     case "location":
                         $(".gcf-item-location").addClass("hidden");
+                        // Remove the BR before location to move the elements 
+                        // following a bit upwards
+                        $(".gcf-item-location").prev("br").remove(); 
                         break;
                     case "daterange":
                         $(".gcf-item-daterange").addClass("hidden");
@@ -122,7 +125,9 @@
                                 $prev = $this.prev(),
                                 $prev_title = $prev.find('.gcf-item-title'),
                                 $prev_location = $prev.find('.gcf-item-location');
-                            if ($desc.text()) {
+                            if (!$desc.hasClass("hidden") && $desc.text()) {
+                                // Convert description text to HTML. But only 
+                                // when the Description is not hidden.
                                 $desc.html($.parseHTML($desc.text()));
                             }
                             if (found_dates.indexOf(_date) > -1) {
@@ -329,7 +334,18 @@
                             + " - " + moment(end_d).format("LT");
                     }
                 },
-                callback: callback
+                callback: callback || function () {
+                    var $items = this.find(".gcf-item-block");
+                    $items.each(function (index) {
+                        var $this = $(this),
+                            $desc = $this.find(".gcf-item-description");
+                        if (!$desc.hasClass("hidden") && $desc.text()) {
+                            // Convert description text to HTML. But only 
+                            // when the Description is not hidden.
+                            $desc.html($.parseHTML($desc.text()));
+                        }
+                    });
+                }
             });
         });
     </script>

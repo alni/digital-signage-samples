@@ -1,0 +1,92 @@
+﻿.tasks-ticker-mixin() {
+    .gcf-item-daterange:after {
+        content: ": ";
+    }
+
+    .gcf-item-title:not(:empty):after {
+        content: " ";
+    }
+
+    .gcf-item-location:not(:empty) {
+        &:before {
+            content: " (";
+        }
+
+        &:after {
+            content: ")";
+        }
+    }
+}
+
+.tasks-mixin() {
+    .gcf-item-container-block {
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        border-bottom: solid 80px transparent;
+        height: 100%;
+        overflow-y: auto;
+    }
+}
+
+.ticker-mixin() {
+    height: 74px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+
+    .gcf-header-block {
+        -webkit-border-bottom-left-radius: 4px;
+        -moz-border-bottom-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+        float: left;
+        height: 74px;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    .gcf-item-container-block {
+        margin-bottom: 0.2em;
+        overflow: hidden;
+        height: 74px;
+    }
+
+    .gcf-item-description {
+        padding-left: 1em;
+        color: @main-color;
+        font-size: 78%;
+
+        &:before {
+            content: " -- ";
+            color: #aaa;
+        }
+    }
+
+    .gcf-item-block {
+        margin-bottom: 0;
+        padding: 0;
+    }
+}
+
+.lang-mixin() {
+    &, &[data-lang="en"] {
+        .week:before {
+            content: "Week ";
+        }
+
+        .gcf-title:empty:before {
+            content: "Loading...";
+        }
+    }
+
+    &[data-lang="nb"] {
+        .week:before {
+            content: "Uke ";
+        }
+
+        .gcf-title:empty:before {
+            content: "Laster...";
+        }
+    }
+}
