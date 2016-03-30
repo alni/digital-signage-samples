@@ -4,6 +4,7 @@
 }
 .cycle-overlay {
   color: #fff;
+  font-size: 48px;
   background: rgba(76, 117, 151, 0.5);
   position: absolute;
   bottom: 0;
@@ -15,6 +16,9 @@
   font-family: "Open Sans", sans-serif;
   color: #fff;
   font-size: 48px;
+}
+.cycle-overlay .ownername span {
+  border-bottom: 2px solid #fff;
 }
 .content {
   font-family: "Open Sans", sans-serif;

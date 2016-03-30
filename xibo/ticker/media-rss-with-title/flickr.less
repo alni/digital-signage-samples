@@ -5,6 +5,7 @@
 }
 .cycle-overlay {
     color: @header-fgcolor;
+    font-size: @font-size;
     background: @header-bgcolor;
     position: absolute;
     bottom: 0;
@@ -16,6 +17,12 @@
         font-family: @font-family;
         color: @header-fgcolor;
         font-size: @font-size;
+    }
+
+    .ownername {
+        span {
+            border-bottom: 2px solid @header-fgcolor;
+        }
     }
 }
 
