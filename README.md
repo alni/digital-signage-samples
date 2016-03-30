@@ -10,6 +10,7 @@ projects.
   Script
 * [`gcalflow/`](gcalflow/) - contains code, layout and styles for the 
   gCalFlow JavaScript library
+* [`php/`](php/) - contains server side code samples written in PHP
 * [`xibo/`](xibo/) - contains templates and styles for Xibo modules
 * [`shared/`](shared/) - contains shared code, styles and other resources
 
