@@ -140,6 +140,22 @@ ul {
 #gcf-custom-template .gcf-item-description table td[nowrap] {
   padding-left: 16px;
 }
+#gcf-custom-template .gcf-item-description table td[bgcolor="#EBF187"] {
+  /* modest pollen dispersal */
+  background-color: #c3d28b;
+}
+#gcf-custom-template .gcf-item-description table td[bgcolor="#F8A722"] {
+  /* moderate pollen dispersal */
+  background-color: #cd9b3f;
+}
+#gcf-custom-template .gcf-item-description table td[bgcolor="#E9473C"] {
+  /* heavy pollen dispersal */
+  background-color: #c25353;
+}
+#gcf-custom-template .gcf-item-description table td[bgcolor="#7C2B0A"] {
+  /* extreme pollen dispersal */
+  background-color: #703e2d;
+}
 #gcf-custom-template.tasks .gcf-item-daterange:after,
 #gcf-custom-template.ticker .gcf-item-daterange:after {
   content: ": ";

@@ -143,6 +143,28 @@ ul {
             td[nowrap] {
                 padding-left: @font-size / 3;
             }
+
+            // NAAF Pollenvarsling (Pollen alert) intensity color codes:
+            td[bgcolor="#EBF187"] {
+                /* modest pollen dispersal */
+                .bg-color-mixin(#EBF187, @accent-color);
+            }
+
+            td[bgcolor="#F8A722"] {
+                /* moderate pollen dispersal */
+                .bg-color-mixin(#F8A722, @accent-color);
+            }
+            
+            td[bgcolor="#E9473C"] {
+                /* heavy pollen dispersal */
+                .bg-color-mixin(#E9473C, @accent-color);
+            }
+            
+            td[bgcolor="#7C2B0A"] {
+                /* extreme pollen dispersal */
+                .bg-color-mixin(#7C2B0A, @accent-color);
+            }
+            // /NAAF Pollenvarsling (Pollen alert) intensity color codes
         }
     }
 

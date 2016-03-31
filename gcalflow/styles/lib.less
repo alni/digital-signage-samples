@@ -90,3 +90,8 @@
         }
     }
 }
+
+.bg-color-mixin(@color, @base-color) {
+    background-color: mix(@color, @base-color, 75%);
+    //background-color: hsl(hue(@color), saturation(@base-color), lightness(@color));
+}
