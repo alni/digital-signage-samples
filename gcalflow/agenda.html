@@ -47,6 +47,17 @@
                  localized date format
     -->
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="styles/loader.css">
+</head>
+<body>
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+    </div>
+
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link href="jquery-gcal-flow-3.0.2/jquery.gcal_flow.css" rel="stylesheet" type="text/css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -71,6 +82,11 @@
             var API_KEY = window.GOOGLE_CALENDAR_API_KEY || null;
 
             var CAL_ID = getParameterByName("CAL_ID");
+            if (!!CAL_ID) {
+                initAgenda(CAL_ID, API_KEY);
+            }
+        });
+        function initAgenda(CAL_ID, API_KEY) {
             var DATA_URL = getParameterByName("DATA_URL");
             var DATE_FORMAT = getParameterByName("DATE_FORMAT") || "ddd, ll";
             var LANG = getParameterByName("LANG") || "nb";
@@ -174,6 +190,8 @@
                                 $this.find("br:first").remove();
                             }
                         });
+
+                        $("body").addClass("loaded");
                     };
                     break;
                 case "tasks":
@@ -238,6 +256,7 @@
                             // the same line within the item
                             $this.find("br").remove();
                         });
+                        $("body").addClass("loaded");
                     };
                     break;
                 case "ticker":
@@ -254,6 +273,7 @@
                             // Hide the description to keep all at the same line
                             $this.find(".gcf-item-description").addClass("hidden");
                         });
+                        $("body").addClass("loaded");
                     };
                     break;
             }
@@ -345,9 +365,10 @@
                             $desc.html($.parseHTML($desc.text()));
                         }
                     });
+                    $("body").addClass("loaded");
                 }
             });
-        });
+        }
     </script>
     <style type="text/css">
         h2 {
@@ -369,8 +390,7 @@
     </style>
 
     <link rel="stylesheet" type="text/css" href="agenda.css">
-</head>
-<body>
+    
     <div id="gcf-custom-template" data-lang="en">
         <div class="gcf-header-block">
             <div class="gcf-title-block">

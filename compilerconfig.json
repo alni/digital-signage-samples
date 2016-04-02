@@ -50,5 +50,9 @@
   {
     "outputFile": "gcalflow/boards/styles.css",
     "inputFile": "gcalflow/boards/styles.less"
+  },
+  {
+    "outputFile": "gcalflow/styles/loader.css",
+    "inputFile": "gcalflow/styles/loader.less"
   }
 ]

@@ -1,0 +1,167 @@
+﻿/**
+    * "How To Create A CSS3 Spinning Preloader"
+      <https://ihatetomatoes.net/create-css3-spinning-preloader/>
+    * "How To Create A Custom Preloading Screen"
+      <https://ihatetomatoes.net/create-custom-preloading-screen/>
+*/
+
+@import "../../shared/colors.less";
+
+@_color1: hsl(hue(#3498db), saturation(@header-bgcolor), lightness(@header-bgcolor));
+@_color2: hsl(hue(#e74c3c), saturation(@header-bgcolor), lightness(@header-bgcolor));
+@_color3: hsl(hue(#f9c922), saturation(@header-bgcolor), lightness(@header-bgcolor));
+
+@_border-width: 5px;
+@_preloader_size: 200px;
+
+// 2. Position our preloader
+
+// set to position fixed with a very high z-index to appear on top of any 
+// content.
+#loader-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+
+    .loader-section {
+        position: fixed;
+        top: 0;
+        width: 51%;
+        height: 100%;
+        background: @main-color;
+        z-index: 1000;
+
+        &.section-left {
+            left: 0;
+        }
+
+        &.section-right {
+            right: 0;
+        }
+    }
+}
+
+#loader {
+    display: block;
+    position: relative;
+    left: 50%; // positioned in the middle of the screen
+    top: 50%; // positioned in the middle of the screen
+    width: @_preloader_size;
+    height: @_preloader_size;
+    // to position the `center` of this div in the middle of the screen we are 
+    // setting negative top and left margin -75px
+    margin: -(@_preloader_size / 2) 0 0 -(@_preloader_size / 2); // a half of the width and height
+
+    // turn all our squares into lines we will simply change the border to 
+    // transparent and only set the border-top-color.
+    border: @_border-width solid transparent;
+    border-top-color: @_color1; //#3498db;
+    border-radius: 50%; // bend our lines 
+
+    z-index: 1500;
+
+    .create-anim(2s);
+
+    // 3. Create a nested elements
+    &:before {
+        content: "";
+        position: absolute;
+        top: @_border-width / 0.6; //5px;
+        left: @_border-width / 0.6; //5px;
+        right: @_border-width / 0.6; //5px;
+        bottom: @_border-width / 0.6; //5px;
+
+        // turn all our squares into lines we will simply change the border to 
+        // transparent and only set the border-top-color.
+        border: @_border-width solid transparent;
+        border-top-color: @_color2; //#e74c3c;
+        border-radius: 50%; // bend our lines 
+
+        .create-anim(3s);
+    }
+    &:after {
+        content: "";
+        position: absolute;
+        top: @_border-width / 0.2; //15px;
+        left: @_border-width / 0.2; //15px;
+        right: @_border-width / 0.2; //15px;
+        bottom: @_border-width / 0.2; //15px;
+
+        // turn all our squares into lines we will simply change the border to 
+        // transparent and only set the border-top-color.
+        border: @_border-width solid transparent;
+        border-top-color: @_color3; //#f9c922;
+        border-radius: 50%; // bend our lines 
+
+        .create-anim(1.5s);
+    }
+
+}
+
+// 5. Add CSS3 animation
+
+.mixi-frames() {
+    0% {
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg); /* IE 9 */
+        -o-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg); /* Chrome, Opera 15+, Safari 3.1+ */
+        transform: rotate(0deg); /* Firefox 16+, IE 10+, Opera */
+    }
+
+    100% {
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes spin {.mixi-frames;}
+@-moz-keyframes spin {.mixi-frames;}
+@-ms-keyframes spin {.mixi-frames;}
+@-o-keyframes spin {.mixi-frames;}
+@keyframes spin {.mixi-frames;}
+
+.create-anim(@duration) {
+    -moz-animation: spin @duration linear infinite;
+    -o-animation: spin @duration  linear infinite;
+    -webkit-animation: spin @duration linear infinite;
+    animation: spin @duration linear infinite;
+}
+
+.loaded {
+    #loader {
+        opacity: 0;
+        -moz-transition: all 0.3s ease-out;
+        -o-transition: all 0.3s ease-out;
+        -webkit-transition: all 0.3s ease-out;
+        transition: all 0.3s ease-out;
+    }
+
+    #loader-wrapper {
+        -moz-transform: translateY(-100%);
+        -ms-transform: translateY(-100%);
+        -o-transform: translateY(-100%);
+        -webkit-transform: translateY(-100%);
+        transform: translateY(-100%);
+
+        -moz-transition: all 0.3s 0.6s ease-out;
+        -o-transition: all 0.3s 0.6s ease-out;
+        -webkit-transition: all 0.3s 0.6s ease-out;
+        transition: all 0.3s 0.6s ease-out;
+
+        .loader-section {
+            &.section-right, &.section-left {
+                -moz-transition: all 0.3s 0.3s ease-out;
+                -o-transition: all 0.3s 0.3s ease-out;
+                -webkit-transition: all 0.3s 0.3s ease-out;
+                transition: all 0.3s 0.3s ease-out;
+            }
+        }
+    }
+}

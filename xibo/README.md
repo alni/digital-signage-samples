@@ -26,7 +26,7 @@ actually be set at `24px` to make it be rendered at the correct size.
 This is easy when using `LESS` (or `SCSS/SASS`) stylesheets and 
 compiling them into `CSS` stylesheets.
 
-#### Alernative solution: ###
+#### Alernative (better) solution: ###
 
 Create a override style and set the `#content` zoom to `1.0`:
 
