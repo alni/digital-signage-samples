@@ -54,5 +54,9 @@
   {
     "outputFile": "gcalflow/styles/loader.css",
     "inputFile": "gcalflow/styles/loader.less"
+  },
+  {
+    "outputFile": "xibo/embedded/header.css",
+    "inputFile": "xibo/embedded/header.less"
   }
 ]

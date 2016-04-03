@@ -1,0 +1,15 @@
+﻿@import url(//fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic);
+html,
+body {
+  margin: 0;
+  padding: 0;
+  pointer-events: none;
+}
+p {
+  font-family: "Open Sans", sans-serif;
+  width: 100%;
+  color: #ffffff;
+  font-size: 48px;
+  background-color: rgba(76, 117, 151, 0.498039);
+  padding: 5px 4px 5px 4px;
+}
