@@ -5,15 +5,17 @@
     - https://community.xibo.org.uk/t/autoplay-embedded-youtube-videos/5228
 -->
 <!-- HTML to Embed -->
+<div id="loader-wrapper">
+    <div id="loader"></div>
+
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+</div>
 <div id="player"></div>
 <!-- /HTML to Embed -->
 <!-- Custom Style Sheets -->
 <style type="text/css">
-    html, body {
-        margin: 0;
-        padding: 0;
-        pointer-events: none;
-    }
+    @import "youtube.css";  /* Replace with content from "youtube.css" */
 </style>
 <!-- /Custom Style Sheets -->
 <!-- HEAD content to Embed (including script tags) -->
@@ -86,6 +88,7 @@ function EmbedInit() { }
         MUTE && event.target.mute()
         PLAYBACK_RATE && event.target.setPlaybackRate(PLAYBACK_RATE);
         event.target.playVideo();
+        document.body.className = "loaded";
     }
 
     // 5. The API calls this function when the player's state changes.

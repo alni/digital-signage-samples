@@ -58,5 +58,9 @@
   {
     "outputFile": "xibo/embedded/header.css",
     "inputFile": "xibo/embedded/header.less"
+  },
+  {
+    "outputFile": "xibo/embedded/youtube.css",
+    "inputFile": "xibo/embedded/youtube.less"
   }
 ]

@@ -16,12 +16,24 @@ projects.
 
 Licensed under the [MIT](LICENSE.md) License.
 
+## Building ##
+
+To build this project you will need the following applications:
+
+* `nodejs` + `npm`
+* `grunt` - install with `npm install -g grunt`
+
+Install the required NodeJS packages with (from the project root folder):
+
+    npm install
+
 
 ## Links ##
 
 * [Xibo](http://xibo.org.uk/) Open Source Digital Signage
 * [Rise Vision](https://www.risevision.com/) Digital Signage Content Management
-* [Coin Slider](http://workshop.rs/projects/coin-slider/): jQuery Image Slider with Unique Effects
+* [Coin Slider](http://workshop.rs/projects/coin-slider/): jQuery Image Slider 
+  with Unique Effects
 * [gCalFlow](http://sugi.github.io/jquery-gcal-flow/): jQuery Google Calendar 
   Event List Plug-in
 * [Moment.js](http://momentjs.com/) JavaScript library
