@@ -31,11 +31,18 @@ Install the required NodeJS packages with (from the project root folder):
 ## Links ##
 
 * [Xibo](http://xibo.org.uk/) Open Source Digital Signage
+  ([Github Repository](https://github.com/xibosignage/xibo-cms))
 * [Rise Vision](https://www.risevision.com/) Digital Signage Content Management
+  ([Github Repository](https://github.com/Rise-Vision/rise-vision-apps))
 * [Coin Slider](http://workshop.rs/projects/coin-slider/): jQuery Image Slider 
   with Unique Effects
+  ([Github Repository](https://github.com/kopipejst/coin-slider))
 * [gCalFlow](http://sugi.github.io/jquery-gcal-flow/): jQuery Google Calendar 
   Event List Plug-in
+  ([Github Repository](https://github.com/sugi/jquery-gcal-flow))
 * [Moment.js](http://momentjs.com/) JavaScript library
+  ([Github Repository](https://github.com/moment/moment))
+* [Color Safe](http://colorsafe.co/) - beautiful, accessible colors
+  ([Github Repository](https://github.com/donnieberg/accessible-color-palette))
 * [Google Apps Script](https://www.google.com/script/start/) JavaScript cloud 
   scripting language
