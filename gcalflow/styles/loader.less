@@ -7,9 +7,16 @@
 
 @import "../../shared/colors.less";
 
-@_color1: hsl(hue(#3498db), saturation(@header-bgcolor), lightness(@header-bgcolor));
-@_color2: hsl(hue(#e74c3c), saturation(@header-bgcolor), lightness(@header-bgcolor));
-@_color3: hsl(hue(#f9c922), saturation(@header-bgcolor), lightness(@header-bgcolor));
+@_color_saturation: saturation(@header-bgcolor);
+@_color_lightness: lightness(@header-bgcolor);
+
+@_color1_base: #3498db;
+@_color2_base: #e74c3c;
+@_color3_base: #f9c922;
+
+@_color1: @accent-fgcolor1; // hsl(hue(#3498db), @_color_saturation, @_color_lightness);
+@_color2: @accent-fgcolor2; // hsl(hue(#e74c3c), @_color_saturation, @_color_lightness);
+@_color3: @accent-fgcolor3; // hsl(hue(#f9c922), @_color_saturation, @_color_lightness);
 
 @_border-width: 5px;
 @_preloader_size: 200px;
@@ -31,7 +38,7 @@
         top: 0;
         width: 51%;
         height: 100%;
-        background: @main-color;
+        background: @accent-color; //@main-color;
         z-index: 1000;
 
         &.section-left {

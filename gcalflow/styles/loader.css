@@ -17,7 +17,7 @@
   top: 0;
   width: 51%;
   height: 100%;
-  background: #313131;
+  background: #4c7597;
   z-index: 1000;
 }
 #loader-wrapper .loader-section.section-left {
@@ -35,7 +35,7 @@
   height: 200px;
   margin: -100px 0 0 -100px;
   border: 5px solid transparent;
-  border-top-color: #4c7997;
+  border-top-color: #add8e6;
   border-radius: 50%;
   z-index: 1500;
   -moz-animation: spin 2s linear infinite;
@@ -51,7 +51,7 @@
   right: 8.33333333px;
   bottom: 8.33333333px;
   border: 5px solid transparent;
-  border-top-color: #97534c;
+  border-top-color: #dcc6e0;
   border-radius: 50%;
   -moz-animation: spin 3s linear infinite;
   -o-animation: spin 3s linear infinite;
@@ -66,7 +66,7 @@
   right: 25px;
   bottom: 25px;
   border: 5px solid transparent;
-  border-top-color: #97864c;
+  border-top-color: #fffacd;
   border-radius: 50%;
   -moz-animation: spin 1.5s linear infinite;
   -o-animation: spin 1.5s linear infinite;
