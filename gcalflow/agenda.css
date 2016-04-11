@@ -185,6 +185,13 @@ ul {
   height: 100%;
   overflow-y: auto;
 }
+#gcf-custom-template.tasks .gcf-item-title > i.fa {
+  display: inline-block;
+  width: 2ch;
+}
+#gcf-custom-template.grouped-alt .gcf-item-container-block {
+  overflow: hidden;
+}
 #gcf-custom-template.ticker {
   height: 74px;
   -moz-box-sizing: border-box;

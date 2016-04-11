@@ -211,25 +211,39 @@
                     };
                     break;
                 case "tasks":
-                    autoscroll = false;
-                    // Set the dtstart to the start of the day
-                    dtstart.setHours(0);
-                    dtstart.setMinutes(0);
-                    dtstart.setSeconds(0);
-                    dtstart.setMilliseconds(0);
-                    //dtend = moment(dtstart).endOf('day').toDate();
-                    // Default NUM_DAYS to 1 of not already set to a value
-                    NUM_DAYS = NUM_DAYS || 1;
-                    $('#gcf-custom-template').on('click', '.gcf-item-block', function (e) {
-                        var $this = $(this); // The task item
-                        // The key to use with localStorage
-                        var key = "agenda-tasks-" + $this.data("event-id") + "_done";
-                        // Toogle DONE state of the task item when clicked/tapped
-                        $this.toggleClass("disabled");
-                        // Store the serialized task done state (has "disabled"
-                        // class) in localStorage
-                        localStorage.setItem(key, JSON.stringify($this.hasClass("disabled")));
-                    });
+                case "grouped-alt":
+                    if (TYPE == "tasks") {
+                        autoscroll = false;
+                        // Set the dtstart to the start of the day
+                        dtstart.setHours(0);
+                        dtstart.setMinutes(0);
+                        dtstart.setSeconds(0);
+                        dtstart.setMilliseconds(0);
+                        //dtend = moment(dtstart).endOf('day').toDate();
+                        // Default NUM_DAYS to 1 of not already set to a value
+                        NUM_DAYS = NUM_DAYS || 1;
+                        $('#gcf-custom-template').on('click', '.gcf-item-block[data-event-id]', function (e) {
+                            var $this = $(this); // The task item
+                            // The key to use with localStorage
+                            var key = "agenda-tasks-" + $this.data("event-id") + "_done";
+                            // Toogle DONE state of the task item when clicked/tapped
+                            $this.toggleClass("disabled");
+                            if ($this.hasClass("disabled")) {
+                                $this.find(".gcf-item-title > i.fa")
+                                    .removeClass("fa-square-o")
+                                    .addClass("fa-check-square-o");
+                            } else {
+                                $this.find(".gcf-item-title > i.fa")
+                                    .removeClass("fa-check-square-o")
+                                    .addClass("fa-square-o");
+                            }
+                            // Store the serialized task done state (has "disabled"
+                            // class) in localStorage
+                            localStorage.setItem(key, JSON.stringify($this.hasClass("disabled")));
+                        });
+                    } else {
+                        $('#gcf-custom-template').addClass("grouped-alt");
+                    }
                     $('#gcf-custom-template').addClass("tasks");
 
                     callback = function () {
@@ -238,39 +252,67 @@
                             // Loop through each task item and check for stored
                             // DONE state
                             var $this = $(this); // The task item
-                            // The key to use with localStorage
-                            var key = "agenda-tasks-" + $this.data("event-id") + "_done";
-                            // Check if key exists in localStorage
-                            if (key in localStorage) {
-                                // Then check its parsed value
-                                if (!!JSON.parse(localStorage.getItem(key))) {
-                                    // If the parsed value validates to true,
-                                    // then set the task as already done (add
-                                    // "disabled" class)
-                                    $this.addClass("disabled");
+                            if (TYPE == "tasks") {
+                                $this.find(".gcf-item-title").prepend("<i class=\"fa fa-square-o\">&nbsp;</i>");
+                                // The key to use with localStorage
+                                var key = "agenda-tasks-" + $this.data("event-id") + "_done";
+                                // Check if key exists in localStorage
+                                if (key in localStorage) {
+                                    // Then check its parsed value
+                                    if (!!JSON.parse(localStorage.getItem(key))) {
+                                        // If the parsed value validates to true,
+                                        // then set the task as already done (add
+                                        // "disabled" class)
+                                        $this.addClass("disabled");
+                                        $this.find(".gcf-item-title > i.fa")
+                                            .removeClass("fa-square-o")
+                                            .addClass("fa-check-square-o");
+                                    }
                                 }
                             }
                             var _date = $this.find(".gcf-item-daterange").text();
+                            // Remove the BR elements to keep all elements on
+                            // the same line within the item
+                            $this.find("br").remove();
                             if (found_dates.indexOf(_date) > -1) {
                                 // If the date/time has already been found,
                                 // then remove the HR element to group it with
                                 // the previous (same) items
                                 $this.find("hr").remove();
+                                $this.find(".gcf-item-daterange").addClass("hidden");
+
+                                if (TYPE === "grouped-alt") {
+                                    $this.prev(".gcf-item-block").append($this.detach());
+                                }
                             } else {
                                 // Otherwise, add the date/time as a new entry
                                 // with the found_dates array
                                 found_dates.push(_date);
-                                // Remove the bottom HR element and add another
-                                // at the top of the element
+
+                                // Use this element as a daterange group header
+                                // for other elements
+
+                                // Remove the bottom HR element
                                 $this.find("hr").remove(); // Remove bottom
+                                if (TYPE == "tasks") {
+                                    // Clone this element and add it after itself
+                                    // and hide the daterange element of the clone 
+                                    // (use the daterange element of the original 
+                                    // as the header)
+                                    $this.after($this.clone()
+                                        .find(".gcf-item-daterange").addClass("hidden")
+                                        .parents(".gcf-item-block"));
+                                    $this.find(".gcf-item-title, .gcf-item-location").remove();
+                                } else {
+                                    $this.find(".gcf-item-daterange").after("<br />");
+                                }
+                                // and add another at the top of the element
                                 $this.prepend("<hr />"); // Add at top
+                                $this.removeAttr("data-event-id");
                             }
                             // Hide the description as it is not supported with
                             // tasks
                             $this.find(".gcf-item-description").addClass("hidden");
-                            // Remove the BR elements to keep all elements on
-                            // the same line within the item
-                            $this.find("br").remove();
                         });
                         $("body").addClass("loaded");
                     };

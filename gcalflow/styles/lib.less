@@ -27,6 +27,13 @@
         height: 100%;
         overflow-y: auto;
     }
+
+    .gcf-item-title > i.fa {
+        // Keep the title text at the same distance regardless of the icon 
+        // width
+        display: inline-block;
+        width: 2ch; // Set the width to a 2 character fixed size
+    }
 }
 
 .ticker-mixin() {
