@@ -10,6 +10,7 @@ body {
 .container {
   text-align: center;
   margin-top: 40px;
+  color: #313131;
 }
 .icon {
   font-size: 72px;
@@ -30,7 +31,7 @@ body {
   font-size: 96px;
 }
 .title {
-  background: rgba(76, 117, 151, 0.5);
+  background: rgba(76, 117, 151, 0.7);
   font-size: 48px;
   font-weight: 600;
   color: #fff;

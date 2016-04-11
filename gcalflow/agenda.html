@@ -104,7 +104,23 @@
                 NUM_DAYS = 1;
             }
             if (FA_ICON) {
-                $(".gcf-title-block").prepend("&nbsp;<i class=\"fa fa-" + FA_ICON + "\">&nbsp;</i>");
+                FA_ICON = FA_ICON.split(",");
+                
+                if (FA_ICON.length > 1) {
+                    var $fa_stack = $("<span/>");
+                    $fa_stack.addClass("fa-stack");
+                    $.each(FA_ICON, function (index, icon) {
+                        var fa_stack_class = "fa-stack-" + (FA_ICON.length - index) + "x";
+                        if (index === 0) {
+                            fa_stack_class += " fa-lg";
+                        }
+                        $fa_stack.append("<i class=\"fa fa-" + icon + " " + fa_stack_class + "\"></i>");
+                    });
+                    $(".gcf-title-block").prepend($fa_stack).prepend("&nbsp;");
+                } else {
+                    FA_ICON = FA_ICON[0];
+                    $(".gcf-title-block").prepend("&nbsp;<i class=\"fa fa-" + FA_ICON + "\"></i>");
+                }
             }
             $.each(HIDE, function (index, hide) {
                 switch (hide) {

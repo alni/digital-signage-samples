@@ -1,6 +1,8 @@
 ﻿@import "../shared/styles.less";
 @import "styles/lib.less";
 
+@header-bgcolor-opacity: 70%; // Override Header BG Color Opacity
+
 html {
     font-family: @font-family;
 }
@@ -60,7 +62,7 @@ ul {
 
     &:not(.tasks):not(.ticker) {
         .gcf-item-container-block {
-            padding: 10px 20px 0px 20px;
+            padding: 0 20px;
             border-bottom: 1px solid @main-color;
             overflow-y: hidden !important;
         }
@@ -70,15 +72,23 @@ ul {
         background: @header-bgcolor;
         padding: @header-padding;
 
+        font-size: @font-size;
+
         .fa, .gcf-title {
             display: inline;
-            font-size: @font-size;
             font-weight: 600;
             color: @header-fgcolor;
+        }
+
+        .fa-stack {
+            font-size: 0.5em;
+            //height: @font-size * (1 + (1 / 6));
         }
     }
 
     .gcf-item-block {
+        padding-top: 0;
+        margin-top: 0;
         margin-bottom: 8px;
         border-bottom: none;
 
@@ -114,7 +124,7 @@ ul {
         text-decoration: none;
         background-color: transparent;
         white-space: normal;
-        line-height: 1.125;
+        line-height: normal;
     }
 
     .gcf-item-location {

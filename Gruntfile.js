@@ -154,6 +154,26 @@ module.exports = function (grunt) {
 
     });
 
+    function readLines(input, func) {
+        var remaining = '';
+
+        input.on('data', function (data) {
+            remaining += data;
+            var index = remaining.indexOf('\n');
+            while (index > -1) {
+                var line = remaining.substring(0, index);
+                remaining = remaining.substring(index + 1);
+                func(line);
+                index = remaining.indexOf('\n');
+            }
+        });
+        input.on('end', function () {
+            if (remaining.length > 0) {
+                func(remaining);
+            }
+        })
+    }
+
     // These plugins provide necessary tasks.
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-clean');
@@ -161,6 +181,10 @@ module.exports = function (grunt) {
 
     // Build task
     grunt.registerTask('build', ['copy']);
+
+    grunt.registerMultiTask('xibo', 'Build Xibo module template to JSON', function (mod) {
+        var fs = require('fs');
+    });
 
     // Default task
     grunt.registerTask('default', [

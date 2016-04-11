@@ -4,5 +4,6 @@
 @accent-fgcolor3: #fffacd;
 
 @main-color: #313131;
-@header-bgcolor: fade(@accent-color, 50%);
+@header-bgcolor-opacity: 50%;
+@header-bgcolor: fade(@accent-color, @header-bgcolor-opacity);
 @header-fgcolor: #fff;

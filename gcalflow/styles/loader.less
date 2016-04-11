@@ -18,6 +18,8 @@
 @_color2: @accent-fgcolor2; // hsl(hue(#e74c3c), @_color_saturation, @_color_lightness);
 @_color3: @accent-fgcolor3; // hsl(hue(#f9c922), @_color_saturation, @_color_lightness);
 
+@_color_bg: @accent-color;
+
 @_border-width: 5px;
 @_preloader_size: 200px;
 
@@ -38,7 +40,7 @@
         top: 0;
         width: 51%;
         height: 100%;
-        background: @accent-color; //@main-color;
+        background: @_color_bg; //@main-color;
         z-index: 1000;
 
         &.section-left {

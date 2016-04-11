@@ -1,4 +1,6 @@
-﻿.tasks-ticker-mixin() {
+﻿@import "../../shared/lib.less";
+
+.tasks-ticker-mixin() {
     .gcf-item-daterange:after {
         content: ": ";
     }
@@ -20,9 +22,7 @@
 
 .tasks-mixin() {
     .gcf-item-container-block {
-        -moz-box-sizing: border-box;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
+        .border-box-sizing-mixin();
         border-bottom: solid 80px transparent;
         height: 100%;
         overflow-y: auto;
@@ -30,26 +30,36 @@
 }
 
 .ticker-mixin() {
-    height: 74px;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
+    @_ticker_height: 74px;
+
+    height: @_ticker_height;
+    .border-box-sizing-mixin();
 
     .gcf-header-block {
-        -webkit-border-bottom-left-radius: 4px;
-        -moz-border-bottom-left-radius: 4px;
-        border-bottom-left-radius: 4px;
         float: left;
-        height: 74px;
-        -moz-box-sizing: border-box;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
+        height: @_ticker_height;
+        .border-box-sizing-mixin();
+
+        padding-top: 0; // Keep the children centered vertically
+        padding-bottom: 0; // Keep the children centered vertically
     }
 
     .gcf-item-container-block {
-        margin-bottom: 0.2em;
+        //margin-bottom: 0.2em;
         overflow: hidden;
-        height: 74px;
+        height: @_ticker_height;
+    }
+
+    .gcf-item-block {
+        height: @_ticker_height;
+
+        margin-bottom: 0;
+        padding: 0;
+    }
+
+    .gcf-item-header-block {
+        height: @_ticker_height;
+        line-height: @_ticker_height; // Keep the children centered vertically
     }
 
     .gcf-item-description {
@@ -61,11 +71,6 @@
             content: " -- ";
             color: #aaa;
         }
-    }
-
-    .gcf-item-block {
-        margin-bottom: 0;
-        padding: 0;
     }
 }
 
