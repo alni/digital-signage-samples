@@ -36,6 +36,9 @@
             * "daterange" : hide the start and end date/time of the event
             * "description" : hide the event description
             * Default : "description" (hide the description if not set)
+        * ICON_ONLY : (optional) should the Title/Header block show the icon
+          only/hide the text? This is only used when also the "FA_ICON"
+          parameter is also provided.
 
 
         Examples:
@@ -95,6 +98,7 @@
             var MAX_ITEMS = getParameterByName("MAX_ITEMS") || 50;
             var NUM_DAYS = getParameterByName("NUM_DAYS") || null;
             var FA_ICON = getParameterByName("FA_ICON") || null;
+            var ICON_ONLY = getParameterByName("ICON_ONLY") || false;
             var HIDE = (getParameterByName("HIDE") || "description").split(",");
             var dtstart = new Date();
             var dtend = null;
@@ -104,8 +108,12 @@
                 NUM_DAYS = 1;
             }
             if (FA_ICON) {
+                if (ICON_ONLY) {
+                    $(".gcf-title").addClass("hidden");
+                    $(".gcf-title-block").prepend("&nbsp;")
+                }
                 FA_ICON = FA_ICON.split(",");
-                
+
                 if (FA_ICON.length > 1) {
                     var $fa_stack = $("<span/>");
                     $fa_stack.addClass("fa-stack");
@@ -116,10 +124,11 @@
                         }
                         $fa_stack.append("<i class=\"fa fa-" + icon + " " + fa_stack_class + "\"></i>");
                     });
-                    $(".gcf-title-block").prepend($fa_stack).prepend("&nbsp;");
+                    $(".gcf-title-block").prepend($("<span/>").addClass("icon")).prepend("&nbsp;");
+                    $(".gcf-title-block span.icon").append($fa_stack);
                 } else {
                     FA_ICON = FA_ICON[0];
-                    $(".gcf-title-block").prepend("&nbsp;<i class=\"fa fa-" + FA_ICON + "\"></i>");
+                    $(".gcf-title-block").prepend("&nbsp;<i class=\"fa fa-" + FA_ICON + " fa-fw\">&nbsp;</i>");
                 }
             }
             $.each(HIDE, function (index, hide) {
@@ -129,9 +138,9 @@
                         break;
                     case "location":
                         $(".gcf-item-location").addClass("hidden");
-                        // Remove the BR before location to move the elements 
+                        // Remove the BR before location to move the elements
                         // following a bit upwards
-                        $(".gcf-item-location").prev("br").remove(); 
+                        $(".gcf-item-location").prev("br").remove();
                         break;
                     case "daterange":
                         $(".gcf-item-daterange").addClass("hidden");
@@ -158,7 +167,7 @@
                                 $prev_title = $prev.find('.gcf-item-title'),
                                 $prev_location = $prev.find('.gcf-item-location');
                             if (!$desc.hasClass("hidden") && $desc.text()) {
-                                // Convert description text to HTML. But only 
+                                // Convert description text to HTML. But only
                                 // when the Description is not hidden.
                                 $desc.html($.parseHTML($desc.text()));
                             }
@@ -210,8 +219,58 @@
                         $("body").addClass("loaded");
                     };
                     break;
-                case "tasks":
                 case "grouped-alt":
+                    $('#gcf-custom-template').addClass("tasks")
+                        .addClass("grouped-alt");
+                    callback = function () {
+                        var found_dates = [];
+                        var $items = this.find(".gcf-item-block");
+                        $items.each(function (index) {
+                            var $this = $(this),
+                                $date = $this.find(".gcf-item-daterange"),
+                                _date = $date.text(),
+                                $header_block = $this.find(".gcf-item-header-block"),
+                                $desc = $this.find(".gcf-item-description"),
+                                $prev = $this.prev();
+                            if (!$desc.hasClass("hidden") && $desc.text()) {
+                                // Convert description text to HTML. But only
+                                // when the Description is not hidden.
+                                $desc.html($.parseHTML($desc.text()));
+                            }
+                            // Remove the BR elements to keep all elements on
+                            // the same line within the item
+                            $this.find("br").remove();
+                            if (found_dates.indexOf(_date) > -1) {
+                                // If the date of the current item is already
+                                // found, then group it with the previous
+                                $this.find(".gcf-item-daterange").addClass("hidden");
+                                $prev.append($header_block.detach());
+                                $this.remove();
+                            } else {
+                                // Otherwise, add the date/time as a new entry
+                                // with the found_dates array
+                                found_dates.push(_date);
+
+                                // Use this element as a daterange group header
+                                // for other elements
+
+                                // Remove the bottom HR element
+                                $this.find("hr").remove(); // Remove bottom
+                                $this.find(".gcf-item-daterange").after("<br />");
+                                // and add another at the top of the element
+                                $this.prepend("<hr />"); // Add at top
+                            }
+                            if (NUM_DAYS == 1) {
+                                $date.addClass("hidden");
+                                $this.find("hr").remove();
+                                $this.find("br:first").remove();
+                            }
+                        });
+
+                        $("body").addClass("loaded");
+                    };
+                    break;
+                case "tasks":
                     if (TYPE == "tasks") {
                         autoscroll = false;
                         // Set the dtstart to the start of the day
@@ -296,13 +355,14 @@
                                 $this.find("hr").remove(); // Remove bottom
                                 if (TYPE == "tasks") {
                                     // Clone this element and add it after itself
-                                    // and hide the daterange element of the clone 
-                                    // (use the daterange element of the original 
+                                    // and hide the daterange element of the clone
+                                    // (use the daterange element of the original
                                     // as the header)
                                     $this.after($this.clone()
                                         .find(".gcf-item-daterange").addClass("hidden")
                                         .parents(".gcf-item-block"));
                                     $this.find(".gcf-item-title, .gcf-item-location").remove();
+                                    $this.removeClass("disabled");
                                 } else {
                                     $this.find(".gcf-item-daterange").after("<br />");
                                 }
@@ -418,7 +478,7 @@
                         var $this = $(this),
                             $desc = $this.find(".gcf-item-description");
                         if (!$desc.hasClass("hidden") && $desc.text()) {
-                            // Convert description text to HTML. But only 
+                            // Convert description text to HTML. But only
                             // when the Description is not hidden.
                             $desc.html($.parseHTML($desc.text()));
                         }
@@ -448,7 +508,7 @@
     </style>
 
     <link rel="stylesheet" type="text/css" href="agenda.css">
-    
+
     <div id="gcf-custom-template" data-lang="en">
         <div class="gcf-header-block">
             <div class="gcf-title-block">

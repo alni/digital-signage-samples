@@ -23,7 +23,7 @@
 .tasks-mixin() {
     .gcf-item-container-block {
         .border-box-sizing-mixin();
-        border-bottom: solid 80px transparent;
+        border-bottom: solid 75px transparent;
         height: 100%;
         overflow-y: auto;
     }
@@ -49,6 +49,10 @@
 
         padding-top: 0; // Keep the children centered vertically
         padding-bottom: 0; // Keep the children centered vertically
+    }
+
+    .gcf-title-block > span.icon {
+        vertical-align: middle;
     }
 
     .gcf-item-container-block {

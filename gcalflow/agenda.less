@@ -39,7 +39,7 @@ ul {
 }
 
 .hidden:not(.gcf-item-block) {
-    display: none;
+    display: none !important;
 }
 
 #gcf-custom-template {
@@ -47,6 +47,8 @@ ul {
     height: 100%;
     background: transparent !important;
     border: none;
+    border-radius: 0 !important;
+    padding-bottom: 0 !important;
     .lang-mixin;
 
     &:not(.ticker) {
@@ -71,6 +73,8 @@ ul {
     .gcf-header-block {
         background: @header-bgcolor;
         padding: @header-padding;
+
+        border-radius: 0 !important;
 
         font-size: @font-size;
 
@@ -195,4 +199,17 @@ ul {
     &.ticker {
         .ticker-mixin;
     }
+}
+
+
+::-webkit-scrollbar {
+    width: @font-size / 3;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: @header-bgcolor;
 }
