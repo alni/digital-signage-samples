@@ -1,7 +1,27 @@
-# digital-signage-samples #
+# Digital Signage Samples #
 
 A repository containing commonly used code samples for my digital signage 
-projects.
+projects. This includes code for
+
+* [`gcalflow/`](gcalflow/) - a customizable scrolling Agenda that uses data 
+  from Google Calendar,
+* [`coin-slider/`](coin-slider/) - a customizable, nice, Slide show gallery 
+  that uses images from Flickr,
+* [`gapps-script/pollenvarsling/`](gapps-script/pollenvarsling/) - a project 
+  that automatically extracts Pollen alert data from Pollen Alert emails from 
+  NAAF (The Norwegian Asthma and Allergy Association) and adds the alert to 
+  Google Calendar,
+* [`php/flickr/`](php/flickr/) - a project that returns a filtered photos 
+  result from Flickr as a Feed,
+* [`xibo/`](xibo/) - custom templates for the modules of the Xibo Digital 
+  Signage project
+
+
+Licensed under the [MIT](LICENSE.md) License.
+
+-----------
+
+## Folder structure ##
 
 * [`coin-slider/`](coin-slider/) - contains code, layout and styles for the 
   Coin Slider JavaScript library
@@ -13,8 +33,6 @@ projects.
 * [`php/`](php/) - contains server side code samples written in PHP
 * [`xibo/`](xibo/) - contains templates and styles for Xibo modules
 * [`shared/`](shared/) - contains shared code, styles and other resources
-
-Licensed under the [MIT](LICENSE.md) License.
 
 ## Building ##
 

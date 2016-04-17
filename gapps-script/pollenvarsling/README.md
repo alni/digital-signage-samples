@@ -3,6 +3,14 @@
 Parse Pollen Alert emails from NAAF (The Norwegian Asthma and Allergy 
 Association) and add the alert to the Google Calendar.
 
+The project uses Google Apps Script together with the Gmail and the Google 
+Calendar services.
+
+* Reads emails with a specific label
+* Adds the extracted from the latest email to a calendar with a specific name
+
+
+
 ## How to use ##
 
 ### Setting up Email Pollen Alerts from NAAF ###

@@ -1,5 +1,17 @@
 ﻿# Xibo Modules #
 
+Provides custom templates and workarounds documentation for the modules of the 
+Xibo Digital Signage project.
+
+This includes templates and workarounds for
+
+* the Embedded module
+* the Forecast module
+* the Text module
+* the Ticker module
+* the Twitter module
+* the Webpage module
+
 
 ## Webpage ##
 
