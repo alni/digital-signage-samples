@@ -59,9 +59,12 @@ The Agenda supports the following URI Query Parameters:
   included with Font Awesome 4.5.0 (like `calendar`).
 * `HIDE` : (optional) what event item parts should be hidden? A comma separated
   value list of parts to hide.
+    * `scrollbars` : hide the scrollbars from the event item container + 
+      disable scrolling
     * `title` : hide the event title/summary
     * `location` : hide the event location
     * `daterange` : hide the start and end date/time of the event
+    * `enddate` : hide the end date of the event
     * `description` : hide the event description
     * Default : `description` (hide the description if not set)
 * `ICON_ONLY` : (optional) should the Title/Header block show the icon only? 

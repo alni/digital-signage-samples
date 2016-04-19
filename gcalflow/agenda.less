@@ -7,7 +7,7 @@ html {
     font-family: @font-family;
 }
 body {
-    overflow: hidden;
+    overflow: hidden; 
     
     /* Display & Box Model */
     margin: 0;
@@ -87,6 +87,20 @@ ul {
         .fa-stack {
             font-size: 0.5em;
             //height: @font-size * (1 + (1 / 6));
+        }
+
+        .scroll_btns {
+            position: absolute;
+            right: @font-size;
+
+            a {
+                //text-decoration: none;
+                width: 1ch;
+                display: inline-block;
+                &:hover {
+
+                }
+            }
         }
     }
 
@@ -201,9 +215,16 @@ ul {
     }
 }
 
+.hide-scrollbars {
+    .gcf-item-container-block {
+        overflow-y: hidden !important;
+    }
+}
+
+@scrollbar_size: @font-size / 3;
 
 ::-webkit-scrollbar {
-    width: @font-size / 3;
+    width: @scrollbar_size;
 }
 
 ::-webkit-scrollbar-track {

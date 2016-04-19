@@ -89,6 +89,35 @@
                 initAgenda(CAL_ID, API_KEY);
             }
         });
+        /**
+          * Called when the calendar events has been added and the events has
+          * been proccessed. Also Set the refresh timer (if any) to reload the
+          * page after a set amount of minutes.
+          * @param {Number} refresh - the number of minutes to wait before
+          *     reloading the page
+          */
+        function loadComplete(refresh) {
+            $("body").addClass("loaded");
+            if (!!refresh && refresh >= 1) {
+                setTimeout(function () {
+                    window.location.reload();
+                }, refresh * 60000);
+            }
+        }
+        function scrollList(bUp) {
+            var _gcalflow = $("#gcf-custom-template").data('gCalFlow').obj;
+            var idx = _gcalflow._tmpIdx || 0;
+            if (bUp) {
+                idx -= 1;
+            } else {
+                idx += 1;
+            }
+            if (idx < 0 ) {
+                idx = 0;
+            }
+            console.error(idx);
+            _gcalflow._tmpIdx = _gcalflow.bind_scroll(true, bUp, idx);
+        }
         function initAgenda(CAL_ID, API_KEY) {
             var DATA_URL = getParameterByName("DATA_URL");
             var DATE_FORMAT = getParameterByName("DATE_FORMAT") || "ddd, ll";
@@ -100,12 +129,19 @@
             var FA_ICON = getParameterByName("FA_ICON") || null;
             var ICON_ONLY = getParameterByName("ICON_ONLY") || false;
             var HIDE = (getParameterByName("HIDE") || "description").split(",");
+            var REFRESH_AFTER = getParameterByName("REFRESH_AFTER") || null;
             var dtstart = new Date();
             var dtend = null;
             var autoscroll = true;
+            var show_enddate = true;
             var callback = null;
             if (NUM_DAYS !== null && +NUM_DAYS < 1) {
                 NUM_DAYS = 1;
+            }
+            if (REFRESH_AFTER !== null && +REFRESH_AFTER < 1) {
+                REFRESH_AFTER = null;
+            } else {
+                REFRESH_AFTER = +REFRESH_AFTER; // minutes
             }
             if (FA_ICON) {
                 if (ICON_ONLY) {
@@ -133,6 +169,9 @@
             }
             $.each(HIDE, function (index, hide) {
                 switch (hide) {
+                    case "scrollbars":
+                        $("body").addClass("hide-scrollbars");
+                        break;
                     case "title":
                         $(".gcf-item-title").addClass("hidden");
                         break;
@@ -147,6 +186,9 @@
                         break;
                     case "description":
                         $(".gcf-item-description").addClass("hidden");
+                        break;
+                    case "enddate":
+                        show_enddate = false;
                         break;
                 }
             });
@@ -271,38 +313,35 @@
                     };
                     break;
                 case "tasks":
-                    if (TYPE == "tasks") {
-                        autoscroll = false;
-                        // Set the dtstart to the start of the day
-                        dtstart.setHours(0);
-                        dtstart.setMinutes(0);
-                        dtstart.setSeconds(0);
-                        dtstart.setMilliseconds(0);
-                        //dtend = moment(dtstart).endOf('day').toDate();
-                        // Default NUM_DAYS to 1 of not already set to a value
-                        NUM_DAYS = NUM_DAYS || 1;
-                        $('#gcf-custom-template').on('click', '.gcf-item-block[data-event-id]', function (e) {
-                            var $this = $(this); // The task item
-                            // The key to use with localStorage
-                            var key = "agenda-tasks-" + $this.data("event-id") + "_done";
-                            // Toogle DONE state of the task item when clicked/tapped
-                            $this.toggleClass("disabled");
-                            if ($this.hasClass("disabled")) {
-                                $this.find(".gcf-item-title > i.fa")
-                                    .removeClass("fa-square-o")
-                                    .addClass("fa-check-square-o");
-                            } else {
-                                $this.find(".gcf-item-title > i.fa")
-                                    .removeClass("fa-check-square-o")
-                                    .addClass("fa-square-o");
-                            }
-                            // Store the serialized task done state (has "disabled"
-                            // class) in localStorage
-                            localStorage.setItem(key, JSON.stringify($this.hasClass("disabled")));
-                        });
-                    } else {
-                        $('#gcf-custom-template').addClass("grouped-alt");
-                    }
+
+                    autoscroll = false;
+                    // Set the dtstart to the start of the day
+                    dtstart.setHours(0);
+                    dtstart.setMinutes(0);
+                    dtstart.setSeconds(0);
+                    dtstart.setMilliseconds(0);
+                    //dtend = moment(dtstart).endOf('day').toDate();
+                    // Default NUM_DAYS to 1 of not already set to a value
+                    NUM_DAYS = NUM_DAYS || 1;
+                    $('#gcf-custom-template').on('click', '.gcf-item-block[data-event-id]', function (e) {
+                        var $this = $(this); // The task item
+                        // The key to use with localStorage
+                        var key = "agenda-tasks-" + $this.data("event-id") + "_done";
+                        // Toogle DONE state of the task item when clicked/tapped
+                        $this.toggleClass("disabled");
+                        if ($this.hasClass("disabled")) {
+                            $this.find(".gcf-item-title > i.fa")
+                                .removeClass("fa-square-o")
+                                .addClass("fa-check-square-o");
+                        } else {
+                            $this.find(".gcf-item-title > i.fa")
+                                .removeClass("fa-check-square-o")
+                                .addClass("fa-square-o");
+                        }
+                        // Store the serialized task done state (has "disabled"
+                        // class) in localStorage
+                        localStorage.setItem(key, JSON.stringify($this.hasClass("disabled")));
+                    });
                     $('#gcf-custom-template').addClass("tasks");
 
                     callback = function () {
@@ -311,22 +350,20 @@
                             // Loop through each task item and check for stored
                             // DONE state
                             var $this = $(this); // The task item
-                            if (TYPE == "tasks") {
-                                $this.find(".gcf-item-title").prepend("<i class=\"fa fa-square-o\">&nbsp;</i>");
-                                // The key to use with localStorage
-                                var key = "agenda-tasks-" + $this.data("event-id") + "_done";
-                                // Check if key exists in localStorage
-                                if (key in localStorage) {
-                                    // Then check its parsed value
-                                    if (!!JSON.parse(localStorage.getItem(key))) {
-                                        // If the parsed value validates to true,
-                                        // then set the task as already done (add
-                                        // "disabled" class)
-                                        $this.addClass("disabled");
-                                        $this.find(".gcf-item-title > i.fa")
-                                            .removeClass("fa-square-o")
-                                            .addClass("fa-check-square-o");
-                                    }
+                            $this.find(".gcf-item-title").prepend("<i class=\"fa fa-square-o\">&nbsp;</i>");
+                            // The key to use with localStorage
+                            var key = "agenda-tasks-" + $this.data("event-id") + "_done";
+                            // Check if key exists in localStorage
+                            if (key in localStorage) {
+                                // Then check its parsed value
+                                if (!!JSON.parse(localStorage.getItem(key))) {
+                                    // If the parsed value validates to true,
+                                    // then set the task as already done (add
+                                    // "disabled" class)
+                                    $this.addClass("disabled");
+                                    $this.find(".gcf-item-title > i.fa")
+                                        .removeClass("fa-square-o")
+                                        .addClass("fa-check-square-o");
                                 }
                             }
                             var _date = $this.find(".gcf-item-daterange").text();
@@ -339,10 +376,6 @@
                                 // the previous (same) items
                                 $this.find("hr").remove();
                                 $this.find(".gcf-item-daterange").addClass("hidden");
-
-                                if (TYPE === "grouped-alt") {
-                                    $this.prev(".gcf-item-block").append($this.detach());
-                                }
                             } else {
                                 // Otherwise, add the date/time as a new entry
                                 // with the found_dates array
@@ -353,19 +386,16 @@
 
                                 // Remove the bottom HR element
                                 $this.find("hr").remove(); // Remove bottom
-                                if (TYPE == "tasks") {
-                                    // Clone this element and add it after itself
-                                    // and hide the daterange element of the clone
-                                    // (use the daterange element of the original
-                                    // as the header)
-                                    $this.after($this.clone()
-                                        .find(".gcf-item-daterange").addClass("hidden")
-                                        .parents(".gcf-item-block"));
-                                    $this.find(".gcf-item-title, .gcf-item-location").remove();
-                                    $this.removeClass("disabled");
-                                } else {
-                                    $this.find(".gcf-item-daterange").after("<br />");
-                                }
+                                // Clone this element and add it after itself
+                                // and hide the daterange element of the clone
+                                // (use the daterange element of the original
+                                // as the header)
+                                $this.after($this.clone()
+                                    .find(".gcf-item-daterange").addClass("hidden")
+                                    .parents(".gcf-item-block"));
+                                $this.find(".gcf-item-title, .gcf-item-location").remove();
+                                $this.removeClass("disabled");
+                            
                                 // and add another at the top of the element
                                 $this.prepend("<hr />"); // Add at top
                                 $this.removeAttr("data-event-id");
@@ -394,6 +424,9 @@
                         $("body").addClass("loaded");
                     };
                     break;
+            }
+            if (!!autoscroll) {
+                $(".scroll_btns").addClass("hidden");
             }
             moment.locale(LANG); // Use the current LANG as the moment locale
             // Use the current LANG as the preferred language of the commonly
@@ -434,7 +467,8 @@
                     var start, end;
                     if (allday_p) {
                         start = moment(start_d); //.format("ddd, ll");
-                        if (moment(end_d).diff(start, 'days') > 1) {
+                        if (show_enddate &&
+                            moment(end_d).diff(start, 'days') > 1) {
                             // If the end_d is more than a day after start,
                             // then initialize end from end_d and subtract 1
                             // day from it (prevents overflow)
@@ -465,11 +499,14 @@
                         // date string
                         return moment(start_d).format(DATE_FORMAT);
                     } else {
+                        if (show_enddate) {
+                            end = moment(end_d).format("LT");
+                        }
                         // Otherwise return a calendar formatted start_d + a
                         // locale aware time formatted end_d in the form of
-                        // "<start_d> - <end_d>"
+                        // "<start_d> - <end>"
                         return moment(start_d).calendar()
-                            + " - " + moment(end_d).format("LT");
+                            + (end ? " - " + end : "");
                     }
                 },
                 callback: callback || function () {
@@ -485,6 +522,15 @@
                     });
                     $("body").addClass("loaded");
                 }
+            });
+
+            $('#gcf-custom-template').on("click", "#scroll_up", function (e) {
+                e.preventDefault();
+                scrollList(true);
+            });
+            $('#gcf-custom-template').on("click", "#scroll_dn", function (e) {
+                e.preventDefault();
+                scrollList(false);
             });
         }
     </script>
@@ -513,6 +559,15 @@
         <div class="gcf-header-block">
             <div class="gcf-title-block">
                 <span class="gcf-title"></span>
+                <span class="scroll_btns">
+                    <a id="scroll_up">
+                        <i class="fa fa-angle-double-up fa-fw"></i>
+                    </a>
+                    &nbsp;|&nbsp;
+                    <a id="scroll_dn">
+                        <i class="fa fa-angle-double-down fa-fw"></i>
+                    </a>
+                </span>
             </div>
         </div>
         <ul class="gcf-item-container-block">

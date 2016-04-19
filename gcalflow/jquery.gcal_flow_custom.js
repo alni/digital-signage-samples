@@ -316,25 +316,45 @@
       }
     };
 
-    gCalFlow.prototype.bind_scroll = function() {
+    /**
+     * (params added by @alni)
+     * @param {boolean} bScroll - (optional) should the elements be scrolled 
+     *     manually by one element? Default: false (no)
+     * @param {boolean} bUp - (optional) If scrolled manually, should the 
+     *     direction be upwards? Default: false (downwards)
+     * @param {number} idx - (optional) the index of the element to scroll to.
+     *     Default: 0
+     * @returns {number} - the id if the timer if bScroll is false. The current
+     *     element idx if bScroll is true.
+     */
+    gCalFlow.prototype.bind_scroll = function(bScroll, bUp, idx) {
       var scroll_children, scroll_container, scroll_timer, scroller, state;
       scroll_container = this.target.find('.gcf-item-container-block');
       scroll_children = scroll_container.find(".gcf-item-block");
       log.debug("scroll container:", scroll_container);
-      if (!this.opts.auto_scroll || scroll_container.size() < 1 || scroll_children.size() < 2) {
+      if ((!bScroll && !this.opts.auto_scroll) || scroll_container.size() < 1 || scroll_children.size() < 2) {
+        console.error("true")
         return;
       }
       state = {
-        idx: 0
+        //idx: 0
+        idx: idx || 0  // Added by @alni
       };
       scroller = function () {
         scroll_children = scroll_container.find(".gcf-item-block"); // Added by @alni
         var scroll_to;
         log.debug("current scroll position:", scroll_container.scrollTop());
         log.debug("scroll capacity:", scroll_container[0].scrollHeight - scroll_container[0].clientHeight);
-        if (typeof scroll_children[state.idx] === 'undefined' || scroll_container.scrollTop() >= scroll_container[0].scrollHeight - scroll_container[0].clientHeight) {
+        if ((!bScroll || !bUp /* Added by @alni */) && (typeof scroll_children[state.idx] === 'undefined' || scroll_container.scrollTop() >= scroll_container[0].scrollHeight - scroll_container[0].clientHeight)) {
           log.debug("scroll to top");
           state.idx = 0;
+          if (bScroll) {
+            // Added by @alni
+            scroll_container.animate({
+              scrollTop: scroll_children[0].offsetTop
+            });
+            return state.idx;
+          }
           return scroll_container.animate({
             scrollTop: scroll_children[0].offsetTop
           });
@@ -344,10 +364,18 @@
           scroll_container.animate({
             scrollTop: scroll_to
           });
+          if (bScroll) {
+            // Added by @alni
+            return state.idx;
+          }
           return state.idx += 1;
         }
       };
-      return scroll_timer = setInterval(scroller, this.opts.scroll_interval);
+      console.error(bScroll);
+      if (bScroll) {
+          return scroller();
+      }
+      return scroll_timer = this.opts.auto_scroll && setInterval(scroller, this.opts.scroll_interval);
     };
 
     return gCalFlow;

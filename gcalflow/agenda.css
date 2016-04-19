@@ -87,6 +87,14 @@ ul {
 #gcf-custom-template .gcf-header-block .fa-stack {
   font-size: 0.5em;
 }
+#gcf-custom-template .gcf-header-block .scroll_btns {
+  position: absolute;
+  right: 48px;
+}
+#gcf-custom-template .gcf-header-block .scroll_btns a {
+  width: 1ch;
+  display: inline-block;
+}
 #gcf-custom-template .gcf-item-block {
   padding-top: 0;
   margin-top: 0;
@@ -234,6 +242,9 @@ ul {
 #gcf-custom-template.ticker .gcf-item-description:before {
   content: " -- ";
   color: #aaa;
+}
+.hide-scrollbars .gcf-item-container-block {
+  overflow-y: hidden !important;
 }
 ::-webkit-scrollbar {
   width: 16px;
