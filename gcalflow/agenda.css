@@ -204,35 +204,72 @@ ul {
   overflow: hidden;
 }
 #gcf-custom-template.ticker {
-  height: 74px;
+  height: 100%;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
 #gcf-custom-template.ticker .gcf-header-block {
   float: left;
-  height: 74px;
+  height: 100%;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   padding-top: 0;
   padding-bottom: 0;
 }
+#gcf-custom-template.ticker .gcf-title-block {
+  /*
+        # Vertical align anything with just 3 lines of CSS #
+
+        Original author: Sebastian Ekström (http://twitter.com/seb_ekstrom)
+        http://zerosixthree.se/vertical-align-anything-with-just-3-lines-of-css/
+    */
+  position: relative;
+  top: 50%;
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  height: auto;
+}
 #gcf-custom-template.ticker .gcf-title-block > span.icon {
   vertical-align: middle;
 }
 #gcf-custom-template.ticker .gcf-item-container-block {
   overflow: hidden;
-  height: 74px;
+  height: 100%;
 }
 #gcf-custom-template.ticker .gcf-item-block {
-  height: 74px;
+  height: 100%;
   margin-bottom: 0;
   padding: 0;
 }
 #gcf-custom-template.ticker .gcf-item-header-block {
-  height: 74px;
-  line-height: 74px;
+  height: 100%;
+  line-height: 100%;
+  /*
+        # Vertical align anything with just 3 lines of CSS #
+
+        Original author: Sebastian Ekström (http://twitter.com/seb_ekstrom)
+        http://zerosixthree.se/vertical-align-anything-with-just-3-lines-of-css/
+    */
+  position: relative;
+  top: 50%;
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  height: auto;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+#gcf-custom-template.ticker .gcf-item-daterange,
+#gcf-custom-template.ticker .gcf-item-title,
+#gcf-custom-template.ticker .gcf-item-location {
+  white-space: nowrap;
 }
 #gcf-custom-template.ticker .gcf-item-description {
   padding-left: 1em;

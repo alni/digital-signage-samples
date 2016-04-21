@@ -37,7 +37,8 @@
 }
 
 .ticker-mixin() {
-    @_ticker_height: 74px;
+    //@_ticker_height: 74px;
+    @_ticker_height: 100%;
 
     height: @_ticker_height;
     .border-box-sizing-mixin();
@@ -49,6 +50,10 @@
 
         padding-top: 0; // Keep the children centered vertically
         padding-bottom: 0; // Keep the children centered vertically
+    }
+
+    .gcf-title-block {
+        .vertical-align-mixin();
     }
 
     .gcf-title-block > span.icon {
@@ -71,6 +76,15 @@
     .gcf-item-header-block {
         height: @_ticker_height;
         line-height: @_ticker_height; // Keep the children centered vertically
+
+        .vertical-align-mixin();
+
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .gcf-item-daterange, .gcf-item-title, .gcf-item-location {
+        white-space: nowrap;
     }
 
     .gcf-item-description {
