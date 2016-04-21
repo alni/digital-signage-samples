@@ -27,20 +27,24 @@ This includes templates and workarounds for
 
 ## Forecast ##
 
-### The styles need to be half the displayed scale! ###
+### ~~The styles need to be half the displayed scale!~~ ###
 
-The Forecast is rendered at 2x the scale. Therefor, the style dimensions need 
-to be at half of the needed dimensions/scale.
+> **EDIT:** This workaround was needed due to the scale of the widget was 
+> previously set `2`. And then the template was overridden resulting in the 
+> scale setting input was hidden. 
 
-For example, if the preferred font size is at `48px`, the font size need to 
-actually be set at `24px` to make it be rendered at the correct size.
+~~The Forecast is rendered at 2x the scale. Therefor, the style dimensions need 
+to be at half of the needed dimensions/scale.~~
 
-This is easy when using `LESS` (or `SCSS/SASS`) stylesheets and 
-compiling them into `CSS` stylesheets.
+~~For example, if the preferred font size is at `48px`, the font size need to 
+actually be set at `24px` to make it be rendered at the correct size.~~
 
-#### Alernative (better) solution: ###
+~~This is easy when using `LESS` (or `SCSS/SASS`) stylesheets and 
+compiling them into `CSS` stylesheets.~~
 
-Create a override style and set the `#content` zoom to `1.0`:
+#### ~~Alernative (better) solution:~~ ###
+
+~~Create a override style and set the `#content` zoom to `1.0`:~~
 
 ```css
 #content {
@@ -48,8 +52,8 @@ Create a override style and set the `#content` zoom to `1.0`:
 }
 ```
 
-With that change, the preferred dimensions (font sizes etc.) does not need to 
-be halved to appear correctly on the screen.
+~~With that change, the preferred dimensions (font sizes etc.) does not need to 
+be halved to appear correctly on the screen.~~
 
 ### How to add new languages? ###
 
