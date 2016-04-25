@@ -107,6 +107,27 @@ module.exports = function (grunt) {
                     dest: '<%= dir.dist %>/www/'
                 }, {
                     expand: true,
+                    cwd: '<%= dir.src %>/xibo/forecast',
+                    src: [ // Xibo Modules files
+                        '*.json',
+                    ],
+                    dest: '<%= dir.dist %>/xibo/xibo-cms/modules/theme/forecastio/'
+                }, {
+                    expand: true,
+                    cwd: '<%= dir.src %>/xibo/ticker',
+                    src: [ // Xibo Modules files
+                        '*.json',
+                    ],
+                    dest: '<%= dir.dist %>/xibo/xibo-cms/modules/theme/ticker/'
+                }, {
+                    expand: true,
+                    cwd: '<%= dir.src %>/xibo/twitter',
+                    src: [ // Xibo Modules files
+                        '*.json',
+                    ],
+                    dest: '<%= dir.dist %>/xibo/xibo-cms/modules/theme/twitter/'
+                }, {
+                    expand: true,
                     cwd: '<%= dir.src %>/xibo',
                     src: [ // Xibo Modules files
                         'embedded/*.html',
@@ -123,7 +144,7 @@ module.exports = function (grunt) {
                         'ticker/media-rss-with-title/*.css',
                         'ticker/title-only/*.html',
                         'ticker/title-only/*.css',
-                        'ticker/*.json',
+                        //'ticker/*.json',
 
                         'twitter/tweet-with-profileimage-left/*.html',
                         'twitter/tweet-with-profileimage-left/*.css',
@@ -150,29 +171,57 @@ module.exports = function (grunt) {
                     dest: '<%= dir.dist %>/xibo/'
                 }]
             },
+        },
+        
+        xibo: {
+            forecast: {
+                "cwd": "<%= dir.src %>/xibo/forecast/",
+                files: [{
+                    "template": "custom-current",
+                    "main": "current.html",
+                    "css": "current.min.css"
+                }, {
+                    "template": "custom-5-day",
+                    "main": "5days_main.html",
+                    "daily": "5days_dailyForecast.html",
+                    "css": "5days.min.css"
+                }]
+            },
+            ticker: {
+                "cwd": "<%= dir.src %>/xibo/ticker/",
+                files: [{
+                    "template": "custom-media-rss-with-title-flickr",
+                    "html": "media-rss-with-title/flickr.html",
+                    "css": "media-rss-with-title/flickr.min.css"
+                }, {
+                    "template": "custom-media-rss-with-title-flickr2",
+                    "html": "media-rss-with-title/flickr2.html",
+                    "css": "media-rss-with-title/flickr.min.css"
+                }, {
+                    "template": "custom-media-rss-with-title-width-desc",
+                    "html": "media-rss-with-title/with_desc.html",
+                    "css": "media-rss-with-title/with_desc.min.css"
+                }, {
+                    "template": "custom-title-only-with-logo",
+                    "html": "title-only/with_logo.html",
+                    "css": "title-only/with_logo.min.css"
+                }, {
+                    "template": "custom-title-only-with-name",
+                    "html": "title-only/with_name.html",
+                    "css": "title-only/with_name.min.css"
+                }]
+            },
+            twitter: {
+                "cwd": "<%= dir.src %>/xibo/twitter/",
+                files: [{
+                    "template": "custom-tweet-with-profileimage-left-marqueeLeft",
+                    "html": "tweet-with-profileimage-left/marqueeLeft.html",
+                    "css": "tweet-with-profileimage-left/marqueeLeft.min.css"
+                }]
+            }
         }
 
     });
-
-    function readLines(input, func) {
-        var remaining = '';
-
-        input.on('data', function (data) {
-            remaining += data;
-            var index = remaining.indexOf('\n');
-            while (index > -1) {
-                var line = remaining.substring(0, index);
-                remaining = remaining.substring(index + 1);
-                func(line);
-                index = remaining.indexOf('\n');
-            }
-        });
-        input.on('end', function () {
-            if (remaining.length > 0) {
-                func(remaining);
-            }
-        })
-    }
 
     // These plugins provide necessary tasks.
     grunt.loadNpmTasks('grunt-contrib-connect');
@@ -180,10 +229,85 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
 
     // Build task
-    grunt.registerTask('build', ['copy']);
+    grunt.registerTask('build', ['xibo', 'copy']);
 
-    grunt.registerMultiTask('xibo', 'Build Xibo module template to JSON', function (mod) {
-        var fs = require('fs');
+    grunt.registerMultiTask('xibo', 'Build Xibo module templates to JSON', function (mod) {
+        var data = this.data,
+            cwd = data.cwd;
+
+        function readTemplateHtml(filePath) {
+            var templateLines = [];
+            var htmlTemplate = grunt.file.read(filePath);
+            htmlTemplate = htmlTemplate.split("<!-- TEMPLATE REGION BEGIN -->").join("");
+            htmlTemplate = htmlTemplate.split("<!-- /TEMPLATE REGION END -->")[0];
+            htmlTemplate = htmlTemplate.split("\r").join(""); //.replace(/\s+/g, ' ');
+            //templateLines = htmlTemplate.split("\n");
+
+            return htmlTemplate;
+        }
+        this.data.files.forEach(function (data, index) {
+            var htmlFile = data.html; // Used with regular templates
+            var mainFile = data.main; // Used with Forecast templates
+            var dailyFile = data.daily; // Used with Forecast templates
+            var htmlContent = null;
+            var mainContent = null;
+            var dailyContent = null;
+            var templateLines = null;
+            var mainLines = null;
+            var dailyLines = null;
+            var cssFile = data.css;
+            var jsonFile = data.template + ".template.json";
+            var jsonObj;
+
+            grunt.log.writeln(JSON.stringify(data, null, 4));
+            grunt.log.writeln(cwd + htmlFile);
+
+            if (htmlFile) {
+                // Regular template
+                htmlContent = readTemplateHtml(cwd + htmlFile);
+                /*var htmlTemplate = grunt.file.read(cwd + htmlFile);
+                htmlTemplate = htmlTemplate.substring(
+                    "<!-- TEMPLATE REGION BEGIN -->".length,
+                    htmlTemplate.indexOf("<!-- /TEMPLATE REGION END -->")
+                );
+                htmlTemplate = htmlTemplate.split("\r").join("").replace(/\s+/g, ' ');
+                templateLines = htmlTemplate.split("\n");*/
+            } else if (mainFile) {
+                // Forecast template
+                //mainLines = [].concat(readTemplateHtml(cwd + mainFile));
+                mainContent = readTemplateHtml(cwd + mainFile);
+
+                if (dailyFile) {
+                    //dailyLines = [].concat(readTemplateHtml(cwd + dailyFile));
+                    dailyContent = readTemplateHtml(cwd + dailyFile);
+                }
+            }
+
+            var cssContent = grunt.file.read(cwd + cssFile);
+
+            grunt.log.writeln(cwd + jsonFile);
+            var jsonTemplate = grunt.file.readJSON(cwd + jsonFile);
+            grunt.log.writeln(jsonTemplate);
+            if (!!htmlContent) {
+                // Regular template
+                //jsonTemplate.template = templateLines.join("").trim();
+                jsonTemplate.template = htmlContent.trim();
+            } else if (!!mainContent) {
+                // Forecast template
+                //jsonTemplate.main = mainLines.join("").trim();
+                jsonTemplate.main = mainContent.trim();
+
+                if (!!dailyContent) {
+                    //jsonTemplate.daily = dailyLines.join("").trim();
+                    jsonTemplate.daily = dailyContent.trim();
+                }
+            }
+            jsonTemplate.css = cssContent.trim();
+
+            grunt.file.write(cwd + jsonFile, JSON.stringify(jsonTemplate, null, 4));
+
+            
+        });
     });
 
     // Default task

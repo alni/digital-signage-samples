@@ -1,0 +1,6 @@
+{
+    "id": "custom-media-rss-with-title-with-desc",
+    "value": "[Custom] Image overlaid with the Title and Description",
+    "template": "<div class=\"image\">\n    [Link|image]\n    <div class=\"cycle-overlay\">\n        <p>[Title]</p>\n\n        <p>[Description]</p>\n    </div>\n</div>",
+    "css": "@import url(//fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic);.image img{width:100%;}.cycle-overlay{color:#fff;background:rgba(76,117,151,.5);position:absolute;bottom:0;width:100%;padding:15px;text-align:center;}.cycle-overlay p{font-family:\"Open Sans\",sans-serif;color:#fff;font-size:48px;}"
+}
