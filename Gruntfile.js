@@ -21,6 +21,13 @@ module.exports = function (grunt) {
                     port: 8080,
                     base: '<%= dir.dist %>'
                 }
+            },
+			src: {
+                options: {
+                    keepalive: true,
+                    port: 50353,
+                    base: '<%= dir.src %>'
+                }
             }
         },
 
@@ -169,6 +176,24 @@ module.exports = function (grunt) {
                         'README.md',
                     ],
                     dest: '<%= dir.dist %>/xibo/'
+                }, {
+                    expand: true,
+                    cwd: '<%= dir.src %>/gapps-script',
+                    src: [ // Google Apps Script files
+                        // Calendar Task List:
+                        'calendar-task-list/Code.gs.js',
+                        'calendar-task-list/tasks.html',
+                        'calendar-task-list/*.md',
+
+                        // Pollenvarsling
+                        'pollenvarsling/Code.gs.js',
+                        'pollenvarsling/*.md'
+                    ],
+                    dest: '<%= dir.dist %>/gapps-script/'
+                }, {
+                    cwd: '<%= dir.src %>',
+                    src: "shared/lib/moment-with-locales.min.js",
+                    dest: "<%= dir.dist %>/gapps-script/calendar-task-list/MomentJS.gs.js"
                 }]
             },
         },

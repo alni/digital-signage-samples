@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <? 
+    // Replace with the base URL to the "digital-signage-samples" distribution
+    var BASE_URL = "https://example.com"; 
+    ?>
+    <base target="_top">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link href="<?= BASE_URL ?>/gcalflow/jquery-gcal-flow-3.0.2/jquery.gcal_flow.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/gcalflow/agenda.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+        }
+    </style>
+    <?
+    var cal = CalendarApp.getCalendarById(CALENDAR_ID);
+    var todaysEvents = getPublicEventsForDay(cal, new Date())
+    ?>
+    <script>
+    $(document).ready(function() {
+        $('#gcf-custom-template').on('click', '.gcf-item-block[data-event-id]', function (e) {
+            var calendarId = "<?= CALENDAR_ID ?>";
+            var $this = $(this); // The task item
+            // The key to use with localStorage
+            var key = "agenda-tasks-" + $this.data("event-id") + "_done";
+            // Toogle DONE state of the task item when clicked/tapped
+            $this.toggleClass("disabled");
+            var isDone = $this.hasClass("disabled");
+            if ($this.hasClass("disabled")) {
+                $this.find(".gcf-item-title > i.fa")
+                    .removeClass("fa-square-o")
+                    .addClass("fa-check-square-o");
+            } else {
+                $this.find(".gcf-item-title > i.fa")
+                    .removeClass("fa-check-square-o")
+                    .addClass("fa-square-o");
+            }
+            google.script.run.setTaskDoneState($this.data("event-id"), isDone, calendarId, $this.data("start"));
+        });
+    });
+    </script>
+</head>
+<body class="loaded">
+    <? if (todaysEvents && todaysEvents.length > 0) { ?>
+    <div id="gcf-custom-template" class="tasks gCalFlow" data-lang="<?= LANG ?>">
+        <div class="gcf-header-block">
+            <div class="gcf-title-block">
+                <? if (FA_ICON) { ?>
+                &nbsp;<i class="fa fa-<?= FA_ICON ?> fa-fw">&nbsp;</i>
+                <? } ?>
+                <span class="gcf-title"><?= cal.getName() ?></span>
+                <span class="scroll_btns">
+                    <a id="scroll_up">
+                        <i class="fa fa-angle-double-up fa-fw"></i>
+                    </a>
+                    &nbsp;|&nbsp;
+                    <a id="scroll_dn">
+                        <i class="fa fa-angle-double-down fa-fw"></i>
+                    </a>
+                </span>
+            </div>
+        </div>
+        <ul class="gcf-item-container-block">
+            <? var foundDates = [] ?>
+            <? for (var i = 0; i < todaysEvents.length; i++) { ?>
+            <?
+ var start_dt = todaysEvents[i].getStartTime()
+               var end_dt = todaysEvents[i].getEndTime()
+               var allday_p = todaysEvents[i].isAllDayEvent()
+               var daterange = daterange_formatter(start_dt, end_dt, allday_p, true)
+               var isDone = todaysEvents[i].getTag("taskState") == "done"
+               var doneStateClass = isDone ? ' disabled' : ''
+            ?>
+            <? if (foundDates.indexOf(daterange) < 0) { ?>
+            <? foundDates.push(daterange) ?>
+            <li class="gcf-item-block">
+                <hr>
+                <div class="gcf-item-header-block">
+                    <span class="gcf-item-daterange"><?= daterange ?></span>
+                    <div class="gcf-item-description hidden"></div>
+                </div>
+            </li>
+            <? } ?>
+            <li class="gcf-item-block<?= isDone ? ' disabled' : '' ?>" data-event-id="<?= todaysEvents[i].getId() ?>"
+                data-start="<?= todaysEvents[i].getStartTime().toISOString() ?>">
+                <div class="gcf-item-header-block">
+                    <span class="gcf-item-daterange hidden"><?= todaysEvents[i].getStartTime().toTimeString() ?></span><br />
+                    <span class="gcf-item-title"><i class="fa <?= isDone ? 'fa-check-square-o' : 'fa-square-o' ?>">&nbsp;</i><?= todaysEvents[i].getTitle() ?></span><br />
+                    <span class="gcf-item-location"><?= todaysEvents[i].getLocation() ?></span>
+                    <div class="gcf-item-description hidden"><?= todaysEvents[i].getDescription() ?></div>
+                </div>
+            </li>
+            <? } ?>
+        </ul>
+        <div class="gcf-last-update-block hidden">
+            LastUpdate: <span class="gcf-last-update">2012-02-30 20:58</span>
+        </div>
+    </div>
+    <? } ?>
+</body>
+</html>
