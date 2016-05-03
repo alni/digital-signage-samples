@@ -26,6 +26,12 @@
 #loader-wrapper .loader-section.section-right {
   right: 0;
 }
+#loader-wrapper.theme-green .loader-section {
+  background: #75974c;
+}
+#loader-wrapper.theme-red .loader-section {
+  background: #974c75;
+}
 #loader {
   display: block;
   position: relative;

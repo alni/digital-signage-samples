@@ -1,4 +1,6 @@
 ﻿@accent-color: #4c7597;
+@accent-color-green: hsl(87, saturation(@accent-color), lightness(@accent-color));
+@accent-color-red: hsl(327, saturation(@accent-color), lightness(@accent-color));
 @accent-fgcolor1: #add8e6;
 @accent-fgcolor2: #dcc6e0;
 @accent-fgcolor3: #fffacd;
@@ -6,4 +8,6 @@
 @main-color: #313131;
 @header-bgcolor-opacity: 50%;
 @header-bgcolor: fade(@accent-color, @header-bgcolor-opacity);
+@header-bgcolor-green: fade(@accent-color-green, @header-bgcolor-opacity);
+@header-bgcolor-red: fade(@accent-color-red, @header-bgcolor-opacity);
 @header-fgcolor: #fff;

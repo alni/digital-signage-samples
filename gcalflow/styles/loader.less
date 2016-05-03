@@ -19,6 +19,8 @@
 @_color3: @accent-fgcolor3; // hsl(hue(#f9c922), @_color_saturation, @_color_lightness);
 
 @_color_bg: @accent-color;
+@_color_bg_green: @accent-color-green;
+@_color_bg_red: @accent-color-red;
 
 @_border-width: 5px;
 @_preloader_size: 200px;
@@ -49,6 +51,18 @@
 
         &.section-right {
             right: 0;
+        }
+    }
+
+    &.theme-green {
+        .loader-section {
+            background: @_color_bg_green; 
+        }
+    }
+
+    &.theme-red {
+        .loader-section {
+            background: @_color_bg_red; 
         }
     }
 }

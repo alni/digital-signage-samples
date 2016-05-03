@@ -59,6 +59,24 @@ ul {
 #gcf-custom-template[data-lang="nb"] .gcf-title:empty:before {
   content: "Laster...";
 }
+#gcf-custom-template.theme-green .gcf-header-block {
+  background: rgba(117, 151, 76, 0.7);
+}
+#gcf-custom-template.theme-green .gcf-item-title {
+  color: #75974c;
+}
+#gcf-custom-template.theme-green ::-webkit-scrollbar-thumb {
+  background-color: rgba(117, 151, 76, 0.7);
+}
+#gcf-custom-template.theme-red .gcf-header-block {
+  background: rgba(151, 76, 117, 0.7);
+}
+#gcf-custom-template.theme-red .gcf-item-title {
+  color: #974c75;
+}
+#gcf-custom-template.theme-red ::-webkit-scrollbar-thumb {
+  background-color: rgba(151, 76, 117, 0.7);
+}
 #gcf-custom-template:not(.ticker) .gcf-item-container-block {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;

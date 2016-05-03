@@ -1,5 +1,35 @@
 ﻿@import "../../shared/lib.less";
 
+.color-mixin() {
+    &.theme-green {
+        .gcf-header-block {
+            background: @header-bgcolor-green;
+        }
+
+        .gcf-item-title {
+            color: @accent-color-green;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: @header-bgcolor-green;
+        }
+    }
+
+    &.theme-red {
+        .gcf-header-block {
+            background: @header-bgcolor-red;
+        }
+
+        .gcf-item-title {
+            color: @accent-color-red;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: @header-bgcolor-red;
+        }
+    }
+}
+
 .tasks-ticker-mixin() {
     .gcf-item-daterange:after {
         content: ": ";
