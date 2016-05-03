@@ -73,6 +73,28 @@
     <script type="text/javascript" src="jquery.gcal_flow_custom.js"></script>
     <script type="text/javascript">
         /**
+         * http://lions-mark.com/jquery/scrollTo/
+         */
+        $.fn.scrollTo = function (target, options, callback) {
+            if (typeof options == 'function' && arguments.length == 2) { callback = options; options = target; }
+            var settings = $.extend({
+                scrollTarget: target,
+                offsetTop: 50,
+                duration: 500,
+                easing: 'swing'
+            }, options);
+            return this.each(function () {
+                var scrollPane = $(this);
+                var scrollTarget = (typeof settings.scrollTarget == "number") ? settings.scrollTarget : $(settings.scrollTarget);
+                var scrollY = (typeof scrollTarget == "number") ? scrollTarget : scrollTarget.offset().top + scrollPane.scrollTop() - parseInt(settings.offsetTop);
+                scrollPane.animate({ scrollTop: scrollY }, parseInt(settings.duration), settings.easing, function () {
+                    if (typeof callback == 'function') { callback.call(this); }
+                });
+            });
+        }
+    </script>
+    <script type="text/javascript">
+        /**
          * <http://stackoverflow.com/a/5158301>
          */
         function getParameterByName(name) {
@@ -82,6 +104,16 @@
 
         var $ = jQuery;
         $(function () {
+            var THEME_COLOR = getParameterByName("THEME_COLOR") || null;
+            if (THEME_COLOR) {
+                switch (THEME_COLOR) {
+                    case "green":
+                    case "red":
+                        $("#loader-wrapper, #gcf-custom-template")
+                            .addClass("theme-" + THEME_COLOR);
+                        break;
+                }
+            }
             var API_KEY = window.GOOGLE_CALENDAR_API_KEY || null;
 
             var CAL_ID = getParameterByName("CAL_ID");
@@ -105,7 +137,35 @@
             }
         }
         function scrollList(bUp) {
-            var _gcalflow = $("#gcf-custom-template").data('gCalFlow').obj;
+            var $root = $('#gcf-custom-template .gcf-item-container-block');
+            var $item;
+            if (bUp) {
+                console.error("    ");
+                $item = $root.find(".gcf-item-block").filter(function () {
+                    console.error($(this).position().top);
+                    return parseInt($(this).position().top) < 0;
+                }).last();
+                console.error("    ");
+                console.error($item.position().top);
+                $root.scrollTo($item[0].offsetTop, {
+                    offsetTop: 0
+                });
+            } else {
+                console.error("    ");
+                $item = $root.find(".gcf-item-block").filter(function () {
+                    console.error($(this).position().top);
+                    return parseInt($(this).position().top) >= 0;
+                }).first();
+                console.error("    ");
+                console.error($item.position().top);
+                $root.scrollTo($item.find(".gcf-item-header-block"), {
+                    offsetTop: 0
+                });
+            }
+            
+            //$root.scrollTop($item.find(".gcf-item-header-block").offset().top);
+            //$root.scrollTop($root.scrollTop() - 42);
+            /*var _gcalflow = $("#gcf-custom-template").data('gCalFlow').obj;
             var idx = _gcalflow._tmpIdx || 0;
             if (bUp) {
                 idx -= 1;
@@ -116,7 +176,7 @@
                 idx = 0;
             }
             console.error(idx);
-            _gcalflow._tmpIdx = _gcalflow.bind_scroll(true, bUp, idx);
+            _gcalflow._tmpIdx = _gcalflow.bind_scroll(true, bUp, idx);*/
         }
         function initAgenda(CAL_ID, API_KEY) {
             var DATA_URL = getParameterByName("DATA_URL");
@@ -130,6 +190,8 @@
             var ICON_ONLY = getParameterByName("ICON_ONLY") || false;
             var HIDE = (getParameterByName("HIDE") || "description").split(",");
             var REFRESH_AFTER = getParameterByName("REFRESH_AFTER") || null;
+            var GAS_ID = getParameterByName("GAS_ID") || null;
+            var GAS_SECRET = getParameterByName("GAS_SECRET") || null;
             var dtstart = new Date();
             var dtend = null;
             var autoscroll = true;
@@ -329,6 +391,7 @@
                         var key = "agenda-tasks-" + $this.data("event-id") + "_done";
                         // Toogle DONE state of the task item when clicked/tapped
                         $this.toggleClass("disabled");
+                        var isDone = $this.hasClass("disabled");
                         if ($this.hasClass("disabled")) {
                             $this.find(".gcf-item-title > i.fa")
                                 .removeClass("fa-square-o")
@@ -337,6 +400,24 @@
                             $this.find(".gcf-item-title > i.fa")
                                 .removeClass("fa-check-square-o")
                                 .addClass("fa-square-o");
+                        }
+                        if (GAS_ID && GAS_SECRET) {
+                            var url = "https://script.google.com/macros/s/"
+                                + GAS_ID + "/exec?callback=?";
+                            var url = "https://script.google.com/macros/s/"
+                                + GAS_ID + "/dev?callback=?";
+                            var data = {
+                                "SECRET_KEY": GAS_SECRET,
+                                "CALENDAR_ID": CAL_ID,
+                                "EVENT_ID": $this.data("event-id"),
+                                "START_DT": $this.data("start")
+                            };
+                            if (isDone) {
+                                data["IS_DONE"] = "true";
+                            }
+                            $.getJSON(url, data).done(function (e) {
+
+                            });
                         }
                         // Store the serialized task done state (has "disabled"
                         // class) in localStorage
@@ -351,21 +432,31 @@
                             // DONE state
                             var $this = $(this); // The task item
                             $this.find(".gcf-item-title").prepend("<i class=\"fa fa-square-o\">&nbsp;</i>");
-                            // The key to use with localStorage
-                            var key = "agenda-tasks-" + $this.data("event-id") + "_done";
-                            // Check if key exists in localStorage
-                            if (key in localStorage) {
-                                // Then check its parsed value
-                                if (!!JSON.parse(localStorage.getItem(key))) {
-                                    // If the parsed value validates to true,
-                                    // then set the task as already done (add
-                                    // "disabled" class)
+                            if (GAS_ID && GAS_SECRET) {
+                                if ($this.attr("data-exprop-task-state") === "done") {
                                     $this.addClass("disabled");
                                     $this.find(".gcf-item-title > i.fa")
                                         .removeClass("fa-square-o")
                                         .addClass("fa-check-square-o");
                                 }
+                            } else {
+                                // The key to use with localStorage
+                                var key = "agenda-tasks-" + $this.data("event-id") + "_done";
+                                // Check if key exists in localStorage
+                                if (key in localStorage) {
+                                    // Then check its parsed value
+                                    if (!!JSON.parse(localStorage.getItem(key))) {
+                                        // If the parsed value validates to true,
+                                        // then set the task as already done (add
+                                        // "disabled" class)
+                                        $this.addClass("disabled");
+                                        $this.find(".gcf-item-title > i.fa")
+                                            .removeClass("fa-square-o")
+                                            .addClass("fa-check-square-o");
+                                    }
+                                }
                             }
+                            
                             var _date = $this.find(".gcf-item-daterange").text();
                             // Remove the BR elements to keep all elements on
                             // the same line within the item
@@ -526,10 +617,14 @@
 
             $('#gcf-custom-template').on("click", "#scroll_up", function (e) {
                 e.preventDefault();
+                //$root = $('#gcf-custom-template .gcf-item-container-block');
+                //$root.scrollTop($root.scrollTop() - 42);
                 scrollList(true);
             });
             $('#gcf-custom-template').on("click", "#scroll_dn", function (e) {
                 e.preventDefault();
+                //$root = $('#gcf-custom-template .gcf-item-container-block');
+                //$root.scrollTop($root.scrollTop() + 42);
                 scrollList(false);
             });
         }
@@ -555,7 +650,7 @@
 
     <link rel="stylesheet" type="text/css" href="agenda.css">
 
-    <div id="gcf-custom-template" data-lang="en">
+    <div id="gcf-custom-template" data-lang="en" data-exprop-task-state="">
         <div class="gcf-header-block">
             <div class="gcf-title-block">
                 <span class="gcf-title"></span>

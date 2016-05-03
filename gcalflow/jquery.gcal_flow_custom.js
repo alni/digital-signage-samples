@@ -253,6 +253,10 @@
           ci = it.clone();
           
           ci.attr("data-event-id", ent.id); // Added by @alni
+          ci.attr("data-start", (ent.start.dateTime || (ent.start.date + "T00:00:00Z")));
+          ci.attr("data-exprop-task-state", ent.extendedProperties &&
+            ent.extendedProperties && ent.extendedProperties.shared && 
+            ent.extendedProperties.shared.taskState); // Added by @alni
           if (ent.start) {
             if (ent.start.dateTime) {
               st = ent.start.dateTime;
