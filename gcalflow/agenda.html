@@ -121,6 +121,11 @@
                 initAgenda(CAL_ID, API_KEY);
             }
         });
+        function hideScrollButtons(hide) {
+            if (!!hide) {
+                $(".scroll_btns").addClass("hidden");
+            }
+        }
         /**
           * Called when the calendar events has been added and the events has
           * been proccessed. Also Set the refresh timer (if any) to reload the
@@ -148,18 +153,20 @@
                 console.error("    ");
                 console.error($item.position().top);
                 $root.scrollTo($item[0].offsetTop, {
-                    offsetTop: 0
+                    offsetTop: 0,
+                    duration: 250
                 });
             } else {
                 console.error("    ");
                 $item = $root.find(".gcf-item-block").filter(function () {
                     console.error($(this).position().top);
-                    return parseInt($(this).position().top) >= 0;
+                    return parseInt($(this).position().top) > 0;
                 }).first();
                 console.error("    ");
                 console.error($item.position().top);
-                $root.scrollTo($item.find(".gcf-item-header-block"), {
-                    offsetTop: 0
+                $root.scrollTo($item[0].offsetTop, {
+                    offsetTop: 0,
+                    duration: 250
                 });
             }
             
@@ -197,6 +204,9 @@
             var autoscroll = true;
             var show_enddate = true;
             var callback = null;
+            if (+SCROLL_INTERVAL <= 0) {
+                autoscroll = false;
+            }
             if (NUM_DAYS !== null && +NUM_DAYS < 1) {
                 NUM_DAYS = 1;
             }
@@ -321,6 +331,7 @@
                         });
 
                         $("body").addClass("loaded");
+                        hideScrollButtons($items.length <= 1);
                     };
                     break;
                 case "grouped-alt":
@@ -372,6 +383,7 @@
                         });
 
                         $("body").addClass("loaded");
+                        hideScrollButtons($items.length <= 1);
                     };
                     break;
                 case "tasks":
@@ -426,8 +438,9 @@
                     $('#gcf-custom-template').addClass("tasks");
 
                     callback = function () {
-                        var found_dates = [];
-                        this.find(".gcf-item-block").each(function (index) {
+                        var found_dates = [],
+                            $items = this.find(".gcf-item-block");
+                        $items.each(function (index) {
                             // Loop through each task item and check for stored
                             // DONE state
                             var $this = $(this); // The task item
@@ -496,14 +509,16 @@
                             $this.find(".gcf-item-description").addClass("hidden");
                         });
                         $("body").addClass("loaded");
+                        hideScrollButtons($items.length <= 1);
                     };
                     break;
                 case "ticker":
                     $('#gcf-custom-template').addClass("ticker");
 
                     callback = function () {
-                        var found_dates = [];
-                        this.find(".gcf-item-block").each(function (index) {
+                        var found_dates = [],
+                            $items = this.find(".gcf-item-block");
+                        $items.each(function (index) {
                             var $this = $(this);
                             // Remove all HR and BR from item to keep all at
                             // the same line (inline)
@@ -513,6 +528,7 @@
                             $this.find(".gcf-item-description").addClass("hidden");
                         });
                         $("body").addClass("loaded");
+                        hideScrollButtons($items.length <= 1);
                     };
                     break;
             }

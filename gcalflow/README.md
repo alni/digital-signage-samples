@@ -46,6 +46,7 @@ The Agenda supports the following URI Query Parameters:
     * `ticker` : use the agenda as a news ticker (supports only date, title and
       location)
 * `INTERVAL` : (optional) the scroll interval in seconds
+    * If it is less or equal to `0` then auto-scrolling is disabled
     * Default : `10`
 * `MAX_ITEMS` : (optional) the number of max items to fetch from the calendar
     * Default : `50`
