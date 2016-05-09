@@ -65,6 +65,21 @@ just these steps:
 9. Select **File > New > Html File** and name it **tasks**
 10. Copy the contents of [`tasks.html`](tasks.html) to the created HTML file
 
+#### Enabling Advanced Google Services (Calendar API) ####
+
+To use the advanced Google Calendar API service, follow these instructions:
+
+1. In the script editor, select **Resources > Advanced Google services...**.
+2. In the dialog that appears, click the **on/off** switch next to the
+   **Calendar API** service.
+3. At the bottom of the dialog, click the link for the
+   **Google Developers Console**.
+4. In the console, click into the filter box and type "Calendar", then click 
+   the name once you see it.
+5. On the next screen, click **Enable API**.
+6. Close the Developers Console and return to the script editor. Click **OK**
+   in the dialog.
+
 #### Deploying a script as a web app ####
 
 To publish the script as a web application, follow these steps:
@@ -81,3 +96,16 @@ To publish the script as a web application, follow these steps:
    can include "Only myself", any member of your domain, "Anyone" (with a 
    Google account), or "Anyone, even anonymous".
 6. Click **Deploy**.
+
+-------
+
+### Recommended changes to the code: ###
+
+1. Change the `SECRET_KEY` variable to something different than the default
+   value.
+1. Populate the `WHITELISTED_CALENDAR_IDS` array with IDs of Calendars that
+   should be allowed to be accessed,
+2. Populate the `BLACKLISTED_CALENDAR_IDS` array with IDs of Calendars that
+   should _NOT_ be allowed to be accessed
+3. It is recommended that at least _one_ of these arrays contains at a minimum
+   one ID. It is _not_ recommended that both are empty.

@@ -16,8 +16,53 @@
 // PLEASE CHANGE ME! :)
 var SECRET_KEY = "WDYAkNWlfBdnSW0isQyTrUx1b3haSXRL5HgpZyrPcSs5T3woAqKUo5EMRR9zoCyv";
 
+var WHITELISTED_CALENDAR_IDS = [
+    // Whitelisted Calendar IDs of calendars that are allowed to be accessed
+    // when this Script is run as the Script Owner.
+];
+
+var BLACKLISTED_CALENDAR_IDS = [
+    // Blacklisted Calendar IDs of calendars that are not allowed to be accessed
+    // when this Script is run as the Script Owner.
+];
+
 function myFunction() {
 
+}
+
+/**
+ * Checks if a calendar with the provided ID is allowed to be accessed.
+ * 
+ * @param {string} calendarId - the Calendar ID to check if is allowed
+ * 
+ * @returns {boolean} Whether the Calendar is allowed to be accessed or not.
+ */
+function checkCalendarIsAllowed(calendarId) {
+    if (WHITELISTED_CALENDAR_IDS.length > 0) {
+        // If whitelisted calendars are specified only allow if it is in the
+        // list
+        if (WHITELISTED_CALENDAR_IDS.indexOf(calendarId) > -1) {
+            // The ID is in the list: allow it!
+            return true;
+        } else {
+            // The ID is not in the list: disallow it!
+            return false;
+        }
+    }
+    if (BLACKLISTED_CALENDAR_IDS.length > 0) {
+        // If blacklisted calendars are specified only allow if it is not in 
+        // the list
+        if (BLACKLISTED_CALENDAR_IDS.indexOf(calendarId) > -1) {
+            // The ID is in the list: disallow it!
+            return false;
+        } else {
+            // The ID is not in the list: allow it!
+            return true;
+        }
+    }
+    // If neither whitelisted or blacklisted calendars are specified then
+    // always allow it. (NOT recommended!!)
+    return true; // allow it!
 }
 
 /**
@@ -59,22 +104,24 @@ function doGet(e) {
     var params = e.parameter;
     if (params.SECRET_KEY && params.SECRET_KEY === SECRET_KEY) {
         var CALENDAR_ID = params.CALENDAR_ID;
-        if (params.EVENT_ID) {
-            var EVENT_ID = params.EVENT_ID;
-            var START_DT = params.START_DT;
-            var IS_DONE = params.IS_DONE || false;
-            var evnt = setTaskDoneState(EVENT_ID, IS_DONE, CALENDAR_ID, START_DT);
-            return ContentService.createTextOutput(params.callback +
-                '(' + JSON.stringify(evnt) + ')');
-        } else {
-            var LANG = params.LANG || "nb";
-            var FA_ICON = params.FA_ICON || null;
-            setUserProperty("LANG", LANG);
-            var t = HtmlService.createTemplateFromFile('tasks');
-            t.CALENDAR_ID = CALENDAR_ID + "";
-            t.LANG = LANG;
-            t.FA_ICON = FA_ICON;
-            return t.evaluate().setSandboxMode(HtmlService.SandboxMode.IFRAME);
+        if (checkCalendarIsAllowed(CALENDAR_ID)) {
+            if (params.EVENT_ID) {
+                var EVENT_ID = params.EVENT_ID;
+                var START_DT = params.START_DT;
+                var IS_DONE = params.IS_DONE || false;
+                var evnt = setTaskDoneState(EVENT_ID, IS_DONE, CALENDAR_ID, START_DT);
+                return ContentService.createTextOutput(params.callback +
+                    '(' + JSON.stringify(evnt) + ')');
+            } else {
+                var LANG = params.LANG || "nb";
+                var FA_ICON = params.FA_ICON || null;
+                setUserProperty("LANG", LANG);
+                var t = HtmlService.createTemplateFromFile('tasks');
+                t.CALENDAR_ID = CALENDAR_ID + "";
+                t.LANG = LANG;
+                t.FA_ICON = FA_ICON;
+                return t.evaluate().setSandboxMode(HtmlService.SandboxMode.IFRAME);
+            }
         }
     }
 }
@@ -124,29 +171,40 @@ function getPublicEventsForDay(cal, date) {
  *     * If not specified defaults to "5" minutes after "start_dt"
  */
 function setTaskDoneState(eventId, isDone, calendarId, start_dt, end_dt) {
-    var cal = CalendarApp.getCalendarById(calendarId);
+    //var cal = CalendarApp.getCalendarById(calendarId);
     //var calEventSeries = cal.getEventSeriesById(eventId);
-    var start = moment(start_dt).toDate(); //new Date(start_dt);
-    var end;
-    if (end_dt) {
-        end = moment(end_dt).toDate();
-    } else {
-        end = moment(start_dt).add(5, "minutes").toDate();
-    }
-    var calEvents = cal.getEvents(start, end);
-    var calEvent = calEvents.filter(function (obj) {
-        return obj.getId() === eventId &&
-            // Only include event if it is PUBLIC
-            obj.getVisibility() == CalendarApp.Visibility.PUBLIC;
-    })[0];
-    if (calEvent) {
+    //var start = moment(start_dt).toDate(); //new Date(start_dt);
+    //var end;
+    //if (end_dt) {
+    //    end = moment(end_dt).toDate();
+    //} else {
+    //    end = moment(start_dt).add(5, "minutes").toDate();
+    //}
+    //var calEvents = cal.getEvents(start, end);
+    //var calEvent = calEvents.filter(function (obj) {
+    //    return obj.getId() === eventId &&
+    //        // Only include event if it is PUBLIC
+    //        obj.getVisibility() == CalendarApp.Visibility.PUBLIC;
+    //})[0];
+    var calEvent = Calendar:Events.get(calendarId, eventId);
+    if (calEvent && calEvent.visibility == "public") {
+        var taskState = "";
         if (isDone) {
-            calEvent.setTag("taskState", "done");
+            taskState = "done";
+            //calEvent.setTag("taskState", "done");
         } else {
-            calEvent.setTag("taskState", "");
+            //calEvent.setTag("taskState", "");
         }
+        Calendar.Events.patch({
+            extendedProperties: {
+                shared: {
+                    taskState: taskState
+                }
+            }
+        }, calendarId, eventId);
     }
-    return start.toLocaleString(); // TODO: Return an actual needed value
+    return calEvent && calEvent.id;
+    //return start.toLocaleString(); // TODO: Return an actual needed value
     /*return calEvents.map(function(obj) {
       return obj.getId();
     });*/

@@ -198,6 +198,7 @@
             var HIDE = (getParameterByName("HIDE") || "description").split(",");
             var REFRESH_AFTER = getParameterByName("REFRESH_AFTER") || null;
             var GAS_ID = getParameterByName("GAS_ID") || null;
+            var GAS_DEV_ID = getParameterByName("GAS_DEV_ID") || null;
             var GAS_SECRET = getParameterByName("GAS_SECRET") || null;
             var dtstart = new Date();
             var dtend = null;
@@ -413,11 +414,13 @@
                                 .removeClass("fa-check-square-o")
                                 .addClass("fa-square-o");
                         }
-                        if (GAS_ID && GAS_SECRET) {
+                        if ((GAS_ID || GAS_DEV_ID) && GAS_SECRET) {
                             var url = "https://script.google.com/macros/s/"
                                 + GAS_ID + "/exec?callback=?";
-                            var url = "https://script.google.com/macros/s/"
-                                + GAS_ID + "/dev?callback=?";
+                            if (GAS_DEV_ID) {
+                                url = "https://script.google.com/macros/s/"
+                                    + GAS_DEV_ID + "/dev?callback=?";
+                            }
                             var data = {
                                 "SECRET_KEY": GAS_SECRET,
                                 "CALENDAR_ID": CAL_ID,
