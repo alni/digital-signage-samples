@@ -1,0 +1,44 @@
+﻿<!-- Please note that you also can upload the font in the media library and remove the next link //-->
+<link href='http://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
+
+<table class="container">
+    <caption>Værvarsel</caption>
+    <tbody class="daily-forecast">[dailyForecast]</tbody>
+    <tfoot>
+        <tr>
+            <td colspan="5" class="powered-by">Powered by Forecast.</td>
+        </tr>
+    </tfoot>
+</table>
+<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script>
+    // Override forecast weekday names
+    // can be used as a simple client-side translation when date
+    // internationalization is not available on the server (for example when 
+    // the "php5-intl" package is not available or cannot be installed)
+    var weekdays = {
+        "Sun": "søn",
+        "Mon": "man",
+        "Tue": "tirs",
+        "Wed": "ons",
+        "Thu": "tors",
+        "Fri": "fre",
+        "Sat": "lør",
+
+        "Sunday": "søndag",
+        "Monday": "mandag",
+        "Tuesday": "tirsdag",
+        "Wednesday": "onsdag",
+        "Thursday": "torsdag",
+        "Friday": "fredag",
+        "Saturday": "lørdag"
+    };
+
+    // Loop through all elements with "weekday" or "weekday-short" classes
+    $(".weekday, .weekday-short").each(function () {
+        // Replace the text with the override from the "weekdays" above
+        $(this).text(weekdays[$(this).text()]);
+    });
+    
+</script>

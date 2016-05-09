@@ -1,0 +1,109 @@
+﻿<!-- Please note that you also can upload the font in the media library and remove the next link //-->
+<link href='http://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
+<link href='table.css' rel='stylesheet' type='text/css'>
+<link href='../weather_icons/weather-icons.min.css' rel='stylesheet' type='text/css'>
+<table class="container">
+</table>
+<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script>
+    // Override forecast weekday names
+    // can be used as a simple client-side translation when date
+    // internationalization is not available on the server (for example when 
+    // the "php5-intl" package is not available or cannot be installed)
+    var weekdays = {
+        "Sun": "søn",
+        "Mon": "man",
+        "Tue": "tirs",
+        "Wed": "ons",
+        "Thu": "tors",
+        "Fri": "fre",
+        "Sat": "lør",
+
+        "Sunday": "søndag",
+        "Monday": "mandag",
+        "Tuesday": "tirsdag",
+        "Wednesday": "onsdag",
+        "Thursday": "torsdag",
+        "Friday": "fredag",
+        "Saturday": "lørdag"
+    };
+
+    var weekdays_short_num = [
+        "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
+    ];
+
+    var weekdays_long_num = [
+        "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+    ];
+
+    var weather_icons = {
+        "clear-day": "wi-day-sunny",
+        "clear-night": "wi-night-clear",
+        "rain": "wi-rain",
+        "snow": "wi-snow",
+        "sleet": "wi-hail",
+        "wind": "wi-windy",
+        "fog": "wi-fog",
+        "cloudy": "wi-cloudy",
+        "partly-cloudy-day": "wi-day-cloudy",
+        "partly-cloudy-night": "wi-night-partly-cloudy"
+    };
+
+    var weekday_num = 1;
+
+    function getWeekDay(index) {
+        var num = weekday_num + index;
+        if (num > weekdays_short_num.length) {
+            num = 0;
+        }
+        return num;
+    }
+
+    /**
+     * https://stackoverflow.com/a/7228322
+     */
+    function randomIntFromInterval(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
+    var getForecast = function (API_KEY) {
+
+        var baseUrl =
+
+        $.when(
+            $.get("5days_main.html"),
+            $.get("5days_dailyForecast.html"),
+            $.getJSON("sampleData.json")
+        ).done(function (mainHtml, dailyForecastHtml, sampleData) {
+            var data = sampleData[0];
+            console.log(mainHtml[0]);
+            $(".container").html($("<div></div>").append(mainHtml[0]).find(".container").html());
+            $(".daily-forecast").html("");
+            var $elem;
+            weekday_num = new Date(data[0].time).getDay();
+            for (var i = 0; i < 7; i++) {
+                $elem = $(dailyForecastHtml[0]);
+                if (i > 0) {
+                    $elem.removeClass("currentDay");
+                }
+                var weekday = new Date(data[i].time * 1000).getDay();
+                var icon = data[i].icon;
+                $elem.find(".wi").removeClass("[wicon]").addClass(weather_icons[icon]);
+                $elem.find(".weekday").text(weekdays_long_num[weekday]);
+                $elem.find(".weekday-short").text(weekdays_short_num[weekday]);
+                $elem.find(".temp").text(Math.floor(data[i].temperatureMax));
+                $elem.find(".unitTemp").text("F");
+                $elem.find(".desc").text(data[i].summary);
+                $(".daily-forecast").append($elem);
+            }
+            // Loop through all elements with "weekday" or "weekday-short" classes
+            $(".weekday, .weekday-short").each(function () {
+                // Replace the text with the override from the "weekdays" above
+                $(this).text(weekdays[$(this).text()]);
+            });
+        });
+    }
+    
+    
+</script>
