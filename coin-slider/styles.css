@@ -1,10 +1,11 @@
 ﻿@import url(//fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic);
+@import url(//fonts.googleapis.com/css?family=PT+Sans:400,700);
 html,
 body {
   height: 100%;
   padding: 0;
   margin: 0;
-  font-family: "Open Sans", sans-serif;
+  font-family: "PT Sans", sans-serif;
   pointer-events: none;
   /* 
         DIsable Text Selection 
@@ -60,7 +61,7 @@ body[data-lang="nn"] #games.no-images:empty {
 body #header {
   background-color: rgba(76, 117, 151, 0.5);
   color: #fff;
-  font-family: "Open Sans", sans-serif;
+  font-family: "PT Sans", sans-serif;
   font-size: 48px;
   padding: 5px 4px 5px 4px;
   z-index: 1;

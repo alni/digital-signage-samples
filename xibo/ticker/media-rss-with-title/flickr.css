@@ -1,4 +1,5 @@
 ﻿@import url(//fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic);
+@import url(//fonts.googleapis.com/css?family=PT+Sans:400,700);
 .image img {
   width: 100%;
 }
@@ -13,7 +14,7 @@
   text-align: center;
 }
 .cycle-overlay p {
-  font-family: "Open Sans", sans-serif;
+  font-family: "PT Sans", sans-serif;
   color: #fff;
   font-size: 48px;
 }
@@ -21,7 +22,7 @@
   border-bottom: 2px solid #fff;
 }
 .content {
-  font-family: "Open Sans", sans-serif;
+  font-family: "PT Sans", sans-serif;
   color: #fff;
   font-size: 48px;
 }

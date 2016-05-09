@@ -2,5 +2,5 @@
     "id": "custom-title-only-with-logo",
     "value": "[Custom] Title Only (with logo)",
     "template": "<p>\n    <img alt=\"\" src=\"https://example.com/logos/news.png\" style=\"width: 132px; height: 40px; margin-top: 0px; margin-bottom: 0px;\" />\n    <span>[Name]&nbsp;</span>\n</p>\n\n<p><span>|&nbsp;</span><span><strong>[Title]&nbsp;</strong></span><span>[Description]</span></p>",
-    "css": "@import url(//fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic);p{line-height:93px;font-family:\"Open Sans\",sans-serif;font-size:48px;color:#fff;}.item:first-child img{position:absolute;left:0;top:23px;}.item:not(:first-child) p:first-child{display:none !important;}#content{margin-left:140px;}"
+    "css": "@import url(//fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic);@import url(//fonts.googleapis.com/css?family=PT+Sans:400,700);p{line-height:93px;font-family:\"PT Sans\",sans-serif;font-size:48px;color:#fff;}.item:first-child img{position:absolute;left:0;top:23px;}.item:not(:first-child) p:first-child{display:none !important;}#content{margin-left:140px;}"
 }

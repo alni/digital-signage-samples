@@ -2,5 +2,5 @@
     "id": "custom-tweet-with-profileimage-left-marqueeLeft",
     "value": "[Custom] Marquee Left - Tweet with Profile Image to the Left",
     "template": "<p class=\"profileimage\">[ProfileImage]&nbsp;</p>\n\n<p><span>[Tweet]</span></p>",
-    "css": "@import url(//fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic);p{line-height:74px;font-family:\"Open Sans\",sans-serif;font-size:48px;}p.profileimage img{height:74px;padding-right:20px;vertical-align:top;}"
+    "css": "@import url(//fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic);@import url(//fonts.googleapis.com/css?family=PT+Sans:400,700);p{line-height:74px;font-family:\"PT Sans\",sans-serif;font-size:48px;}p.profileimage img{height:74px;padding-right:20px;vertical-align:top;}"
 }
