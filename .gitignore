@@ -3,3 +3,5 @@ gcalflow/private.js
 gcalflow/boards/_private/
 dist/
 node_modules/
+responsive-tabbed-navigation/config/_private/
+*.DS_Store

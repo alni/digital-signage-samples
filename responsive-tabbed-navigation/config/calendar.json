@@ -1,0 +1,18 @@
+﻿{
+  "pages": [
+    {
+      "id": "holidays",
+      "title": "Holidays",
+      "embed": "../gcalflow/boards/index.html?BOARD=holidays/no_noscroll_green.json"
+    },
+    {
+      "id": "forecast",
+      "title": "Weather Forecast",
+      "embed": "http://localhost/forecast/index.php",
+      "params": {
+        "LATITUDE": 37.8267,
+        "LONGITUDE": -122.423
+      }
+    }
+  ]
+}

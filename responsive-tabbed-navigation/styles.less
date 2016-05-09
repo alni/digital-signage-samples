@@ -1,0 +1,95 @@
+﻿@import "../shared/styles.less";
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+
+    background-color: transparent;
+
+    header {
+        display: none;
+    }
+
+    &, iframe {
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    .cd-tabs {
+        height: 100%;
+        max-width: initial;
+        width: 100%;
+        margin: 0;
+
+        nav {
+            
+            height: auto;
+            position: relative;
+            float: none;
+
+            background: transparent; // fade(@main-color, @header-bgcolor-opacity);
+            
+
+            .cd-tabs-navigation {
+                background: transparent;
+                //opacity: 0.5;
+                width: 100%;
+                height: @font-size;
+                overflow-y: hidden;
+                a {
+                    
+                    height: 100%;
+                    font-size: @font-size * 0.5;
+                    padding-top: 0;
+                    padding-left: @font-size;
+                    padding-right: @font-size;
+                    display: inline-block;
+
+                    line-height: @font-size;
+                    width: auto;
+                    text-align: left;
+
+                    opacity: 0.5;
+
+                    color: @main-color; //@header-fgcolor;
+
+                    &::before {
+                        display: none;
+                    }
+
+                    &:hover:not(.selected) {
+                        color: @main-color;
+                        background: @header-fgcolor;
+                        color: @header-fgcolor; //@main-color;
+                        //background: @header-fgcolor;
+                        background-color: @main-color !important; 
+                        opacity: 0.25;
+                    }
+
+                    &.selected {
+                        box-shadow: inset 0  0 @accent-color;
+                        color: @header-fgcolor; //@main-color;
+                        //background: @header-fgcolor;
+                        background-color: @main-color !important; // fade(@main-color, @header-bgcolor-opacity) !important;
+                    }
+                }
+            }
+        }
+
+        .cd-tabs-content {
+            height: 100%;
+            background-color: transparent;
+
+            li {
+                height: 100%;
+                padding: 0;
+                border-bottom: @font-size solid transparent;
+            }
+        }
+    }
+}
+

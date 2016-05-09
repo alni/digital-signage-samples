@@ -22,7 +22,7 @@ module.exports = function (grunt) {
                     base: '<%= dir.dist %>'
                 }
             },
-			src: {
+            src: {
                 options: {
                     keepalive: true,
                     port: 50353,
@@ -74,9 +74,9 @@ module.exports = function (grunt) {
                         'coin-slider/styles.min.css',
 
                         // gCalFlow:
-                        'gcalflow/boards/_private/*.json',
-                        'gcalflow/boards/holidays/*.json',
-                        'gcalflow/boards/*.json',
+                        'gcalflow/boards/_private/**/*.json',
+                        'gcalflow/boards/holidays/**/*.json',
+                        'gcalflow/boards//**/*.json',
                         'gcalflow/boards/index.html',
                         'gcalflow/boards/styles.css',
                         'gcalflow/boards/styles.min.css',
@@ -94,6 +94,20 @@ module.exports = function (grunt) {
                         'gcalflow/*.html',
                         'gcalflow/agenda.css',
                         'gcalflow/agenda.min.css',
+
+                        // Responsive Tabbed Navigation:
+                        'responsive-tabbed-navigation/config/**/*.json',
+
+                        'responsive-tabbed-navigation/css/*.css',
+
+                        'responsive-tabbed-navigation/img/*.pdf',
+                        'responsive-tabbed-navigation/img/*.svg',
+
+                        'responsive-tabbed-navigation/js/*.js',
+
+                        'responsive-tabbed-navigation/index.html',
+                        'responsive-tabbed-navigation/styles.css',
+                        'responsive-tabbed-navigation/styles.min.css',
 
                         // Shared:
                         'shared/lib/*.js',
