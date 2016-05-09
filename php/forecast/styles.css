@@ -1,0 +1,116 @@
+﻿@import url(//fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic);
+@import url(//fonts.googleapis.com/css?family=PT+Sans:400,700);
+body {
+  font-family: "PT Sans", sans-serif;
+  color: #313131;
+  margin: 0;
+  padding: 0;
+}
+.container {
+  color: #313131;
+  text-align: left;
+  width: 100%;
+  border-collapse: collapse;
+}
+.container caption {
+  background-color: rgba(76, 117, 151, 0.5);
+  color: #fff;
+  font-size: 48px;
+  border-bottom: 1.2px solid #313131;
+}
+.daily-forecast {
+  display: table;
+  width: 100%;
+  color: #313131;
+}
+.day {
+  color: #313131;
+  vertical-align: middle;
+  text-align: center;
+  font-size: 48px;
+  line-height: 48px;
+  border: none;
+  border-bottom: 1.2px solid #313131;
+}
+.day td {
+  border: none;
+  padding: 0;
+}
+.day .currentDay {
+  font-size: 48px;
+}
+.day .day-icon {
+  font-size: 48px;
+  min-width: 72px;
+  height: 72px;
+  padding-bottom: 4.8px;
+  padding-top: 9.6px;
+}
+.day .day-icon .wi:before {
+  /*
+        # Vertical align anything with just 3 lines of CSS #
+
+        Original author: Sebastian Ekström (http://twitter.com/seb_ekstrom)
+        http://zerosixthree.se/vertical-align-anything-with-just-3-lines-of-css/
+    */
+  position: relative;
+  top: 50%;
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  height: auto;
+}
+.day .day-icon-seperator {
+  display: none;
+}
+.day .weekday {
+  font-size: 48px;
+  display: none;
+  text-transform: uppercase;
+}
+.day .maxTemp {
+  padding-left: 12px;
+}
+.day .unitTemp {
+  display: none;
+}
+.day .weekday-short {
+  width: 25%;
+}
+.day .desc {
+  padding-left: 38.83281573px;
+  line-height: 1.25;
+  text-align: left;
+  width: 100%;
+}
+.day:nth-of-type(1).currentDay {
+  background-color: rgba(49, 49, 49, 0.2);
+  /*display: inline-block;
+            padding: 30px;
+            width: 550px;
+            height: 550px;*/
+}
+.day:nth-of-type(1).currentDay .day-icon-seperator {
+  display: block;
+  width: 90%;
+  height: 5px;
+  background-color: #F2F2F2;
+  border: none;
+}
+.day:nth-of-type(1).currentDay .weekday {
+  display: table-cell;
+}
+.day:nth-of-type(1).currentDay .weekday-short {
+  display: none;
+}
+.day:last-of-type {
+  border-bottom-width: 4.8px;
+}
+.powered-by {
+  font-size: 36px;
+  clear: both;
+  float: right;
+  margin-right: 4%;
+}

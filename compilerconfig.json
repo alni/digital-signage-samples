@@ -62,5 +62,21 @@
   {
     "outputFile": "xibo/embedded/youtube.css",
     "inputFile": "xibo/embedded/youtube.less"
+  },
+  {
+    "outputFile": "responsive-tabbed-navigation/styles.css",
+    "inputFile": "responsive-tabbed-navigation/styles.less"
+  },
+  {
+    "outputFile": "xibo/forecast/5days_table/5days.css",
+    "inputFile": "xibo/forecast/5days_table/5days.less"
+  },
+  {
+    "outputFile": "xibo/forecast/table/table.css",
+    "inputFile": "xibo/forecast/table/table.less"
+  },
+  {
+    "outputFile": "php/forecast/styles.css",
+    "inputFile": "php/forecast/styles.less"
   }
 ]
