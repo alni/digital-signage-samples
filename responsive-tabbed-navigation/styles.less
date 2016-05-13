@@ -38,11 +38,15 @@ html, body {
                 background: transparent;
                 //opacity: 0.5;
                 width: 100%;
-                height: @font-size;
+                //height: @font-size;
+                height: auto;
+                
                 overflow-y: hidden;
+                overflow-x: auto;
+                white-space: nowrap;
+
                 a {
-                    
-                    height: 100%;
+                    height: @font-size;
                     font-size: @font-size * 0.5;
                     padding-top: 0;
                     padding-left: @font-size;
@@ -81,6 +85,7 @@ html, body {
         }
 
         .cd-tabs-content {
+            min-height: 0 !important; /* Do not set a minimum height */
             height: 100%;
             background-color: transparent;
 
@@ -91,5 +96,35 @@ html, body {
             }
         }
     }
+}
+
+
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+
+    @scrollbar_size: @font-size / 5;
+
+    .cd-tabs-navigation {
+        &.overflows {
+            //height: (@font-size + @scrollbar_size) !important;
+        }
+    }
+
+    ::-webkit-scrollbar {
+        width: @scrollbar_size;
+
+        &:horizontal {
+            height: @scrollbar_size;
+        }
+    }
+
+    ::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: fade(@main-color, 50%);
+    }
+
 }
 

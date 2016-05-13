@@ -8,10 +8,10 @@ jQuery(document).ready(function ($) {
 				var pages = data.pages;
 				$(".cd-tabs-navigation, .cd-tabs-content").empty();
 				$.each(pages, function (i, page) {
-				    var url = page.embed + "";
-				    if ("params" in page) {
-				        url += "?" + $.param(page.params);
-				    }
+					var url = page.embed + "";
+					if ("params" in page) {
+						url += "?" + $.param(page.params);
+					}
 					var $tab = $("<a/>");
 					$tab.attr("data-content", page.id);
 					$tab.attr("href", "#0");
@@ -21,7 +21,10 @@ jQuery(document).ready(function ($) {
 					$content.append($("<iframe/>")
 						.attr("src", url));
 					$(".cd-tabs-navigation").append($tab.appendTo("<li/>"));
-
+					var $tabs_nav = $(".cd-tabs-navigation");
+					if ($tabs_nav.outerWidth() < $tabs_nav.get(0).scrollWidth) {
+						//$tabs_nav.addClass("overflows");
+					}
 					
 					$(".cd-tabs-content").append($content);
 					// <li><a data-content="inbox" class="selected" href="#0">Inbox</a></li>

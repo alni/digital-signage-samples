@@ -39,12 +39,14 @@ html .cd-tabs nav .cd-tabs-navigation,
 body .cd-tabs nav .cd-tabs-navigation {
   background: transparent;
   width: 100%;
-  height: 48px;
+  height: auto;
   overflow-y: hidden;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 html .cd-tabs nav .cd-tabs-navigation a,
 body .cd-tabs nav .cd-tabs-navigation a {
-  height: 100%;
+  height: 48px;
   font-size: 24px;
   padding-top: 0;
   padding-left: 48px;
@@ -76,6 +78,8 @@ body .cd-tabs nav .cd-tabs-navigation a.selected {
 }
 html .cd-tabs .cd-tabs-content,
 body .cd-tabs .cd-tabs-content {
+  min-height: 0 !important;
+  /* Do not set a minimum height */
   height: 100%;
   background-color: transparent;
 }
@@ -84,4 +88,18 @@ body .cd-tabs .cd-tabs-content li {
   height: 100%;
   padding: 0;
   border-bottom: 48px solid transparent;
+}
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  ::-webkit-scrollbar {
+    width: 9.6px;
+  }
+  ::-webkit-scrollbar:horizontal {
+    height: 9.6px;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(49, 49, 49, 0.5);
+  }
 }
