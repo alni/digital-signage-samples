@@ -1,14 +1,10 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <? 
-    // Replace with the base URL to the "digital-signage-samples" distribution
-    var BASE_URL = "https://example.com"; 
-    ?>
     <base target="_top">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link href="<?= BASE_URL ?>/gcalflow/jquery-gcal-flow-3.0.2/jquery.gcal_flow.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/gcalflow/agenda.min.css">
+    <link href="https://xibo.alni.info/3rdparty/alni.info/gcalflow/jquery-gcal-flow-3.0.2/jquery.gcal_flow.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="https://xibo.alni.info/3rdparty/alni.info/gcalflow/agenda.min.css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <style>
         html, body {
@@ -16,8 +12,10 @@
         }
     </style>
     <?
-    var cal = CalendarApp.getCalendarById(CALENDAR_ID);
-    var todaysEvents = getPublicEventsForDay(cal, new Date())
+    //var cal = CalendarApp.getCalendarById(CALENDAR_ID);
+    //var todaysEvents = getPublicEventsForDay(cal, new Date())
+    var calEvents = getPublicEventsForDays(CALENDAR_ID, new Date(), 1)
+    var todaysEvents = calEvents && calEvents.items;
     ?>
     <script>
     $(document).ready(function() {
@@ -44,14 +42,14 @@
     </script>
 </head>
 <body class="loaded">
-    <? if (todaysEvents && todaysEvents.length > 0) { ?>
+    <? if (todaysEvents  && todaysEvents.length > 0) { ?>
     <div id="gcf-custom-template" class="tasks gCalFlow" data-lang="<?= LANG ?>">
         <div class="gcf-header-block">
             <div class="gcf-title-block">
                 <? if (FA_ICON) { ?>
                 &nbsp;<i class="fa fa-<?= FA_ICON ?> fa-fw">&nbsp;</i>
                 <? } ?>
-                <span class="gcf-title"><?= cal.getName() ?></span>
+                <span class="gcf-title"><?= calEvents.summary /*cal.getName()*/ ?></span>
                 <span class="scroll_btns">
                     <a id="scroll_up">
                         <i class="fa fa-angle-double-up fa-fw"></i>
@@ -67,12 +65,15 @@
             <? var foundDates = [] ?>
             <? for (var i = 0; i < todaysEvents.length; i++) { ?>
             <?
- var start_dt = todaysEvents[i].getStartTime()
-               var end_dt = todaysEvents[i].getEndTime()
-               var allday_p = todaysEvents[i].isAllDayEvent()
-               var daterange = daterange_formatter(start_dt, end_dt, allday_p, true)
-               var isDone = todaysEvents[i].getTag("taskState") == "done"
-               var doneStateClass = isDone ? ' disabled' : ''
+                var start_dt = todaysEvents[i].startTime; // todaysEvents[i].getStartTime()
+                var end_dt = todaysEvents[i].endTime; // todaysEvents[i].getEndTime()
+                var allday_p = todaysEvents[i].isAllDay; // todaysEvents[i].isAllDayEvent()
+                var daterange = daterange_formatter(start_dt, end_dt, allday_p, true)
+                var isDone = todaysEvents[i].extendedProperties
+                && todaysEvents[i].extendedProperties.shared
+                && todaysEvents[i].extendedProperties.shared.taskState == "done";
+                //todaysEvents[i].getTag("taskState") == "done"
+                var doneStateClass = isDone ? ' disabled' : ''
             ?>
             <? if (foundDates.indexOf(daterange) < 0) { ?>
             <? foundDates.push(daterange) ?>
@@ -84,13 +85,13 @@
                 </div>
             </li>
             <? } ?>
-            <li class="gcf-item-block<?= isDone ? ' disabled' : '' ?>" data-event-id="<?= todaysEvents[i].getId() ?>"
-                data-start="<?= todaysEvents[i].getStartTime().toISOString() ?>">
+            <li class="gcf-item-block<?= isDone ? ' disabled' : '' ?>" data-event-id="<?= todaysEvents[i].id /*todaysEvents[i].getId()*/ ?>"
+                data-start="<?= start_dt.toISOString() ?>">
                 <div class="gcf-item-header-block">
-                    <span class="gcf-item-daterange hidden"><?= todaysEvents[i].getStartTime().toTimeString() ?></span><br />
-                    <span class="gcf-item-title"><i class="fa <?= isDone ? 'fa-check-square-o' : 'fa-square-o' ?>">&nbsp;</i><?= todaysEvents[i].getTitle() ?></span><br />
-                    <span class="gcf-item-location"><?= todaysEvents[i].getLocation() ?></span>
-                    <div class="gcf-item-description hidden"><?= todaysEvents[i].getDescription() ?></div>
+                    <span class="gcf-item-daterange hidden"><?= start_dt.toTimeString() ?></span><br />
+                    <span class="gcf-item-title"><i class="fa <?= isDone ? 'fa-check-square-o' : 'fa-square-o' ?>">&nbsp;</i><?= todaysEvents[i].summary /*todaysEvents[i].getTitle()*/ ?></span>
+                    <span class="gcf-item-location"><?= todaysEvents[i].location /*todaysEvents[i].getLocation()*/ ?></span>
+                    <div class="gcf-item-description hidden"><?= todaysEvents[i].description /*todaysEvents[i].getDescription()*/ ?></div>
                 </div>
             </li>
             <? } ?>

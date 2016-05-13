@@ -154,6 +154,27 @@ function getPublicEventsForDay(cal, date) {
     });
 }
 
+function getPublicEventsForDays(calendarId, startDt, numDays) {
+    var calEvents = Calendar.Events.list(calendarId, {
+        timeMin: moment(startDt).startOf('day').toISOString(),
+        timeMax: moment(startDt).add(numDays - 1, 'days').endOf('day').toDate().toISOString(),
+        singleEvents: true,
+        orderBy: 'startTime'
+    });
+    calEvents.items = calEvents.items && calEvents.items.filter(function (calEvent) {
+        return (!calEvent.visibility || calEvent.visibility == "public");
+    }).map(function (calEvent, index) {
+        calEvent.startTime = moment(calEvent.start.dateTime || (calEvent.start.date + "T00:00:00Z")).toDate();
+        calEvent.endTime = moment(calEvent.end.dateTime || (calEvent.end.date + "T00:00:00Z")).toDate();
+        calEvent.isAllDay = calEvent.transparency == "transparent";
+        calEvent.location = calEvent.location || "";
+        Logger.log(calEvent.startTime);
+        return calEvent;
+    });
+
+    return calEvents;
+}
+
 /**
  * Set the Done state of the task event. (Only sets the done state of public 
  * events)
@@ -186,8 +207,8 @@ function setTaskDoneState(eventId, isDone, calendarId, start_dt, end_dt) {
     //        // Only include event if it is PUBLIC
     //        obj.getVisibility() == CalendarApp.Visibility.PUBLIC;
     //})[0];
-    var calEvent = Calendar:Events.get(calendarId, eventId);
-    if (calEvent && calEvent.visibility == "public") {
+    var calEvent = Calendar.Events.get(calendarId, eventId);
+    if (calEvent && (!calEvent.visibility || calEvent.visibility == "public")) {
         var taskState = "";
         if (isDone) {
             taskState = "done";

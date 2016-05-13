@@ -122,6 +122,18 @@ module.exports = function (grunt) {
                     cwd: '<%= dir.src %>/php',
                     src: [ // Web Server files
                         'flickr/*.php',
+
+                        'forecast/*.php',
+                        'forecast/styles.min.css',
+                        'forecast/styles.css',
+                        'forecast/weather_icons/*.css',
+                        'forecast/weather_icons/*.eot',
+                        'forecast/weather_icons/*.otf',
+                        'forecast/weather_icons/*.png',
+                        'forecast/weather_icons/*.svg',
+                        'forecast/weather_icons/*.ttf',
+                        'forecast/weather_icons/*.woff',
+
                         '!test/**',
                         '!**/*.vsspell'
                     ],
