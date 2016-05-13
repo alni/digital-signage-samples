@@ -124,6 +124,7 @@ module.exports = function (grunt) {
                         'flickr/*.php',
 
                         'forecast/*.php',
+                        'forecast/*.js',
                         'forecast/styles.min.css',
                         'forecast/styles.css',
                         'forecast/weather_icons/*.css',

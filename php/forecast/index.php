@@ -1,28 +1,47 @@
-﻿<?php
+<?php
 
 /**
- * # API Responses as Feeds result #
+ * # Weather Forecast #
  * 
- * Get the "flickr.photos.search" API method as Feeds Result
- * 
- * Can be used with software that uses a Media Feed to provide an image gallery
- * and/or an image slideshow (for example the Xibo Ticker Module)
- * 
- * Original example from:
- * <https://code.flickr.net/2008/08/25/api-responses-as-feeds/>
+ * Displays weather forecast page with data powered by Forecast.io.
  */
 
 $API_KEY = "<change_me>";
-$API_KEY = "34aad4a5eb747df27233c4cf11665b05";
+
+$LANG = "en";
+$TITLE = "Weather Forecast";
+
+$TITLES = array(
+    "en" => "Weather Forecast",
+    "nb" => "Værvarsel"
+);
 
 $protocol = (isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["LATITUDE"]) && isset($_GET["LONGITUDE"])) {
-
+    // Check the API Key is not defined or is still set to the default value
+    if (!isset($API_KEY) || $API_KEY == "<change_me>") {
+        // If so, the URI query parameter "API_KEY" *must* provide a valid
+        // Forecast API Key
+        if (isset($_GET["API_KEY"])) {
+            // Set $API_KEY to the provided value
+            $API_KEY = $_GET["API_KEY"];
+        } else {
+            // Otherwise return a '405' HTTP Status Code and return early from
+            // the execution
+            header($protocol . ' 405 Method Not Allowed');
+            die('<h1>405 Method Not Allowed</h1>');
+        }
+    }
     $base_url = "https://api.forecast.io/forecast/";
 
     $LATITUDE = $_GET["LATITUDE"];
     $LONGITUDE = $_GET["LONGITUDE"];
+
+    $containerClasses = "container";
+    if (isset($_GET["THEME"])) {
+        $containerClasses = $containerClasses . " theme-" . $_GET["THEME"];
+    }
 
     $params = array(
         "units" => "auto" // Default units
@@ -32,15 +51,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["LATITUDE"]) && isset($_
     }
     if (isset($_GET["LANG"])) {
         $params["lang"] = $_GET["LANG"];
+        $LANG = $_GET["LANG"];
+    }
+    if (isset($_GET["TITLE"])) {
+        $TITLE = $_GET["TITLE"];
+    } else if (isset($TITLES[$LANG])) {
+        $TITLE = $TITLES[$LANG];
     }
     $url = $base_url . "$API_KEY/$LATITUDE,$LONGITUDE?" . http_build_query($params);
 
-    $content = file_get_contents($url);
-    $jsonObj = json_decode($content, true);
-    header("Content-Type: text/html; utf-8");
+    if (($content = @file_get_contents($url)) === FALSE) {
+        $error = error_get_last();
+        header($protocol . ' 500 Internal Error');
+        echo '<h1>500 Internal Error</h1>';
+        die();
+        //die("<pre>" . $error['message'] . "</pre>");
+    } else {
+        $jsonObj = json_decode($content, true);
+        header("Content-Type: text/html; utf-8");
+    }
 } else {
     header($protocol . ' 405 Method Not Allowed');
-    die();
+    die('<h1>405 Method Not Allowed</h1>');
 }
 
 ?>
@@ -52,17 +84,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["LATITUDE"]) && isset($_
 
     <link href='//fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link href='weather_icons/weather-icons.min.css' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="styles.css" />
-    <script src="js/modernizr.js"></script> <!-- Modernizr -->
-    <script src="../shared/code.js"></script>
-    <title>Weather Forecast</title>
+    <title><?php echo $TITLE ?></title>
 </head>
 <body>
-<table class="container">
+<table class="<?php echo $containerClasses ?>">
 
-    <caption>Værvarsel</caption>
+    <caption><?php echo $TITLE ?></caption>
     <tbody class="daily-forecast">
 <?php 
 $weekdays_short_num = array(
@@ -98,7 +128,7 @@ for ($i = 0; $i < 7; $i++) {
     $temperatureMaxFloor = floor($dayData["temperatureMax"]);
     $summary = $dayData["summary"];
 ?>
-        <tr class="<?php echo $classes ?>">
+        <tr class="<?php echo $classes ?>" data-time="<?php echo $dayData["time"] ?>">
             <td class="weekday"><?php echo $dw_long ?></td>
             <td class="weekday-short"><?php echo $dw_short ?></td>
             <td class="day-icon"><i class="wi <?php echo $wicon ?>"></i></td>
@@ -113,37 +143,12 @@ for ($i = 0; $i < 7; $i++) {
         </tr>
     </tfoot>
 </table>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment-with-locales.min.js"></script>
 <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
 <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <script>
-    // Override forecast weekday names
-    // can be used as a simple client-side translation when date
-    // internationalization is not available on the server (for example when 
-    // the "php5-intl" package is not available or cannot be installed)
-    var weekdays = {
-        "Sun": "søn",
-        "Mon": "man",
-        "Tue": "tirs",
-        "Wed": "ons",
-        "Thu": "tors",
-        "Fri": "fre",
-        "Sat": "lør",
-
-        "Sunday": "søndag",
-        "Monday": "mandag",
-        "Tuesday": "tirsdag",
-        "Wednesday": "onsdag",
-        "Thursday": "torsdag",
-        "Friday": "fredag",
-        "Saturday": "lørdag"
-    };
-
-    // Loop through all elements with "weekday" or "weekday-short" classes
-    $(".weekday, .weekday-short").each(function () {
-        // Replace the text with the override from the "weekdays" above
-        $(this).text(weekdays[$(this).text()]);
-    });
-    
+    var LANG = "<?php echo $LANG ?>";
 </script>
+<script src="code.js"></script>
 </body>
 </html>

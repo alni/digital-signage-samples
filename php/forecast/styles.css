@@ -18,6 +18,12 @@ body {
   font-size: 48px;
   border-bottom: 1.2px solid #313131;
 }
+.container.theme-green caption {
+  background: rgba(117, 151, 76, 0.5);
+}
+.container.theme-red caption {
+  background: rgba(151, 76, 117, 0.5);
+}
 .daily-forecast {
   display: table;
   width: 100%;
