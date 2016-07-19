@@ -28,6 +28,14 @@ body .cd-tabs {
   width: 100%;
   margin: 0;
 }
+html .cd-tabs.tab-bar-hidden nav,
+body .cd-tabs.tab-bar-hidden nav {
+  display: none !important;
+}
+html .cd-tabs.tab-bar-hidden .cd-tabs-content li,
+body .cd-tabs.tab-bar-hidden .cd-tabs-content li {
+  border-bottom: none !important;
+}
 html .cd-tabs nav,
 body .cd-tabs nav {
   height: auto;

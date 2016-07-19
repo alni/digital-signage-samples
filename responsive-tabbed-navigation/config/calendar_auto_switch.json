@@ -1,14 +1,17 @@
 ﻿{
+  "hide_tab_bar": true,
   "pages": [
     {
+      "keep_on_screen": 30,
       "id": "holidays",
       "title": "Holidays",
       "embed": "../gcalflow/boards/index.html",
       "params": {
-        "BOARD": "holidays/no_noscroll_green.json"
+        "BOARD": "holidays/no.json"
       }
     },
     {
+      "keep_on_screen": 20,
       "id": "forecast",
       "title": "Weather Forecast",
       "embed": "http://localhost/forecast/index.php",

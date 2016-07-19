@@ -5,6 +5,9 @@ jQuery(document).ready(function ($) {
 		$.getJSON(CONFIG).done(function (data) {
 			console.log(data);
 			if (!!data && data.pages && data.pages.length > 0) {
+			    if (!!data.hide_tab_bar) {
+			        $(".cd-tabs").addClass("tab-bar-hidden");
+			    }
 				var pages = data.pages;
 				$(".cd-tabs-navigation, .cd-tabs-content").empty();
 				$.each(pages, function (i, page) {
@@ -14,8 +17,18 @@ jQuery(document).ready(function ($) {
 					}
 					var $tab = $("<a/>");
 					$tab.attr("data-content", page.id);
+					if (!!page.keep_on_screen && +page.keep_on_screen > 0) {
+						$tab.attr("data-keep_on_screen", page.keep_on_screen);
+					}
 					$tab.attr("href", "#0");
 					$tab.text(page.title);
+					if (!!page.title_icon) {
+						$tab.prepend([
+							"<i class=\"fa fa-fw fa-",
+							page.title_icon,
+							"\"></i> "
+						].join(""))
+					}
 					var $content = $("<li/>");
 					$content.attr("data-content", page.id);
 					$content.append($("<iframe/>")
@@ -32,10 +45,11 @@ jQuery(document).ready(function ($) {
 			}
 			init($);
 			$("ul.cd-tabs-navigation a:first").trigger("click");
+			
 		});
 	}
 });
-var init = function($) {
+var init = function ($) {
 	var tabs = $('.cd-tabs');
 	
 	tabs.each(function(){
@@ -55,6 +69,17 @@ var init = function($) {
 				tabItems.find('a.selected').removeClass('selected');
 				selectedItem.addClass('selected');
 				selectedContent.addClass('selected').siblings('li').removeClass('selected');
+				if (!!selectedItem.data("keep_on_screen") 
+					&& +selectedItem.data("keep_on_screen") > 0) {
+				    setTimeout(function () {
+				        var nextItem = selectedItem.next("a");
+				        if (nextItem.length < 1) {
+				            nextItem = $("ul.cd-tabs-navigation a:first");
+				        }
+				        console.error(nextItem);
+				        nextItem.trigger("click");
+					}, (+selectedItem.data("keep_on_screen")) * 1000);
+				}
 				//animate tabContentWrapper height when content changes 
 				/*tabContentWrapper.animate({
 					'height': slectedContentHeight
