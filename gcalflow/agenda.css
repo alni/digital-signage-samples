@@ -114,6 +114,10 @@ ul {
   width: 1ch;
   display: inline-block;
 }
+#gcf-custom-template .gcf-header-block .custom-icon {
+  height: 48px;
+  vertical-align: middle;
+}
 #gcf-custom-template .gcf-item-block {
   padding-top: 0;
   margin-top: 0;
@@ -191,8 +195,8 @@ ul {
   /* extreme pollen dispersal */
   background-color: #703e2d;
 }
-#gcf-custom-template.tasks .gcf-item-daterange:after,
-#gcf-custom-template.ticker .gcf-item-daterange:after {
+#gcf-custom-template.tasks .gcf-item-daterange:not(:empty):after,
+#gcf-custom-template.ticker .gcf-item-daterange:not(:empty):after {
   content: ": ";
 }
 #gcf-custom-template.tasks .gcf-item-title:not(:empty):after,
@@ -291,13 +295,54 @@ ul {
   white-space: nowrap;
 }
 #gcf-custom-template.ticker .gcf-item-description {
-  padding-left: 1em;
   color: #313131;
-  font-size: 78%;
+  display: inline;
+  font-size: 32px;
+  height: 36px;
+  line-height: 36px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 #gcf-custom-template.ticker .gcf-item-description:before {
-  content: " -- ";
-  color: #aaa;
+  color: #313131;
+}
+#gcf-custom-template.ticker.marquee .gcf-header-block {
+  padding-right: 12px;
+}
+#gcf-custom-template.ticker.marquee .gcf-item-block {
+  display: inline;
+  white-space: nowrap;
+}
+#gcf-custom-template.ticker.marquee .gcf-item-header-block {
+  display: inline-block;
+  white-space: nowrap;
+}
+#gcf-custom-template.ticker.marquee .gcf-item-header-block:after {
+  font-size: 48px;
+  content: "\00a0\00a0\00a0\00a0\00a0";
+  /*
+        # Vertical align anything with just 3 lines of CSS #
+
+        Original author: Sebastian Ekström (http://twitter.com/seb_ekstrom)
+        http://zerosixthree.se/vertical-align-anything-with-just-3-lines-of-css/
+    */
+  position: relative;
+  top: 50%;
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  height: auto;
+}
+#gcf-custom-template.ticker.marquee .gcf-item-description {
+  color: #313131;
+  display: inline;
+  font-size: 48px;
+  height: 48px;
+  line-height: 48px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .hide-scrollbars .gcf-item-container-block {
   overflow-y: hidden !important;

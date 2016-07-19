@@ -194,6 +194,7 @@
             var MAX_ITEMS = getParameterByName("MAX_ITEMS") || 50;
             var NUM_DAYS = getParameterByName("NUM_DAYS") || null;
             var FA_ICON = getParameterByName("FA_ICON") || null;
+            var CUSTOM_ICON = getParameterByName("CUSTOM_ICON") || null;
             var ICON_ONLY = getParameterByName("ICON_ONLY") || false;
             var HIDE = (getParameterByName("HIDE") || "description").split(",");
             var REFRESH_AFTER = getParameterByName("REFRESH_AFTER") || null;
@@ -216,7 +217,13 @@
             } else {
                 REFRESH_AFTER = +REFRESH_AFTER; // minutes
             }
-            if (FA_ICON) {
+            if (CUSTOM_ICON) {
+                if (ICON_ONLY) {
+                    $(".gcf-title").addClass("hidden");
+                    $(".gcf-title-block").prepend("&nbsp;")
+                }
+                $(".gcf-title-block").prepend("&nbsp;<img src=\"" + CUSTOM_ICON + "\" class=\"custom-icon\" />&nbsp;");
+            } else if (FA_ICON) {
                 if (ICON_ONLY) {
                     $(".gcf-title").addClass("hidden");
                     $(".gcf-title-block").prepend("&nbsp;")
@@ -522,14 +529,60 @@
                         var found_dates = [],
                             $items = this.find(".gcf-item-block");
                         $items.each(function (index) {
-                            var $this = $(this);
+                            var $this = $(this),
+                                $desc = $this.find(".gcf-item-description");
                             // Remove all HR and BR from item to keep all at
                             // the same line (inline)
                             $this.find("hr").remove();
                             $this.find("br").remove();
                             // Hide the description to keep all at the same line
-                            $this.find(".gcf-item-description").addClass("hidden");
+                            //$this.find(".gcf-item-description").addClass("hidden");
+                            if (!$desc.hasClass("hidden") && $desc.text()) {
+                                // Convert description text to HTML. But only
+                                // when the Description is not hidden.
+                                $desc.html($.parseHTML($desc.text()));
+                            }
                         });
+                        $("body").addClass("loaded");
+                        hideScrollButtons($items.length <= 1);
+                    };
+                    break;
+                case "ticker-marquee":
+                    $('#gcf-custom-template').addClass("ticker").addClass("marquee");
+
+                    callback = function () {
+                        var found_dates = [],
+                            $items = this.find(".gcf-item-block");
+                        $items.each(function (index) {
+                            var $this = $(this),
+                                $desc = $this.find(".gcf-item-description");
+                            // Remove all HR and BR from item to keep all at
+                            // the same line (inline)
+                            $this.find("hr").remove();
+                            $this.find("br").remove();
+                            // Hide the description to keep all at the same line
+                            //$this.find(".gcf-item-description").addClass("hidden");
+                            if (!$desc.hasClass("hidden") && $desc.text()) {
+                                // Convert description text to HTML. But only
+                                // when the Description is not hidden.
+                                $desc.html($.parseHTML($desc.text()));
+                            }
+                        });
+                        var contWidth = $(".gcf-item-container-block").innerWidth();
+                        var $lastElem = $items.last();
+                        var scrollLeft = $lastElem.position().left + $lastElem.innerWidth() + contWidth;
+                        $items.first().css("border-left", "solid transparent " + contWidth + "px");
+                        $lastElem.css("border-right", "solid transparent " + contWidth + "px");
+                        var duration = parseInt(((scrollLeft / (1.0 / SCROLL_INTERVAL))) * 1.0);
+                        var scrollMarquee = function () {
+                            $(".gcf-item-container-block").animate({
+                                scrollLeft: scrollLeft
+                            }, duration, "linear", function () {
+                                $(".gcf-item-container-block").scrollLeft(0);
+                                scrollMarquee();
+                            });
+                        };
+                        scrollMarquee();
                         $("body").addClass("loaded");
                         hideScrollButtons($items.length <= 1);
                     };

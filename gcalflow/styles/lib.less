@@ -31,7 +31,7 @@
 }
 
 .tasks-ticker-mixin() {
-    .gcf-item-daterange:after {
+    .gcf-item-daterange:not(:empty):after {
         content: ": ";
     }
 
@@ -118,14 +118,52 @@
     }
 
     .gcf-item-description {
-        padding-left: 1em;
+        //padding-left: 1em;
         color: @main-color;
-        font-size: 78%;
+        //font-size: 78%;
+        display: inline;
+        font-size: @font-size / 1.5;
+        height: @font-size * 0.75;
+        line-height: @font-size * 0.75;
+        overflow: hidden;
+        text-overflow: ellipsis;
 
         &:before {
-            content: " -- ";
-            color: #aaa;
+            //content: " -- ";
+            color: @main-color;
         }
+    }
+}
+
+.ticker-marquee-mixin() {
+    .gcf-header-block {
+        padding-right: @font-size / 4;
+    }
+    .gcf-item-block {
+        display: inline;
+        white-space: nowrap;
+    }
+    .gcf-item-header-block {
+        display: inline-block;
+        white-space: nowrap;
+
+        &:after {
+            font-size: @font-size;
+            content: "\00a0\00a0\00a0\00a0\00a0";
+            .vertical-align-mixin();
+        }
+    }
+
+    .gcf-item-description {
+        //padding-left: 1em;
+        color: @main-color;
+        //font-size: 78%;
+        display: inline;
+        font-size: @font-size;
+        height: @font-size;
+        line-height: @font-size;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }
 

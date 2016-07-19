@@ -103,6 +103,11 @@ ul {
                 }
             }
         }
+
+        .custom-icon {
+            height: @font-size;
+            vertical-align: middle;
+        }
     }
 
     .gcf-item-block {
@@ -213,6 +218,10 @@ ul {
 
     &.ticker {
         .ticker-mixin;
+
+        &.marquee {
+            .ticker-marquee-mixin;
+        }
     }
 }
 

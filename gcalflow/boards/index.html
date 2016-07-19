@@ -13,6 +13,10 @@
     <script>
         var BOARD = getParameterByName("BOARD");
         $.getJSON(BOARD).done(function (params) {
+            if (params.DATA_URL && params.DATA_URL_PARAMS) {
+                params.DATA_URL += "?" + $.param(params.DATA_URL_PARAMS);
+                delete params.DATA_URL_PARAMS;
+            }
             $("#agenda").attr("src", "../agenda.html?" + $.param(params));
         });
     </script>

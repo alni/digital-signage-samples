@@ -1,0 +1,13 @@
+﻿{
+  "DATA_URL": "http://localhost/rss2gcal/feed.php",
+  "DATA_URL_PARAMS": {
+    "URL": "http://www.nrk.no/ostafjells/buskerud/siste.rss",
+    "COUNT": 5,
+    "CUSTOM_TITLE": "NRK Buskerud (Siste)"
+  },
+  "INTERVAL": 5,
+  "CAL_ID": "null",
+  "TYPE": "ticker-marquee",
+  "CUSTOM_ICON": "https://storage.googleapis.com/site-assets/-EmrFMI2CQGdp0jDJM746TMpqxyZXFXcgQuHsg_tztc_visual-1541412c8eb",
+  "HIDE": "null"
+}
