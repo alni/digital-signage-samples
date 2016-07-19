@@ -78,5 +78,9 @@
   {
     "outputFile": "php/forecast/styles.css",
     "inputFile": "php/forecast/styles.less"
+  },
+  {
+    "outputFile": "php/forecast/current.css",
+    "inputFile": "php/forecast/current.less"
   }
 ]

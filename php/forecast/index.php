@@ -16,6 +16,12 @@ $TITLES = array(
     "nb" => "Værvarsel"
 );
 
+$TYPE = "forecast";
+
+$TYPES = array(
+    "forecast", "current"
+);
+
 $protocol = (isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["LATITUDE"]) && isset($_GET["LONGITUDE"])) {
@@ -39,8 +45,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["LATITUDE"]) && isset($_
     $LONGITUDE = $_GET["LONGITUDE"];
 
     $containerClasses = "container";
+    $themeClass = "";
     if (isset($_GET["THEME"])) {
-        $containerClasses = $containerClasses . " theme-" . $_GET["THEME"];
+        $themeClass = "theme-" . $_GET["THEME"];
+        $containerClasses = "$containerClasses $themeClass";
     }
 
     $params = array(
@@ -57,6 +65,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["LATITUDE"]) && isset($_
         $TITLE = $_GET["TITLE"];
     } else if (isset($TITLES[$LANG])) {
         $TITLE = $TITLES[$LANG];
+    }
+
+    if (isset($_GET["TYPE"]) && in_array($_GET["TYPE"], $TYPES)) {
+        $TYPE = $_GET["TYPE"];
     }
     $url = $base_url . "$API_KEY/$LATITUDE,$LONGITUDE?" . http_build_query($params);
 
@@ -75,33 +87,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["LATITUDE"]) && isset($_
     die('<h1>405 Method Not Allowed</h1>');
 }
 
-?>
-<!doctype html>
-<html lang="en" class="no-js">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link href='//fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
-
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link href='weather_icons/weather-icons.min.css' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="styles.css" />
-    <title><?php echo $TITLE ?></title>
-</head>
-<body>
-<table class="<?php echo $containerClasses ?>">
-
-    <caption><?php echo $TITLE ?></caption>
-    <tbody class="daily-forecast">
-<?php 
-$weekdays_short_num = array(
-    "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
-);
-
-$weekdays_long_num = array(
-    "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
-);
 $weather_icons = array(
     "clear-day" => "wi-day-sunny",
     "clear-night" => "wi-night-clear",
@@ -114,6 +99,36 @@ $weather_icons = array(
     "partly-cloudy-day" => "wi-day-cloudy",
     "partly-cloudy-night" => "wi-night-partly-cloudy"
 );
+
+?>
+<!doctype html>
+<html lang="en" class="no-js <?php echo $TYPE ?>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href='//fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link href='weather_icons/weather-icons.min.css' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <title><?php echo $TITLE ?></title>
+</head>
+<body>
+<?php if ($TYPE == "forecast") { ?>
+<table class="<?php echo $containerClasses ?>">
+
+    <caption><?php echo $TITLE ?></caption>
+    <tbody class="daily-forecast">
+<?php 
+$weekdays_short_num = array(
+    "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
+);
+
+$weekdays_long_num = array(
+    "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+);
+
 for ($i = 0; $i < 7; $i++) {
     $dayData = $jsonObj["daily"]["data"][$i];
     $classes = "day";
@@ -143,6 +158,21 @@ for ($i = 0; $i < 7; $i++) {
         </tr>
     </tfoot>
 </table>
+<?php } else if ($TYPE == "current") { ?>
+<?php
+
+
+$wicon = $weather_icons[$jsonObj["currently"]["icon"]];
+$temperatureFloor = floor($jsonObj["currently"]["temperature"]);
+$summary = $jsonObj["currently"]["summary"];
+?>
+<h1 class="title <?php echo $themeClass ?>">&nbsp;<i class="fa fa-sun-o">&nbsp;</i> <?php echo $TITLE ?></h1>
+<div class="container">
+    <div class="icon"><i class="font-icon wi <?php echo $wicon ?>"></i> <?php echo $temperatureFloor ?><i class="wi wi-degrees"></i></div>
+    <div class="desc"><?php echo $summary ?></div>
+    <div class="powered-by">Powered by Forecast</div>
+</div>
+<?php } ?>
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment-with-locales.min.js"></script>
 <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
 <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>

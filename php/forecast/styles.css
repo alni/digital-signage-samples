@@ -1,35 +1,35 @@
 ﻿@import url(//fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic);
 @import url(//fonts.googleapis.com/css?family=PT+Sans:400,700);
-body {
+.forecast body {
   font-family: "PT Sans", sans-serif;
   color: #313131;
   margin: 0;
   padding: 0;
 }
-.container {
+.forecast .container {
   color: #313131;
   text-align: left;
   width: 100%;
   border-collapse: collapse;
 }
-.container caption {
+.forecast .container caption {
   background-color: rgba(76, 117, 151, 0.5);
   color: #fff;
   font-size: 48px;
   border-bottom: 1.2px solid #313131;
 }
-.container.theme-green caption {
+.forecast .container.theme-green caption {
   background: rgba(117, 151, 76, 0.5);
 }
-.container.theme-red caption {
+.forecast .container.theme-red caption {
   background: rgba(151, 76, 117, 0.5);
 }
-.daily-forecast {
+.forecast .daily-forecast {
   display: table;
   width: 100%;
   color: #313131;
 }
-.day {
+.forecast .day {
   color: #313131;
   vertical-align: middle;
   text-align: center;
@@ -38,21 +38,21 @@ body {
   border: none;
   border-bottom: 1.2px solid #313131;
 }
-.day td {
+.forecast .day td {
   border: none;
   padding: 0;
 }
-.day .currentDay {
+.forecast .day .currentDay {
   font-size: 48px;
 }
-.day .day-icon {
+.forecast .day .day-icon {
   font-size: 48px;
   min-width: 72px;
   height: 72px;
   padding-bottom: 4.8px;
   padding-top: 9.6px;
 }
-.day .day-icon .wi:before {
+.forecast .day .day-icon .wi:before {
   /*
         # Vertical align anything with just 3 lines of CSS #
 
@@ -68,55 +68,100 @@ body {
   transform: translateY(-50%);
   height: auto;
 }
-.day .day-icon-seperator {
+.forecast .day .day-icon-seperator {
   display: none;
 }
-.day .weekday {
+.forecast .day .weekday {
   font-size: 48px;
   display: none;
   text-transform: uppercase;
 }
-.day .maxTemp {
+.forecast .day .maxTemp {
   padding-left: 12px;
 }
-.day .unitTemp {
+.forecast .day .unitTemp {
   display: none;
 }
-.day .weekday-short {
+.forecast .day .weekday-short {
   width: 25%;
 }
-.day .desc {
+.forecast .day .desc {
   padding-left: 38.83281573px;
   line-height: 1.25;
   text-align: left;
   width: 100%;
 }
-.day:nth-of-type(1).currentDay {
+.forecast .day:nth-of-type(1).currentDay {
   background-color: rgba(49, 49, 49, 0.2);
   /*display: inline-block;
             padding: 30px;
             width: 550px;
             height: 550px;*/
 }
-.day:nth-of-type(1).currentDay .day-icon-seperator {
+.forecast .day:nth-of-type(1).currentDay .day-icon-seperator {
   display: block;
   width: 90%;
   height: 5px;
   background-color: #F2F2F2;
   border: none;
 }
-.day:nth-of-type(1).currentDay .weekday {
+.forecast .day:nth-of-type(1).currentDay .weekday {
   display: table-cell;
 }
-.day:nth-of-type(1).currentDay .weekday-short {
+.forecast .day:nth-of-type(1).currentDay .weekday-short {
   display: none;
 }
-.day:last-of-type {
+.forecast .day:last-of-type {
   border-bottom-width: 4.8px;
 }
-.powered-by {
+.forecast .powered-by {
   font-size: 36px;
   clear: both;
   float: right;
   margin-right: 4%;
+}
+.current body {
+  font-family: "PT Sans", sans-serif;
+  margin: 0;
+  /*padding-top: 5px;*/
+}
+.current #content {
+  zoom: 1.0 !important;
+}
+.current .container {
+  text-align: center;
+  margin-top: 40px;
+  color: #313131;
+}
+.current .icon {
+  font-size: 72px;
+}
+.current .font-icon {
+  font-size: 123.84px;
+}
+.current .desc {
+  margin-top: 20px;
+  font-size: 60px;
+}
+.current .powered-by {
+  font-size: 24px;
+  clear: both;
+}
+.current .day {
+  margin-top: 20px;
+  font-size: 96px;
+}
+.current .title {
+  background: rgba(76, 117, 151, 0.7);
+  font-size: 48px;
+  font-weight: 600;
+  color: #fff;
+  padding: 5px 4px 5px 4px;
+  margin: 0;
+}
+.current .theme-green.title {
+  background: rgba(117, 151, 76, 0.7);
+}
+.current .theme-red.title {
+  background: rgba(151, 76, 117, 0.7);
 }
