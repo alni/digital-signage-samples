@@ -8,6 +8,7 @@ The agenda can be used as
 * a vertical scrolling agenda with items grouped by the same start and end 
   times (two variants)
 * a single line, vertical scrolling ticker
+* a single line, horizontal scrolling ticker (marquee)
 * a tasks/to-do list that saves the finished state of each item between each 
   session
 * a date/event aware image slide show based images provided with Google 
@@ -43,10 +44,13 @@ The Agenda supports the following URI Query Parameters:
       title and location)
     * `grouped-alt` : an alternative `grouped` type with similar grouping 
       behaviour and styles as the `tasks` type
-    * `ticker` : use the agenda as a news ticker (supports only date, title and
-      location)
+    * `ticker` : use the agenda as a news ticker (vertical scrolling, supports
+      only date, title and location)
+    * `ticker-marquee` : use the agenda as a news ticker (horizontal scrolling)
 * `INTERVAL` : (optional) the scroll interval in seconds
     * If it is less or equal to `0` then auto-scrolling is disabled
+    * If the `TYPE` is `ticker-marquee` then this is used as the speed of the
+      marquee animation
     * Default : `10`
 * `MAX_ITEMS` : (optional) the number of max items to fetch from the calendar
     * Default : `50`

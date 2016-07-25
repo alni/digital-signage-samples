@@ -123,7 +123,7 @@
         //font-size: 78%;
         display: inline;
         font-size: @font-size / 1.5;
-        height: @font-size * 0.75;
+        height: @font-size * 0.75; // FIXME: Ignored with "display: inline"?
         line-height: @font-size * 0.75;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -138,6 +138,16 @@
 .ticker-marquee-mixin() {
     .gcf-header-block {
         padding-right: @font-size / 4;
+        z-index: 999;
+        position: fixed;
+        // Fix Container Block shows beneath the Header Block when using CSS3
+        // transition animation (via the jquery.transit plugin):
+        // * Make the header-bgcolor none-transparent (opaque) and mix it with 
+        //   #fff (white) with a ratio from the header-bgcolor-opacity
+        // * This is is the same color as seen on screen with the Header 
+        //   Background Color with an Opacity of the Header BG Color Opacity on
+        //   a white background
+        background: mix(fade(@header-bgcolor, 100%), #fff, @header-bgcolor-opacity);
     }
     .gcf-item-block {
         display: inline;
@@ -154,13 +164,29 @@
         }
     }
 
+    .gcf-item-container-block {
+        // Fix for not all elements was visible when using CSS3 transition
+        // animation (via the jquery.transit plugin):
+        overflow: visible !important; // Force the overflow to be visible
+        width: auto;
+        z-index: 1;
+    }
+
+    .gcf-item-daterange {
+        color: @accent-color;
+    }
+
+    .gcf-item-title {
+        font-weight: bold;
+    }
+
     .gcf-item-description {
         //padding-left: 1em;
         color: @main-color;
         //font-size: 78%;
         display: inline;
         font-size: @font-size;
-        height: @font-size;
+        height: @font-size; // FIXME: Ignored with "display: inline"?
         line-height: @font-size;
         overflow: hidden;
         text-overflow: ellipsis;

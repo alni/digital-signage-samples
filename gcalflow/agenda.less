@@ -1,4 +1,5 @@
-﻿@import "../shared/styles.less";
+﻿// out: true
+@import "../shared/styles.less";
 @import "styles/lib.less";
 
 @header-bgcolor-opacity: 70%; // Override Header BG Color Opacity
@@ -106,7 +107,9 @@ ul {
 
         .custom-icon {
             height: @font-size;
-            vertical-align: middle;
+            //vertical-align: middle;
+            position: relative;
+            top: @font-size / 6; // vertical middle align
         }
     }
 

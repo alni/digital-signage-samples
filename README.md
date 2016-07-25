@@ -60,6 +60,8 @@ Install the required NodeJS packages with (from the project root folder):
   ([Github Repository](https://github.com/sugi/jquery-gcal-flow))
 * [Moment.js](http://momentjs.com/) JavaScript library
   ([Github Repository](https://github.com/moment/moment))
+* [jQuery Transit](http://ricostacruz.com/jquery.transit/) JavaScript library
+  ([Github Repository](https://github.com/rstacruz/jquery.transit/))
 * [Color Safe](http://colorsafe.co/) - beautiful, accessible colors
   ([Github Repository](https://github.com/donnieberg/accessible-color-palette))
 * [Google Apps Script](https://www.google.com/script/start/) JavaScript cloud 

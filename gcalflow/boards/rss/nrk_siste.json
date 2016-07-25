@@ -2,12 +2,12 @@
   "DATA_URL": "http://localhost/rss2gcal/feed.php",
   "DATA_URL_PARAMS": {
     "URL": "http://www.nrk.no/nyheter/siste.rss",
-    "COUNT": 5,
+    "COUNT": 10,
     "CUSTOM_TITLE": "Nyheter (Siste)"
   },
   "INTERVAL": 5,
   "CAL_ID": "null",
   "TYPE": "ticker-marquee",
   "CUSTOM_ICON": "https://storage.googleapis.com/site-assets/-EmrFMI2CQGdp0jDJM746TMpqxyZXFXcgQuHsg_tztc_visual-1541412c8eb",
-  "HIDE": "null"
+  "HIDE": "enddate"
 }

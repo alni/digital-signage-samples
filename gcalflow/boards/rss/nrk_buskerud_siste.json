@@ -9,5 +9,5 @@
   "CAL_ID": "null",
   "TYPE": "ticker-marquee",
   "CUSTOM_ICON": "https://storage.googleapis.com/site-assets/-EmrFMI2CQGdp0jDJM746TMpqxyZXFXcgQuHsg_tztc_visual-1541412c8eb",
-  "HIDE": "null"
+  "HIDE": "enddate"
 }

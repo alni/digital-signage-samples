@@ -64,6 +64,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link href="jquery-gcal-flow-3.0.2/jquery.gcal_flow.css" rel="stylesheet" type="text/css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript" src="../shared/lib/jquery.transit.min.js" charset="UTF-8"></script>
     <script>
         _gCalFlow_debug = true;
     </script>
@@ -102,6 +103,13 @@
             return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
         }
 
+        /**
+         * <https://stackoverflow.com/a/37369700>
+         */
+        function plaintext(html) {
+            return $("<div/>").html(html).text();
+        }
+
         var $ = jQuery;
         $(function () {
             var THEME_COLOR = getParameterByName("THEME_COLOR") || null;
@@ -128,7 +136,7 @@
         }
         /**
           * Called when the calendar events has been added and the events has
-          * been proccessed. Also Set the refresh timer (if any) to reload the
+          * been processed. Also Set the refresh timer (if any) to reload the
           * page after a set amount of minutes.
           * @param {Number} refresh - the number of minutes to wait before
           *     reloading the page
@@ -295,7 +303,7 @@
                             }
                             if (found_dates.indexOf(_date) > -1) {
                                 // If the date of the current item is already
-                                // fouund, then group it with the previous
+                                // found, then group it with the previous
                                 //$this.find(".gcf-item-daterange").text("");
                                 //$this.find("hr").remove();
 
@@ -421,13 +429,21 @@
                                 .removeClass("fa-check-square-o")
                                 .addClass("fa-square-o");
                         }
+                        // If GAS_ID, or GAS_DEV_ID, and GAS_SECRET is provided
+                        // then use "Calendar Task List" Google Apps Script
+                        // project to sync the done state of the task item with
+                        // the script
                         if ((GAS_ID || GAS_DEV_ID) && GAS_SECRET) {
+                            // Default URL (used with GAS_ID)
                             var url = "https://script.google.com/macros/s/"
                                 + GAS_ID + "/exec?callback=?";
                             if (GAS_DEV_ID) {
+                                // IF GAS_DEV_ID is provided then override the
+                                // default URL with the development variant
                                 url = "https://script.google.com/macros/s/"
                                     + GAS_DEV_ID + "/dev?callback=?";
                             }
+                            // Data to send to Google Apps Script
                             var data = {
                                 "SECRET_KEY": GAS_SECRET,
                                 "CALENDAR_ID": CAL_ID,
@@ -435,10 +451,13 @@
                                 "START_DT": $this.data("start")
                             };
                             if (isDone) {
+                                // If the task is done, then also send the
+                                // "IS_DONE" parameter with the data
                                 data["IS_DONE"] = "true";
                             }
+                            // Send the data to Google Apps Script
                             $.getJSON(url, data).done(function (e) {
-
+                                // TODO: Notify the user that it was successful
                             });
                         }
                         // Store the serialized task done state (has "disabled"
@@ -455,14 +474,21 @@
                             // DONE state
                             var $this = $(this); // The task item
                             $this.find(".gcf-item-title").prepend("<i class=\"fa fa-square-o\">&nbsp;</i>");
-                            if (GAS_ID && GAS_SECRET) {
+                            // If GAS_ID, or GAS_DEV_ID, and GAS_SECRET is
+                            // provided then check if the task item is done
+                            if ((GAS_ID || GAS_DEV_ID) && GAS_SECRET) {
                                 if ($this.attr("data-exprop-task-state") === "done") {
+                                    // If it is done, then style and mark it as
+                                    // so
                                     $this.addClass("disabled");
                                     $this.find(".gcf-item-title > i.fa")
                                         .removeClass("fa-square-o")
                                         .addClass("fa-check-square-o");
                                 }
                             } else {
+                                // Otherwise, check if the task item is done via
+                                // the LocalStorage
+                                
                                 // The key to use with localStorage
                                 var key = "agenda-tasks-" + $this.data("event-id") + "_done";
                                 // Check if key exists in localStorage
@@ -563,26 +589,62 @@
                             // Hide the description to keep all at the same line
                             //$this.find(".gcf-item-description").addClass("hidden");
                             if (!$desc.hasClass("hidden") && $desc.text()) {
-                                // Convert description text to HTML. But only
-                                // when the Description is not hidden.
-                                $desc.html($.parseHTML($desc.text()));
+                                // Remove all HTML tags from the description text
+                                // and convert it to plain text. But only when 
+                                // the Description is not hidden.
+                                $desc.text(plaintext($.parseHTML($desc.text())));
+                                //$desc.html($.parseHTML($desc.text()));
                             }
                         });
+                        // Marquee Scroll Animation Setup
+
+                        // Get the width of the Container Block
                         var contWidth = $(".gcf-item-container-block").innerWidth();
-                        var $lastElem = $items.last();
+                        var $lastElem = $items.last(); // Get the last Item
+                        // Calculate the end scroll position of the marquee
                         var scrollLeft = $lastElem.position().left + $lastElem.innerWidth() + contWidth;
+                        // Add a transparent left border, with a width equal to
+                        // the container block, to the first item.
+                        // This makes the marquee to start scrolling just outside
+                        // the right side.
                         $items.first().css("border-left", "solid transparent " + contWidth + "px");
+                        // Do the same width the last item, but here add a right
+                        // border instead.
+                        // This makes the marquee end scrolling just outside the
+                        // left side.
                         $lastElem.css("border-right", "solid transparent " + contWidth + "px");
+                        // Calculate the duration based on the scrollLeft and
+                        // the SCROLL_INTERVAL ("INTERVAL") parameter.
+                        // The calculation keeps the speed constant despite
+                        // different lengths of the scrollLeft and values of the
+                        // SCROLL_INTERVAL.
                         var duration = parseInt(((scrollLeft / (1.0 / SCROLL_INTERVAL))) * 1.0);
+                        // Function that scrolls the ticker with a marquee
+                        // animation effect and restarts the animation on end
                         var scrollMarquee = function () {
-                            $(".gcf-item-container-block").animate({
+                            // Animate the Container Block scrollLeft position
+                            // with "linear" acceleration
+                            /*$(".gcf-item-container-block").animate({
                                 scrollLeft: scrollLeft
                             }, duration, "linear", function () {
+                                // Reset the scrollLeft position
                                 $(".gcf-item-container-block").scrollLeft(0);
-                                scrollMarquee();
+                                scrollMarquee(); // Restart the animation
+                            });*/
+                            // Animate the Container Block x position with
+                            // "linear" acceleration using the jquery.transit
+                            // plugin (for smooth animation)
+                            $(".gcf-item-container-block").transition({
+                                x: -scrollLeft
+                            }, duration, "linear", function () {
+                                // Reset the x position
+                                $(".gcf-item-container-block").css({
+                                    transform: "translate(0px, 0px)"
+                                });
+                                scrollMarquee(); // Restart the animation
                             });
                         };
-                        scrollMarquee();
+                        scrollMarquee(); // Start the marquee animation
                         $("body").addClass("loaded");
                         hideScrollButtons($items.length <= 1);
                     };
