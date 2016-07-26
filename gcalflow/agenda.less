@@ -54,6 +54,7 @@ ul {
     .color-mixin;
 
     &:not(.ticker) {
+        // Common styles for all types, expect "ticker"
         .gcf-item-container-block {
             -moz-box-sizing: border-box;
             -webkit-box-sizing: border-box;
@@ -65,6 +66,7 @@ ul {
     }
 
     &:not(.tasks):not(.ticker) {
+        // Common styles for all types, expect "tasks" and "ticker"
         .gcf-item-container-block {
             padding: 0 20px;
             border-bottom: 1px solid @main-color;
@@ -73,6 +75,7 @@ ul {
     }
 
     .gcf-header-block {
+    /* Common styles for the Header Block */
         background: @header-bgcolor;
         padding: @header-padding;
 
@@ -81,24 +84,29 @@ ul {
         font-size: @font-size;
 
         .fa, .gcf-title {
+  /* Common styles for the Font Awesome icon and the title text within the 
+   * Header Block
+   */
             display: inline;
             font-weight: 600;
             color: @header-fgcolor;
         }
 
         .fa-stack {
-            font-size: 0.5em;
+  /* Common styles for the Font Awesome icon stack within the Header Block */
+            font-size: 0.5em; // Reduse the font size by half
             //height: @font-size * (1 + (1 / 6));
         }
 
         .scroll_btns {
+            /* Common styles for the Scroll Buttons within the Header Block */
             position: absolute;
-            right: @font-size;
+            right: @font-size; // Positioned absolute at the right side
 
             a {
                 //text-decoration: none;
-                width: 1ch;
-                display: inline-block;
+                width: 1ch; // The button link is exactly "1" character wide
+                display: inline-block; // Display inline, but take up space
                 &:hover {
 
                 }
@@ -106,7 +114,8 @@ ul {
         }
 
         .custom-icon {
-            height: @font-size;
+            /* Common styles for the Custom Icon within the Header Block */
+            height: @font-size; // Set the height to the same as the font size
             //vertical-align: middle;
             position: relative;
             top: @font-size / 6; // vertical middle align
@@ -114,12 +123,14 @@ ul {
     }
 
     .gcf-item-block {
+        /* Common styles for the Item Block */
         padding-top: 0;
         margin-top: 0;
         margin-bottom: 8px;
         border-bottom: none;
 
         &.hidden {
+            /* Hidden Item Block styles */
             padding: 0;
             margin: 0;
             border: none;
@@ -127,11 +138,13 @@ ul {
         }
 
         &.disabled {
+            /* Disabled Item Block styles. "task" type Item Block done styles */
             opacity: 0.50;
         }
     }
 
     .gcf-item-daterange {
+        /* Item Block Start + End dates text (daterange) styles */
         white-space: normal;
         font-family: @font-family;
         color: @main-color;
@@ -143,6 +156,7 @@ ul {
     }
 
     .gcf-item-title {
+        /* Item Block Title text styles */
         font-family: @font-family;
         color: @accent-color;
         font-size: @font-size;
@@ -155,6 +169,7 @@ ul {
     }
 
     .gcf-item-location {
+        /* Item Block Location text styles */
         font-family: @font-family;
         color: @main-color;
         font-size: @font-size;
@@ -165,6 +180,7 @@ ul {
     }
 
     .gcf-item-description {
+        /* Item Block Description text styles */
         font-family: @font-family;
         color: @main-color;
         font-size: @font-size;
@@ -175,6 +191,7 @@ ul {
         margin: 15px 0 0 0;
 
         table {
+            /* Item Block Description table element styøes */
             font-size: @font-size * 0.75;
 
             td[nowrap] {
@@ -206,44 +223,56 @@ ul {
     }
 
     &.tasks, &.ticker {
+        // Common styles for the "tasks" and "ticker" types
         .tasks-ticker-mixin;
     }
 
     &.tasks {
+        // Common styles for the "tasks" type
         .tasks-mixin;
     }
 
     &.grouped-alt {
+        // Common styles for the "grouped-alt" type
         .gcf-item-container-block {
-            overflow: hidden;
+            overflow: hidden; // Hide the overflow of the Container Block
         }
     }
 
     &.ticker {
+        // Common styles for the "ticker" and the "ticker-marquee" types
         .ticker-mixin;
 
         &.marquee {
+            // Common styles for the "ticker-marquee" type */
             .ticker-marquee-mixin;
         }
     }
 }
 
 .hide-scrollbars {
+    // Styles to hide the scroll bars
     .gcf-item-container-block {
+        /* Hide the vertical scroll bars */
         overflow-y: hidden !important;
     }
 }
 
-@scrollbar_size: @font-size / 3;
+@scrollbar_size: @font-size / 3; // Custom scroll bar size
+
+/* Custom styles for the scroll bars when using WebKit based browsers */
 
 ::-webkit-scrollbar {
+    /* Set the size of the scroll bar */
     width: @scrollbar_size;
 }
 
 ::-webkit-scrollbar-track {
+    /* Set the main background color of the scroll bar to transparent */
     background-color: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
+    /* Set the background color of the thumb (buttons) */
     background-color: @header-bgcolor;
 }

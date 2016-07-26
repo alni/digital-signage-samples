@@ -215,74 +215,113 @@
             var show_enddate = true;
             var callback = null;
             if (+SCROLL_INTERVAL <= 0) {
+                // If the numeric value of SCROLL_INTERVAL is less than or equal
+                // to "0" then disable auto scrolling
                 autoscroll = false;
             }
             if (NUM_DAYS !== null && +NUM_DAYS < 1) {
+                // If NUM_DAYS is set to a value, but the numeric value is less
+                // than "1", then set it to the minimum value of "1"
                 NUM_DAYS = 1;
             }
             if (REFRESH_AFTER !== null && +REFRESH_AFTER < 1) {
+                // If REFRESH_AFTER is set to a value, but the numeric value is
+                // less than "1", then disable automatic refresh by setting it
+                // to a value of "null"
                 REFRESH_AFTER = null;
             } else {
+                // Otherwise, set REFRESH_AFTER to its numeric value
                 REFRESH_AFTER = +REFRESH_AFTER; // minutes
             }
             if (CUSTOM_ICON) {
+                // If CUSTOM_ICON is defined, then use it as a title block icon
                 if (ICON_ONLY) {
+                    // If ICON_ONLY is defined, then hide the title text element
                     $(".gcf-title").addClass("hidden");
                     $(".gcf-title-block").prepend("&nbsp;")
                 }
+                // Add an Image element, with the custom icon as Source with a
+                // CSS class of "custom-icon", to the title block
                 $(".gcf-title-block").prepend("&nbsp;<img src=\"" + CUSTOM_ICON + "\" class=\"custom-icon\" />&nbsp;");
             } else if (FA_ICON) {
+                // Otherwise, if FA_ICON is defined, then use it as a title
+                // block icon
                 if (ICON_ONLY) {
+                    // If ICON_ONLY is defined, then hide the title text element
                     $(".gcf-title").addClass("hidden");
                     $(".gcf-title-block").prepend("&nbsp;")
                 }
-                FA_ICON = FA_ICON.split(",");
+                FA_ICON = FA_ICON.split(","); // Split the FA_ICON into a list
 
                 if (FA_ICON.length > 1) {
+                    // If it contains more than 1 element, then create a Font
+                    // Awesome icon stack out of them
                     var $fa_stack = $("<span/>");
-                    $fa_stack.addClass("fa-stack");
+                    $fa_stack.addClass("fa-stack"); // add icon stack class
                     $.each(FA_ICON, function (index, icon) {
+                        // Loop through each icon and add a icon stack size in
+                        // reversed order (first = largest, last = smallest)
                         var fa_stack_class = "fa-stack-" + (FA_ICON.length - index) + "x";
                         if (index === 0) {
+                            // If it is the first icon, then add a Large icon
+                            // CSS class
                             fa_stack_class += " fa-lg";
                         }
+                        // Append the icon, with classes, to the icon stack
                         $fa_stack.append("<i class=\"fa fa-" + icon + " " + fa_stack_class + "\"></i>");
                     });
+                    // Add a SPAN element with "icon" class as the first element
+                    // of the title block
                     $(".gcf-title-block").prepend($("<span/>").addClass("icon")).prepend("&nbsp;");
+                    // Add the icon stack to the "SPAN" with the "icon" class
                     $(".gcf-title-block span.icon").append($fa_stack);
                 } else {
+                    // Otherwise, if the it contains only 1 element, then set
+                    // FA_ICON as the first (only) element
                     FA_ICON = FA_ICON[0];
+                    // Add the icon, with classes, as the first element of the
+                    // title block
                     $(".gcf-title-block").prepend("&nbsp;<i class=\"fa fa-" + FA_ICON + " fa-fw\">&nbsp;</i>");
                 }
             }
             $.each(HIDE, function (index, hide) {
+                // Loop through each item of the HIDE parameter
                 switch (hide) {
                     case "scrollbars":
+                        // Hide the scroll bars
                         $("body").addClass("hide-scrollbars");
                         break;
                     case "title":
+                        // Hide the title of the items
                         $(".gcf-item-title").addClass("hidden");
                         break;
                     case "location":
+                        // Hide the location of the items
                         $(".gcf-item-location").addClass("hidden");
                         // Remove the BR before location to move the elements
                         // following a bit upwards
                         $(".gcf-item-location").prev("br").remove();
                         break;
                     case "daterange":
+                        // Hide the start and end dates (daterange) of the items
                         $(".gcf-item-daterange").addClass("hidden");
                         break;
                     case "description":
+                        // Hide the description of the items
                         $(".gcf-item-description").addClass("hidden");
                         break;
                     case "enddate":
+                        // Hide only the end date of the items
                         show_enddate = false;
                         break;
                 }
             });
 
             switch (TYPE) {
+                // Check what kind of TYPE we should use
                 case "grouped":
+                    // group agenda items by date range (supports only date +
+                    // title)
                     callback = function () {
                         var found_dates = [];
                         var $items = this.find(".gcf-item-block");
@@ -346,11 +385,14 @@
                             }
                         });
 
-                        $("body").addClass("loaded");
+                        $("body").addClass("loaded"); // hide the loading screen
                         hideScrollButtons($items.length <= 1);
                     };
                     break;
                 case "grouped-alt":
+                    // an alternative `grouped` type with similar
+                    // grouping behaviour and styles as the "tasks"
+                    // type
                     $('#gcf-custom-template').addClass("tasks")
                         .addClass("grouped-alt");
                     callback = function () {
@@ -398,12 +440,13 @@
                             }
                         });
 
-                        $("body").addClass("loaded");
+                        $("body").addClass("loaded"); // hide the loading screen
                         hideScrollButtons($items.length <= 1);
                     };
                     break;
                 case "tasks":
-
+                    // use the agenda as a simple tasks/todo list (supports only
+                    // date, title and location)
                     autoscroll = false;
                     // Set the dtstart to the start of the day
                     dtstart.setHours(0);
@@ -544,11 +587,13 @@
                             // tasks
                             $this.find(".gcf-item-description").addClass("hidden");
                         });
-                        $("body").addClass("loaded");
+                        $("body").addClass("loaded"); // hide the loading screen
                         hideScrollButtons($items.length <= 1);
                     };
                     break;
                 case "ticker":
+                    // use the agenda as a news ticker (vertical scrolling,
+                    // supports only date, title and location)
                     $('#gcf-custom-template').addClass("ticker");
 
                     callback = function () {
@@ -574,6 +619,7 @@
                     };
                     break;
                 case "ticker-marquee":
+                    // use the agenda as a news ticker (horizontal scrolling)
                     $('#gcf-custom-template').addClass("ticker").addClass("marquee");
 
                     callback = function () {
@@ -645,7 +691,7 @@
                             });
                         };
                         scrollMarquee(); // Start the marquee animation
-                        $("body").addClass("loaded");
+                        $("body").addClass("loaded"); // hide the loading screen
                         hideScrollButtons($items.length <= 1);
                     };
                     break;

@@ -1,45 +1,61 @@
 ﻿@import "../../shared/lib.less";
 
 .color-mixin() {
+    // Provide different color themes
     &.theme-green {
+        // Common styles for the green theme variant
         .gcf-header-block {
+            // Set the Header Block background to a green color
             background: @header-bgcolor-green;
         }
 
         .gcf-item-title {
+            // Set the Item Title text color to a green color
             color: @accent-color-green;
         }
 
         ::-webkit-scrollbar-thumb {
+            // Set the WebKit scrollbar thumb (button) to a green color
             background-color: @header-bgcolor-green;
         }
     }
 
     &.theme-red {
+        // Common styles for the red theme variant
         .gcf-header-block {
+            // Set the Header Block background to a red color
             background: @header-bgcolor-red;
         }
 
         .gcf-item-title {
+            // Set the Item Title text color to a red color
             color: @accent-color-red;
         }
 
         ::-webkit-scrollbar-thumb {
+            // Set the WebKit scrollbar thumb (button) to a red color
             background-color: @header-bgcolor-red;
         }
     }
 }
 
 .tasks-ticker-mixin() {
+    // Common styles for the "tasks" and the "ticker" types
     .gcf-item-daterange:not(:empty):after {
+        // If the Item Start and End dates text (daterange) has content, then
+        // show a colon (": ") between this element and the next
         content: ": ";
     }
 
     .gcf-item-title:not(:empty):after {
+        // If the Item Title text has content, then seperate it from the next
+        // element with a space (" ")
         content: " ";
     }
 
     .gcf-item-location:not(:empty) {
+        // If the Item Location text has content, then wrap it within
+        // parentheses and separate it from the previous element with a space
         &:before {
             content: " (";
         }
@@ -51,11 +67,13 @@
 }
 
 .tasks-mixin() {
+    // Common styles for the "tasks" type
     .gcf-item-container-block {
+        // Add a large border at the bottom of the Item Container Block
         .border-box-sizing-mixin();
         border-bottom: solid 75px transparent;
-        height: 100%;
-        overflow-y: auto;
+        height: 100%; // Set the height to fill the screen
+        overflow-y: auto; // Let it show vertical scrollbars if necessary
     }
 
     .gcf-item-title > i.fa {
@@ -67,8 +85,9 @@
 }
 
 .ticker-mixin() {
+    // Common styles for the "ticker" and "ticker-marquee" types
     //@_ticker_height: 74px;
-    @_ticker_height: 100%;
+    @_ticker_height: 100%; // Let the ticker fill the available height
 
     height: @_ticker_height;
     .border-box-sizing-mixin();
@@ -83,6 +102,7 @@
     }
 
     .gcf-title-block {
+        // Align the Title Block vertically
         .vertical-align-mixin();
     }
 
@@ -107,26 +127,31 @@
         height: @_ticker_height;
         line-height: @_ticker_height; // Keep the children centered vertically
 
-        .vertical-align-mixin();
+        .vertical-align-mixin(); // Align the Item Header Block vertically
 
-        white-space: nowrap;
-        text-overflow: ellipsis;
+        white-space: nowrap; // Keep all elements on the same line
+        text-overflow: ellipsis; // Show an ellipsis ("...") with text overflow
     }
 
     .gcf-item-daterange, .gcf-item-title, .gcf-item-location {
-        white-space: nowrap;
+        // Shared styles for the Item Start and End Dates text (daterange), Item
+        // Title text, and Item Location text
+        white-space: nowrap; // Keep all text on the same line
     }
 
     .gcf-item-description {
+        // Styles for the Item Description text
         //padding-left: 1em;
-        color: @main-color;
+        color: @main-color; // Set the color to the Main Color
         //font-size: 78%;
-        display: inline;
+        display: inline; // Display it on the same line as rest of the elements
+        // Set the font size to 2/3th of the base font size
         font-size: @font-size / 1.5;
         height: @font-size * 0.75; // FIXME: Ignored with "display: inline"?
+        // Set the line height to 75% of the base font size
         line-height: @font-size * 0.75;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        overflow: hidden; // Hide overflowed text
+        text-overflow: ellipsis; // Show an ellipsis ("...") with text overflow
 
         &:before {
             //content: " -- ";
@@ -136,6 +161,7 @@
 }
 
 .ticker-marquee-mixin() {
+    // Common styles for the "ticker-marquee" type
     .gcf-header-block {
         padding-right: @font-size / 4;
         z-index: 999;
@@ -150,17 +176,20 @@
         background: mix(fade(@header-bgcolor, 100%), #fff, @header-bgcolor-opacity);
     }
     .gcf-item-block {
+        // Display the Item Blocks all on the same line
         display: inline;
-        white-space: nowrap;
+        white-space: nowrap; // Keep all elements on the same line
     }
     .gcf-item-header-block {
+        // Display the Item Header Block as inline and take up space
         display: inline-block;
-        white-space: nowrap;
+        white-space: nowrap; // Keep all elements on the same line
 
         &:after {
+            // Separate the Item Blocks with 5 non-breaking white-spaces
             font-size: @font-size;
             content: "\00a0\00a0\00a0\00a0\00a0";
-            .vertical-align-mixin();
+            .vertical-align-mixin(); // Align the them vertically
         }
     }
 

@@ -92,6 +92,7 @@ ul {
   overflow-y: hidden !important;
 }
 #gcf-custom-template .gcf-header-block {
+  /* Common styles for the Header Block */
   background: rgba(76, 117, 151, 0.7);
   padding: 5px 4px 5px 4px;
   border-radius: 0 !important;
@@ -99,14 +100,19 @@ ul {
 }
 #gcf-custom-template .gcf-header-block .fa,
 #gcf-custom-template .gcf-header-block .gcf-title {
+  /* Common styles for the Font Awesome icon and the title text within the 
+   * Header Block
+   */
   display: inline;
   font-weight: 600;
   color: #fff;
 }
 #gcf-custom-template .gcf-header-block .fa-stack {
+  /* Common styles for the Font Awesome icon stack within the Header Block */
   font-size: 0.5em;
 }
 #gcf-custom-template .gcf-header-block .scroll_btns {
+  /* Common styles for the Scroll Buttons within the Header Block */
   position: absolute;
   right: 48px;
 }
@@ -115,26 +121,31 @@ ul {
   display: inline-block;
 }
 #gcf-custom-template .gcf-header-block .custom-icon {
+  /* Common styles for the Custom Icon within the Header Block */
   height: 48px;
   position: relative;
   top: 8px;
 }
 #gcf-custom-template .gcf-item-block {
+  /* Common styles for the Item Block */
   padding-top: 0;
   margin-top: 0;
   margin-bottom: 8px;
   border-bottom: none;
 }
 #gcf-custom-template .gcf-item-block.hidden {
+  /* Hidden Item Block styles */
   padding: 0;
   margin: 0;
   border: none;
   height: 0;
 }
 #gcf-custom-template .gcf-item-block.disabled {
+  /* Disabled Item Block styles. "task" type Item Block done styles */
   opacity: 0.50;
 }
 #gcf-custom-template .gcf-item-daterange {
+  /* Item Block Start + End dates text (daterange) styles */
   white-space: normal;
   font-family: "PT Sans", sans-serif;
   color: #313131;
@@ -145,6 +156,7 @@ ul {
   background-color: transparent;
 }
 #gcf-custom-template .gcf-item-title {
+  /* Item Block Title text styles */
   font-family: "PT Sans", sans-serif;
   color: #4c7597;
   font-size: 48px;
@@ -156,6 +168,7 @@ ul {
   line-height: normal;
 }
 #gcf-custom-template .gcf-item-location {
+  /* Item Block Location text styles */
   font-family: "PT Sans", sans-serif;
   color: #313131;
   font-size: 48px;
@@ -165,6 +178,7 @@ ul {
   background-color: transparent;
 }
 #gcf-custom-template .gcf-item-description {
+  /* Item Block Description text styles */
   font-family: "PT Sans", sans-serif;
   color: #313131;
   font-size: 48px;
@@ -175,6 +189,7 @@ ul {
   margin: 15px 0 0 0;
 }
 #gcf-custom-template .gcf-item-description table {
+  /* Item Block Description table element styøes */
   font-size: 36px;
 }
 #gcf-custom-template .gcf-item-description table td[nowrap] {
@@ -360,14 +375,19 @@ ul {
   text-overflow: ellipsis;
 }
 .hide-scrollbars .gcf-item-container-block {
+  /* Hide the vertical scroll bars */
   overflow-y: hidden !important;
 }
+/* Custom styles for the scroll bars when using WebKit based browsers */
 ::-webkit-scrollbar {
+  /* Set the size of the scroll bar */
   width: 16px;
 }
 ::-webkit-scrollbar-track {
+  /* Set the main background color of the scroll bar to transparent */
   background-color: transparent;
 }
 ::-webkit-scrollbar-thumb {
+  /* Set the background color of the thumb (buttons) */
   background-color: rgba(76, 117, 151, 0.7);
 }
