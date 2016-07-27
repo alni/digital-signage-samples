@@ -1,0 +1,23 @@
+﻿{
+  "hide_tab_bar": true,
+  "pages": [
+    {
+      "keep_on_screen": 250,
+      "id": "nrk_siste",
+      "title": "NRK Nyheter (Siste)",
+      "embed": "../gcalflow/boards/index.html",
+      "params": {
+        "BOARD": "rss/nrk_siste.json"
+      }
+    },
+    {
+      "keep_on_screen": 120,
+      "id": "nrk_buskerud_siste",
+      "title": "NRK Buskerud (Siste)",
+      "embed": "../gcalflow/boards/index.html",
+      "params": {
+        "BOARD": "rss/nrk_buskerud_siste.json"
+      }
+    }
+  ]
+}

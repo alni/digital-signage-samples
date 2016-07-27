@@ -32,7 +32,8 @@ jQuery(document).ready(function ($) {
 					var $content = $("<li/>");
 					$content.attr("data-content", page.id);
 					$content.append($("<iframe/>")
-						.attr("src", url));
+						.attr("src", "about:blank")
+						.attr("data-src", url));
 					$(".cd-tabs-navigation").append($tab.appendTo("<li/>"));
 					var $tabs_nav = $(".cd-tabs-navigation");
 					if ($tabs_nav.outerWidth() < $tabs_nav.get(0).scrollWidth) {
@@ -64,11 +65,16 @@ var init = function ($) {
 			if( !selectedItem.hasClass('selected') ) {
 				var selectedTab = selectedItem.data('content'),
 					selectedContent = tabContentWrapper.find('li[data-content="'+selectedTab+'"]'),
-					slectedContentHeight = selectedContent.innerHeight();
+					slectedContentHeight = selectedContent.innerHeight(),
+					selectedIframe = selectedContent.find("iframe[data-src]");
 				
 				tabItems.find('a.selected').removeClass('selected');
 				selectedItem.addClass('selected');
 				selectedContent.addClass('selected').siblings('li').removeClass('selected');
+
+				selectedIframe.attr("src", selectedIframe.data("src"));
+				selectedContent.addClass('selected').siblings('li')
+					.find("iframe[data-src]").attr("src", "about:blank");
 				if (!!selectedItem.data("keep_on_screen") 
 					&& +selectedItem.data("keep_on_screen") > 0) {
 				    setTimeout(function () {
