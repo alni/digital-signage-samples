@@ -141,8 +141,28 @@
           * @param {Number} refresh - the number of minutes to wait before
           *     reloading the page
           */
-        function loadComplete(refresh) {
-            $("body").addClass("loaded");
+        function loadComplete($items, refresh) {
+            $("body").addClass("loaded"); // hide the loading screen
+            if (!!window.navigator.userAgent.match(/MSIE|Trident|Edge/)) {
+                // Internet Explorer found!
+                /* < IE11 = "MSIE"
+                 *   IE11 = "Trident"
+                 * > IE11 = "Edge" (IE12 (Edge), Edge 13 etc...)
+                 */
+
+                // IE 11 does not fire the ease-out animation of the Loader
+                // Wrapper (with "transform: translateY(-100%)") correctly, so
+                // we need to do this with JS instead
+                $("#loader-wrapper").transition({
+                    y: "-100%",
+                }, 300, "ease", function() {
+                    $(this).hide(0); // Finally, hide the element
+                });
+                /*$(".loader-section").transition({
+                    opacity: 0.0
+                }, 300, "ease");*/
+            }
+            hideScrollButtons($items.length <= 1);
             if (!!refresh && refresh >= 1) {
                 setTimeout(function () {
                     window.location.reload();
@@ -384,9 +404,10 @@
                                 $this.find("br:first").remove();
                             }
                         });
-
-                        $("body").addClass("loaded"); // hide the loading screen
-                        hideScrollButtons($items.length <= 1);
+                        
+                        loadComplete($items);
+                        //$("body").addClass("loaded"); // hide the loading screen
+                        //hideScrollButtons($items.length <= 1);
                     };
                     break;
                 case "grouped-alt":
@@ -440,8 +461,9 @@
                             }
                         });
 
-                        $("body").addClass("loaded"); // hide the loading screen
-                        hideScrollButtons($items.length <= 1);
+                        loadComplete($items);
+                        //$("body").addClass("loaded"); // hide the loading screen
+                        //hideScrollButtons($items.length <= 1);
                     };
                     break;
                 case "tasks":
@@ -587,8 +609,9 @@
                             // tasks
                             $this.find(".gcf-item-description").addClass("hidden");
                         });
-                        $("body").addClass("loaded"); // hide the loading screen
-                        hideScrollButtons($items.length <= 1);
+                        loadComplete($items);
+                        //$("body").addClass("loaded"); // hide the loading screen
+                        //hideScrollButtons($items.length <= 1);
                     };
                     break;
                 case "ticker":
@@ -614,8 +637,9 @@
                                 $desc.html($.parseHTML($desc.text()));
                             }
                         });
-                        $("body").addClass("loaded");
-                        hideScrollButtons($items.length <= 1);
+                        loadComplete($items);
+                        //$("body").addClass("loaded");
+                        //hideScrollButtons($items.length <= 1);
                     };
                     break;
                 case "ticker-marquee":
@@ -691,8 +715,9 @@
                             });
                         };
                         scrollMarquee(); // Start the marquee animation
-                        $("body").addClass("loaded"); // hide the loading screen
-                        hideScrollButtons($items.length <= 1);
+                        loadComplete($items);
+                        //$("body").addClass("loaded"); // hide the loading screen
+                        //hideScrollButtons($items.length <= 1);
                     };
                     break;
             }
@@ -791,7 +816,8 @@
                             $desc.html($.parseHTML($desc.text()));
                         }
                     });
-                    $("body").addClass("loaded");
+                    loadComplete($items);
+                    //$("body").addClass("loaded");
                 }
             });
 
