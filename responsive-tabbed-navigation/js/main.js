@@ -46,10 +46,26 @@ jQuery(document).ready(function ($) {
 			}
 			init($);
 			$("ul.cd-tabs-navigation a:first").trigger("click");
+
 			
+			$(window).on("message", function (e) {
+				if (e.originalEvent.data == "next-tab") {
+					var selectedItem = $("ul.cd-tabs-navigation a.selected");
+					selectNextTab(selectedItem);
+				}
+			});
 		});
 	}
 });
+window.ResponsiveTabbedNavigation = true;
+var selectNextTab = function(selectedItem) {
+	var nextItem = selectedItem.next("a");
+	if (nextItem.length < 1) {
+		nextItem = $("ul.cd-tabs-navigation a:first");
+	}
+	console.error(nextItem);
+	nextItem.trigger("click");
+};
 var init = function ($) {
 	var tabs = $('.cd-tabs');
 	
@@ -78,12 +94,13 @@ var init = function ($) {
 				if (!!selectedItem.data("keep_on_screen") 
 					&& +selectedItem.data("keep_on_screen") > 0) {
 				    setTimeout(function () {
-				        var nextItem = selectedItem.next("a");
+				        /*var nextItem = selectedItem.next("a");
 				        if (nextItem.length < 1) {
 				            nextItem = $("ul.cd-tabs-navigation a:first");
 				        }
 				        console.error(nextItem);
-				        nextItem.trigger("click");
+				        nextItem.trigger("click");*/
+						selectNextTab(selectedItem);
 					}, (+selectedItem.data("keep_on_screen")) * 1000);
 				}
 				//animate tabContentWrapper height when content changes 

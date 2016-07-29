@@ -134,6 +134,28 @@
                 $(".scroll_btns").addClass("hidden");
             }
         }
+        function ResponsiveTabbedNavigation_NextTab() {
+            var _parent = window.parent;
+            while (!("ResponsiveTabbedNavigation" in _parent)) {
+                try {
+                    // Check has access to the properties of the parent of
+                    // _parent (If no error is thrown, then it is on the same
+                    // domain, otherwise it is on a different domain)
+                    if ("document" in _parent.parent) {
+                        // We have access!
+                        _parent = _parent.parent; // Set as its own parent!
+                    } 
+                } catch (ex) {
+                    // If an error is thrown then the parent of _parent is on a
+                    // different domain!
+                    break; // Break out of the loop
+                }
+                
+            }
+            if ("ResponsiveTabbedNavigation" in _parent) {
+                _parent.postMessage("next-tab", window.location.origin);
+            }
+        }
         /**
           * Called when the calendar events has been added and the events has
           * been processed. Also Set the refresh timer (if any) to reload the
@@ -163,6 +185,9 @@
                 }, 300, "ease");*/
             }
             hideScrollButtons($items.length <= 1);
+            $('.gcf-item-container-block').on("autoscroll:end", function(e) {
+                ResponsiveTabbedNavigation_NextTab();
+            });
             if (!!refresh && refresh >= 1) {
                 setTimeout(function () {
                     window.location.reload();
@@ -711,6 +736,7 @@
                                 $(".gcf-item-container-block").css({
                                     transform: "translate(0px, 0px)"
                                 });
+                                ResponsiveTabbedNavigation_NextTab();
                                 scrollMarquee(); // Restart the animation
                             });
                         };

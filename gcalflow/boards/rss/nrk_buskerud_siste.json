@@ -2,7 +2,7 @@
   "DATA_URL": "http://localhost/rss2gcal/feed.php",
   "DATA_URL_PARAMS": {
     "URL": "http://www.nrk.no/ostafjells/buskerud/siste.rss",
-    "COUNT": 5,
+    "COUNT": 10,
     "CUSTOM_TITLE": "NRK Buskerud (Siste)"
   },
   "INTERVAL": 5,

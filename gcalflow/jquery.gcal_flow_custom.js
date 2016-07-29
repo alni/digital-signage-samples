@@ -359,6 +359,7 @@
             });
             return state.idx;
           }
+          scroll_container.trigger("autoscroll:end"); // Added by @alni
           return scroll_container.animate({
             scrollTop: scroll_children[0].offsetTop
           });
