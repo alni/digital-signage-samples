@@ -11,6 +11,14 @@ jQuery(document).ready(function ($) {
 				var pages = data.pages;
 				$(".cd-tabs-navigation, .cd-tabs-content").empty();
 				$.each(pages, function (i, page) {
+					if (page.enabled_between && page.enabled_between.length > 1) {
+						var now = moment();
+						var start = moment(page.enabled_between[0]);
+						var end = moment(page.enabled_between[1]);
+						if (now.isBefore(start) || now.isAfter(end)) {
+							return true; // continue
+						}
+					}
 					var url = page.embed + "";
 					if ("params" in page) {
 						url += "?" + $.param(page.params);
@@ -31,9 +39,15 @@ jQuery(document).ready(function ($) {
 					}
 					var $content = $("<li/>");
 					$content.attr("data-content", page.id);
-					$content.append($("<iframe/>")
-						.attr("src", "about:blank")
-						.attr("data-src", url));
+					if (!!page.preload) {
+						$content.append($("<iframe/>")
+							.attr("src", url)
+							.attr("data-preload", "1"));
+					} else {
+						$content.append($("<iframe/>")
+							.attr("src", "about:blank")
+							.attr("data-src", url));
+					}
 					$(".cd-tabs-navigation").append($tab.appendTo("<li/>"));
 					var $tabs_nav = $(".cd-tabs-navigation");
 					if ($tabs_nav.outerWidth() < $tabs_nav.get(0).scrollWidth) {
@@ -88,9 +102,11 @@ var init = function ($) {
 				selectedItem.addClass('selected');
 				selectedContent.addClass('selected').siblings('li').removeClass('selected');
 
-				selectedIframe.attr("src", selectedIframe.data("src"));
-				selectedContent.addClass('selected').siblings('li')
-					.find("iframe[data-src]").attr("src", "about:blank");
+				if (!selectedIframe.data("preload") && selectedIframe.data("src")) {
+					selectedIframe.attr("src", selectedIframe.data("src"));
+					selectedContent.addClass('selected').siblings('li')
+						.find("iframe[data-src]").attr("src", "about:blank");
+				}
 				if (!!selectedItem.data("keep_on_screen") 
 					&& +selectedItem.data("keep_on_screen") > 0) {
 				    setTimeout(function () {

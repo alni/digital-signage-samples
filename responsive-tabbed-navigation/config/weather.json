@@ -1,0 +1,36 @@
+﻿{
+  "hide_tab_bar": true,
+  "pages": [
+    {
+      "keep_on_screen": 30,
+      "preload": true,
+      "id": "forecast",
+      "title": "Været i Oslo",
+      "embed": "http://localhost/forecast/index.php",
+      "params": {
+        "LATITUDE": 59.911111,
+        "LONGITUDE": 10.733333,
+        "LANG": "nb",
+        "THEME": "green",
+        "TYPE": "current"
+      }
+    },
+    {
+      "keep_on_screen": 30,
+      "preload": true,
+      "enabled_between": [
+        "2016-02-01", "2016-08-31"
+      ],
+      "id": "forecast-hornoya",
+      "title": "Været på Hornøya",
+      "embed": "http://localhost/forecast/index.php",
+      "params": {
+        "LATITUDE": 70.388889,
+        "LONGITUDE": 31.156944,
+        "LANG": "nb",
+        "THEME": "green",
+        "TYPE": "forecast"
+      }
+    }
+  ]
+}

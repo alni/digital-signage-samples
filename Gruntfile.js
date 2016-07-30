@@ -135,6 +135,8 @@ module.exports = function (grunt) {
                         'forecast/weather_icons/*.ttf',
                         'forecast/weather_icons/*.woff',
 
+                        'rss2gcal/*.php',
+
                         '!test/**',
                         '!**/*.vsspell'
                     ],
