@@ -162,6 +162,8 @@
 
 .ticker-marquee-mixin() {
     // Common styles for the "ticker-marquee" type
+    //background: mix(fade(#fff, 50%), fade(@header-bgcolor, 50%), @header-bgcolor-opacity) !important;
+    //opacity: unit(@header-bgcolor-opacity) / 100.0;
     .gcf-header-block {
         padding-right: @font-size / 4;
         z-index: 999;
@@ -219,6 +221,20 @@
         line-height: @font-size;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+
+    &.theme-dark {
+        .gcf-item-daterange {
+            color: @accent-fgcolor1;
+        }
+
+        .gcf-item-title {
+            color: @accent-fgcolor1;
+        }
+
+        .gcf-item-description {
+            color: #fff;
+        }
     }
 }
 

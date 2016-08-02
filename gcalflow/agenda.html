@@ -117,6 +117,7 @@
                 switch (THEME_COLOR) {
                     case "green":
                     case "red":
+                    case "dark":
                         $("#loader-wrapper, #gcf-custom-template")
                             .addClass("theme-" + THEME_COLOR);
                         break;
@@ -668,6 +669,8 @@
                     };
                     break;
                 case "ticker-marquee":
+                    autoscroll = false; // Disable it, prevents reloads
+                    $(".scroll_btns").addClass("hidden");
                     // use the agenda as a news ticker (horizontal scrolling)
                     $('#gcf-custom-template').addClass("ticker").addClass("marquee");
 

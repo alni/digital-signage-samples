@@ -32,6 +32,10 @@ html .cd-tabs.tab-bar-hidden nav,
 body .cd-tabs.tab-bar-hidden nav {
   display: none !important;
 }
+html .cd-tabs.tab-bar-hidden::after,
+body .cd-tabs.tab-bar-hidden::after {
+  display: none !important;
+}
 html .cd-tabs.tab-bar-hidden .cd-tabs-content li,
 body .cd-tabs.tab-bar-hidden .cd-tabs-content li {
   border-bottom: none !important;
