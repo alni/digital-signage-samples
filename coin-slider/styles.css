@@ -1,4 +1,4 @@
-﻿@import url(//fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic);
+@import url(//fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic);
 @import url(//fonts.googleapis.com/css?family=PT+Sans:400,700);
 html,
 body {
@@ -79,7 +79,8 @@ body #header:after {
   z-index: 0;
 }
 #games {
-  margin: 0 auto;
+  left: 50%;
+  transform: translateX(-50%);
   background-repeat: no-repeat;
   background-size: 480px auto;
 }

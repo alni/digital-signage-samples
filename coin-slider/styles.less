@@ -1,4 +1,5 @@
-﻿@import "../shared/styles.less";
+﻿// out: true
+@import "../shared/styles.less";
 
 @baseHeight: 270px;
 @baseWidth: 480px;
@@ -103,7 +104,13 @@ body {
 }
 
 #games {
-    margin: 0 auto;
+    //margin: 0 auto;
+
+    // Center horizontally (including IE11)
+    left: 50%;
+    transform: translateX(-50%);
+    // See https://stackoverflow.com/q/25982135 for more information
+
     background-repeat: no-repeat;
     background-size: @baseWidth auto; //480px auto;
     
