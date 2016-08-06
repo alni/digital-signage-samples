@@ -59,6 +59,12 @@ The Agenda supports the following URI Query Parameters:
     - If this is not specified, then `MAX_ITEMS` is used instead.
     - The value must to be greater than `0`. If not, the value will be forced 
       to `1`
+* `COLOR_THEME` : (optional) the color variant of the styles.
+    * `green` : a green-like color variant
+    * `red` : a red-like color variant
+    * `dark` : a dark color variant of the default `blue` theme (only supported
+      by the `ticker-marquee` type)
+    * Default : none (a blue-like color variant)
 * `FA_ICON` : (optional) the Font Awesome icon to use together with the 
   Title/Header block. This could be any name or alias of an icon that is 
   included with Font Awesome 4.5.0 (like `calendar`).

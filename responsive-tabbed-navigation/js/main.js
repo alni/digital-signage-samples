@@ -15,7 +15,10 @@ jQuery(document).ready(function ($) {
 						var now = moment();
 						var start = moment(page.enabled_between[0]);
 						var end = moment(page.enabled_between[1]);
-						if (now.isBefore(start) || now.isAfter(end)) {
+						if (!now.isBetween(start, end, 'days', '[]')) {
+							// If today day (now) is not within the start and
+							// end days (inclusive - '[]'), then skip the page
+							// and continue to the next
 							return true; // continue
 						}
 					}
