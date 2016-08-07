@@ -77,10 +77,13 @@ body #header:after {
 }
 .coin-slider {
   z-index: 0;
+  height: 100%;
 }
 #games {
   left: 50%;
   transform: translateX(-50%);
+  -moz-transform-origin: 50% 0;
+  -moz-transform: translateX(-50%);
   background-repeat: no-repeat;
   background-size: 480px auto;
 }

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <!--
@@ -133,11 +133,20 @@
         var onResizeWindow = function () {
             var h = window.innerHeight,
                 w = window.innerWidth;
+
+            function getMozTransform(scale) {
+                var translateX = "translateX(-50%)",
+                    scale = "scale(" + scale + ")";
+                return {
+                    "-moz-transform": translateX + " " + scale
+                };
+            }
             //if (h < w) {
 
             // Set the zoom level of the slide show element from the window/base
             // height ratio
-            $("#games").css("zoom", h / baseHeight);
+            $("#games").css("zoom", h / baseHeight)
+                .css(getMozTransform(h / baseHeight));
 
             //} else {
             //$("#games").css("zoom", w / baseWidth);
