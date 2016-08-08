@@ -137,23 +137,35 @@
         }
         function ResponsiveTabbedNavigation_NextTab() {
             var _parent = window.parent;
-            while (!("ResponsiveTabbedNavigation" in _parent)) {
-                try {
-                    // Check has access to the properties of the parent of
-                    // _parent (If no error is thrown, then it is on the same
-                    // domain, otherwise it is on a different domain)
-                    if ("document" in _parent.parent) {
-                        // We have access!
-                        _parent = _parent.parent; // Set as its own parent!
-                    } 
-                } catch (ex) {
-                    // If an error is thrown then the parent of _parent is on a
-                    // different domain!
-                    break; // Break out of the loop
+            //console.error(_parent.top == _parent.self);
+            if (_parent.top != _parent.self) {
+                // Only loop through parents if the current parent is not the
+                // top window (not in an iframe)
+                while (!("ResponsiveTabbedNavigation" in _parent)) {
+                    try {
+                        // Check has access to the properties of the parent of
+                        // _parent (If no error is thrown, then it is on the
+                        // same domain, otherwise it is on a different domain)
+                        if ("document" in _parent.parent) {
+                            // We have access!
+                            _parent = _parent.parent; // Set as its own parent!
+                        }
+                        if (_parent.top == _parent.self) {
+                            // Break out of the loop if the current _parent is
+                            // the top window (not in a frame)
+                            break;
+                        }
+                    } catch (ex) {
+                        // If an error is thrown then the parent of _parent is
+                        // on a different domain!
+                        break; // Break out of the loop
+                    }
+                    
                 }
-                
             }
             if ("ResponsiveTabbedNavigation" in _parent) {
+                // If the _parent has "ResponsiveTabbedNavigation" then post a 
+                // message to it to notify it to change to the next tab
                 _parent.postMessage("next-tab", window.location.origin);
             }
         }
