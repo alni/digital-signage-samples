@@ -25,6 +25,7 @@ Licensed under the [MIT](LICENSE.md) License.
 
 * [`coin-slider/`](coin-slider/) - contains code, layout and styles for the 
   Coin Slider JavaScript library
+* [`domoticz/`](domoticz/) - contains code for Domoticz Event script projects
 * [`gapps-script/`](gapps-script/) - contains code for integrating different 
   Google services (and/or other services) with each-other through Google Apps 
   Script
@@ -52,6 +53,8 @@ Install the required NodeJS packages with (from the project root folder):
   ([Github Repository](https://github.com/xibosignage/xibo-cms))
 * [Rise Vision](https://www.risevision.com/) Digital Signage Content Management
   ([Github Repository](https://github.com/Rise-Vision/rise-vision-apps))
+* [Domoticz](http://www.domoticz.com/) Open Source Home Automation System
+  ([Github Repository](https://github.com/domoticz/domoticz))
 * [Coin Slider](http://workshop.rs/projects/coin-slider/): jQuery Image Slider 
   with Unique Effects
   ([Github Repository](https://github.com/kopipejst/coin-slider))

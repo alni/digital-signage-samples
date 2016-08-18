@@ -45,14 +45,14 @@
 -- Based on your logic, fill the commandArray with device commands. Device name is case sensitive. 
 --
 
-local temperature_sensor = 'Weather Station - THB'
-local signage_switch = 'Digital Signage - Office'
-local signage_device_host = 'test:test@192.168.0.5:8080'
+local temperature_sensor = uservariables['TemperatureAlert_SensorName'] -- 'Weather Station - THB'
+local signage_switch = uservariables['TemperatureAlert_SwitchName'] -- 'Digital Signage - Office'
+local signage_device_host = uservariables['TemperatureAlert_DeviceHost'] -- 'test:test@192.168.0.5:8080'
 
-local temperature_sensor_critical_value = 23 -- degrees
-local signage_switch_off_after = 90 -- minutes
+local temperature_sensor_critical_value = uservariables['TemperatureAlert_CriticalTemp'] -- 23 -- degrees
+local signage_switch_off_after = uservariables['TemperatureAlert_SwitchOffAfter'] -- 90 -- minutes
 
--- local signage_device_command = "nircmdc exitwin poweroff"
+-- local signage_device_command = "nircmdc exitwin poweroff" 
 
 commandArray = {}
 
@@ -68,37 +68,47 @@ function mysplit(inputstr, sep)
         return t
 end
 
-local signage_device_url = 'http://' .. signage_device_host .. '/json.htm?'
-local shutdown_cmd_uri_path = 'type=command&param=system_shutdown'
-
-local signage_switch_off_after_cmd = string.format("Off AFTER %d", signage_switch_off_after * 60)
-
--- print ("All based event fired");
-print ("Device based event fired");
-print ("Processing 'Temperature Alert' script")
---local temperature_device = otherdevices_svalues[temperature_sensor]
---local temperature_values = mysplit(temperature_device, ';')
-local temperature_value = devicechanged[temperature_sensor .. '_Temperature']
-if temperature_value >= temperature_sensor_critical_value then
---if tonumber(temperature_values[1]) >= temperature_sensor_critical_value then
-    -- os.execute("nircmd cdrom open") -- Only used for testing
-    print("The outside temperature is has exceeded the critical level")
-    print("Checking if the Signage Switch is On")
-    if otherdevices[signage_switch] == "On" then
-        -- Only execute commands if the switch is actually on
-        -- os.execute(signage_device_command)
-        print("Sending the Shutdown signal to the Signage Device...")
-        commandArray['OpenURL'] = signage_device_url .. shutdown_cmd_uri_path
-        print("The power will be cut in %d minutes", signage_switch_off_after)
-        commandArray[signage_switch] = signage_switch_off_after_cmd
-    end
-    -- "Off AFTER¨30" -- 30 seconds
-    -- "Off AFTER 5400" -- 1hr 30 min
+function printf(s,...)
+    print(s:format(...))
 end
--- print(forecast_temperature_device)
+
+function format_str(s,...)
+    return s:format(...)
+end
+
+if (temperature_sensor == nil or signage_switch == nil or signage_device_host == nil
+    or temperature_sensor_critical_value == nil or signage_switch_off_after == null) then
+    print("Error: Required User Variables are not defined")
+else
+    local signage_device_url = 'http://' .. signage_device_host .. '/json.htm?'
+    local shutdown_cmd_uri_path = 'type=command&param=system_shutdown'
+
+    local signage_switch_off_after_cmd = format_str("Off AFTER %d", signage_switch_off_after * 60)
+
+    -- print ("All based event fired");
+    print ("Device based event fired");
+    print ("Processing 'Temperature Alert' script")
+    local temperature_value = devicechanged[temperature_sensor .. '_Temperature']
+    if temperature_value ~= nil and temperature_value >= temperature_sensor_critical_value then
+        -- Only continue if the temperature has actually changed AND it has
+        -- exceeded the critical threshold
+        
+        --os.execute("nircmd cdrom open") -- Only used for testing
+        print("The outside temperature has exceeded the critical level")
+        print("Checking if the Signage Switch is On")
+        if otherdevices[signage_switch] == "On" then
+            -- Only execute commands if the switch is actually on
+            -- os.execute(signage_device_command)
+            print("Sending the Shutdown signal to the Signage Device...")
+            commandArray['OpenURL'] = signage_device_url .. shutdown_cmd_uri_path
+            printf("The power will be cut in %d minutes", signage_switch_off_after)
+            commandArray[signage_switch] = signage_switch_off_after_cmd
+        end
+    end
+end
 --os.execute("nircmd cdrom open")
 -- loop through all the devices
-for deviceName,deviceValue in pairs(otherdevices) do
+--for deviceName,deviceValue in pairs(otherdevices) do
 --    if (deviceName=='myDevice') then
 --        if deviceValue == "On" then
 --            print("Device is On")
@@ -107,16 +117,16 @@ for deviceName,deviceValue in pairs(otherdevices) do
 --            commandArray['Scene:MyScene'] = "Off"
 --        end
 --    end
-end
+--end
 
 -- loop through all the variables
-for variableName,variableValue in pairs(uservariables) do
+--for variableName,variableValue in pairs(uservariables) do
 --    if (variableName=='myVariable') then
 --        if variableValue == 1 then
 --            commandArray['a device name'] = "On"
 --            commandArray['Group:My Group'] = "Off AFTER 30"
 --        end
 --    end
-end
+--end
 
 return commandArray

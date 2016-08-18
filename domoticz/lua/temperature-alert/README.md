@@ -8,7 +8,19 @@ Domoticz must be installed on both a Master (for example a Raspberry Pi) and the
 
 Both units must be connected to the same network.
 
-## Options & default values: ##
+The script must run from the Master.
+
+### User Variables ###
+
+The script need several User Variables to be defined before it can be used:
+
+* `TemperatureAlert_SensorName` : (String) the name of the sensor to get temperature from
+* `TemperatureAlert_SwitchName` : (String) the name of the switch the Digital Signage unit is connected to
+* `TemperatureAlert_DeviceHost` : (String) the hostname of the Digital Signage unit (including username/password, ip-address and port)
+* `TemperatureAlert_CriticalTemp` : (Integer) the critical temperature threshold
+* `TemperatureAlert_SwitchOffAfter` : (Integer) the delay in minutes before sending the "Off" state to the Wireless Switch
+
+## Options & default values: (Old/Deprecated) ##
 
 * `temperature_sensor` : the name of the sensor to get temperature from
     * Default : 'Weather Station - THB'
