@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="../shared/lib/moment-with-locales.min.js" charset="UTF-8"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            moment.locale("nb");
+            var monthNames = [ 
+                "January", "February", "March", "April", "May", "June", "July",
+                "August", "September", "October", "November", "December"
+            ];
+            var dayNames = [
+                "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
+                "Friday", "Saturday"
+            ];
+
+            var newDate = new Date();
+
+            /*$("#date").html(
+                dayNames[newDate.getDay()] + " " + newDate.getDate() + " " +
+                monthNames[newDate.getMonth()] + " " + newDate.getFullYear()
+            );*/
+            $("#date").text(moment().format("ddd, DD MMM"));
+
+            setInterval(function() {
+                var now = new Date();
+                var seconds = now.getSeconds();
+                var minutes = now.getMinutes();
+                var hours = now.getHours();
+
+                //$("#sec").text((seconds < 10 ? "0" : "") + seconds);
+                $("#min").text((minutes < 10 ? "0" : "") + minutes);
+                $("#hours").text((hours < 10 ? "0" : "") + hours);
+            }, 1000);
+
+            setInterval(function() {
+                $("#date").toggleClass("hide");
+                $(".clock ul").toggleClass("hide");
+
+                if ($("#date").hasClass("hide")) {
+                    $("#date").animate({
+                        opacity: 0.0
+                    }, "slow", function() {
+                        $(".clock ul").animate({
+                            opacity: 1.0
+                        }, "slow");
+                    });
+                    
+                } else {
+                    $(".clock ul").animate({
+                        opacity: 0.0
+                    }, "slow", function() {
+                        $("#date").animate({
+                            opacity: 1.0
+                        }, "slow");
+                    });
+                }
+            }, 10000);
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="clock">
+            <div id="date" class="hide"></div>
+            <ul>
+                <li id="hours"></li>
+                <li class="point">:</li>
+                <li id="min"></li>
+                <!--<li class="point">:</li>
+                <li id="sec"></li>-->
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

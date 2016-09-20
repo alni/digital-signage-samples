@@ -1,0 +1,86 @@
+@import url(//fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic);
+@import url(//fonts.googleapis.com/css?family=PT+Sans:400,700);
+body,
+html {
+  margin: 0;
+  padding: 0;
+  width: auto;
+  height: auto;
+  overflow: hidden;
+}
+.container {
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+}
+.container .clock {
+  width: 100%;
+  margin: 0 auto;
+  color: #fff;
+}
+.container .clock #date {
+  position: absolute;
+  font-family: "PT Sans", sans-serif;
+  font-size: 72px;
+  text-align: center;
+  text-shadow: 0 0 5px #4c7597;
+  width: 100%;
+  height: 100%;
+  opacity: 0.0;
+}
+.container .clock ul {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0px;
+  list-style: none;
+  text-align: center;
+  display: inline-block;
+}
+.container .clock ul li {
+  display: inline;
+  font-size: 72px;
+  text-align: center;
+  font-family: "PT Sans", sans-serif;
+  text-shadow: 0 0 5px #4c7597;
+}
+.container .clock ul li.point {
+  position: relative;
+  animation: mymove 2s ease infinite;
+  -webkit-animation: mymove 2s ease infinite;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+@keyframes mymove {
+  0% {
+    opacity: 1.0;
+    text-shadow: 0 0 20px #4c7597;
+  }
+  50% {
+    opacity: 0;
+    text-shadow: none;
+  }
+  100% {
+    opacity: 1.0;
+    text-shadow: 0 0 20px #4c7597;
+  }
+}
+@keyframes mymove2 {
+  0% {
+    opacity: 1.0;
+    text-shadow: 0 0 5px #4c7597;
+  }
+  100% {
+    opacity: 0;
+    text-shadow: none;
+  }
+}
+@keyframes mymove3 {
+  0% {
+    opacity: 0;
+    text-shadow: none;
+  }
+  100% {
+    opacity: 1.0;
+    text-shadow: 0 0 5px #4c7597;
+  }
+}
