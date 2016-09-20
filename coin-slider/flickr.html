@@ -38,7 +38,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script type="text/javascript" src="coin-slider/coin-slider.js"></script>
     <script type="text/javascript" src="../shared/lib/moment-with-locales.min.js" charset="UTF-8"></script>
-
+    <script type="text/javascript" src="../shared/lib/jquery.transit.min.js" charset="UTF-8"></script>
     <link rel="stylesheet" href="coin-slider/coin-slider-styles.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="styles.css" />
 
@@ -49,6 +49,7 @@
     <div id="header"></div>
     <div id="games"></div>
     <script>
+        jQuery.fn.animate = jQuery.fn.transit;
         /**
           * <http://stackoverflow.com/a/5158301>
           */
@@ -196,6 +197,7 @@
                 navigation: false,
                 opacity: 1.0, // opacity of title and navigation
                 delay: +INTERVAL * 1000,
+                sDelay: 50, // delay beetwen squares in ms
                 //delay: 3000 * 1000,
                 width: sliderWidth, //baseWidth, // width of slider panel
                 height: sliderHeight, //baseHeight, // height of slider panel
