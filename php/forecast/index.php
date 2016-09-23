@@ -10,6 +10,7 @@ $API_KEY = "<change_me>";
 
 $LANG = "en";
 $TITLE = "Weather Forecast";
+$poweredBy = "Powered by Dark Sky";
 
 $TITLES = array(
     "en" => "Weather Forecast",
@@ -39,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["LATITUDE"]) && isset($_
             die('<h1>405 Method Not Allowed</h1>');
         }
     }
-    $base_url = "https://api.forecast.io/forecast/";
+    $base_url = "https://api.darksky.net/forecast/";
 
     $LATITUDE = $_GET["LATITUDE"];
     $LONGITUDE = $_GET["LONGITUDE"];
@@ -154,7 +155,7 @@ for ($i = 0; $i < 7; $i++) {
 </tbody>
     <tfoot>
         <tr>
-            <td colspan="5" class="powered-by">Powered by Forecast.</td>
+            <td colspan="5" class="powered-by"><?php echo $poweredBy; ?>.</td>
         </tr>
     </tfoot>
 </table>
@@ -170,7 +171,7 @@ $summary = $jsonObj["currently"]["summary"];
 <div class="container">
     <div class="icon"><i class="font-icon wi <?php echo $wicon ?>"></i> <?php echo $temperatureFloor ?><i class="wi wi-degrees"></i></div>
     <div class="desc"><?php echo $summary ?></div>
-    <div class="powered-by">Powered by Forecast</div>
+    <div class="powered-by"><?php echo $poweredBy; ?></div>
 </div>
 <?php } ?>
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment-with-locales.min.js"></script>
