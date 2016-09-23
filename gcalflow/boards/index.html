@@ -12,6 +12,7 @@
 
     <script>
         var BOARD = getParameterByName("BOARD");
+        var ZOOM = getParameterByName("ZOOM");
         $.getJSON(BOARD).done(function (params) {
             if (params.DATA_URL && params.DATA_URL_PARAMS) {
                 params.DATA_URL += "?" + $.param(params.DATA_URL_PARAMS);
@@ -19,6 +20,15 @@
             }
             $("#agenda").attr("src", "../agenda.html?" + $.param(params));
         });
+        if (!!ZOOM && +ZOOM > 0) {
+            var zoom = +ZOOM;
+            $("#agenda").css({
+                "transform": "scale(" + zoom + ")",
+                "transform-origin": "0 0",
+                "width": (100 / zoom) + "%",
+                "height": (100 / zoom + "%")
+            });
+        }
     </script>
 </body>
 </html>

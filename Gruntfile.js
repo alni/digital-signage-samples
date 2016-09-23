@@ -54,6 +54,10 @@ module.exports = function (grunt) {
                     expand: true,
                     cwd: '<%= dir.src %>',
                     src: [ // Web Server files
+                        // CSS3 Digital Clock:
+                        'css3-digital-clock/*.html',
+                        'css3-digital-clock/*.css',
+
                         // Coin Slider:
                         'coin-slider/coin-slider/*.css',
                         'coin-slider/coin-slider/*.json',
@@ -226,6 +230,91 @@ module.exports = function (grunt) {
                 }]
             },
         },
+
+        less: {
+            development: {
+                options: {
+
+                },
+                files: {
+                    // Coin Slider:
+                    'coin-slider/styles.css': 'coin-slider/styles.less',
+                    'coin-slider/galleries/styles.css': 'coin-slider/galleries/styles.less',
+
+                    // CSS3 Digital Clock:
+                    'css3-digital-clock/styles.css': 'css3-digital-clock/styles.less',
+
+                    // gCalFlow:
+                    'gcalflow/agenda.css': 'gcalflow/agenda.less',
+                    'gcalflow/boards/styles.css': 'gcalflow/boards/styles.less',
+                    'gcalflow/styles/loader.css': 'gcalflow/styles/loader.less',
+
+                    // PHP Forecast:
+                    'php/forecast/styles.css': 'php/forecast/styles.less',
+
+                    // Responsive Tabbed Navigation:
+                    'responsive-tabbed-navigation/styles.css': 'responsive-tabbed-navigation/styles.less',
+
+
+                    // Xibo Modules files
+                    'xibo/embedded/header.css': 'xibo/embedded/header.less',
+                    'xibo/embedded/youtube.css': 'xibo/embedded/youtube.less',
+
+                    'xibo/forecast/5days.css': 'xibo/forecast/5days.less',
+                    'xibo/forecast/current.css': 'xibo/forecast/current.less',
+                    'xibo/forecast/table/table.css': 'xibo/forecast/table/table.less',
+
+                    'xibo/ticker/media-rss-with-left-hand-text/full_width.css': 'xibo/ticker/media-rss-with-left-hand-text/full_width.less',
+                    'xibo/ticker/media-rss-with-title/flickr.css': 'xibo/ticker/media-rss-with-title/flickr.less',
+                    'xibo/ticker/media-rss-with-title/with_desc.css': 'xibo/ticker/media-rss-with-title/with_desc.less',
+                    'xibo/ticker/title-only/with_logo.css': 'xibo/ticker/title-only/with_logo.less',
+                    'xibo/ticker/title-only/with_name.css': 'xibo/ticker/title-only/with_name.less',
+
+                    'xibo/twitter/tweet-with-profileimage-left/marqueeLeft.css': 'xibo/twitter/tweet-with-profileimage-left/marqueeLeft.less',
+                }
+            },
+        },
+
+        cssmin: {
+            target: {
+                files: {
+                    // Coin Slider:
+                    'coin-slider/styles.min.css': 'coin-slider/styles.css',
+                    'coin-slider/galleries/styles.min.css': 'coin-slider/galleries/styles.css',
+
+                    // CSS3 Digital Clock:
+                    'css3-digital-clock/styles.min.css': 'css3-digital-clock/styles.css',
+
+                    // gCalFlow:
+                    'gcalflow/agenda.min.css': 'gcalflow/agenda.css',
+                    'gcalflow/boards/styles.min.css': 'gcalflow/boards/styles.css',
+                    'gcalflow/styles/loader.min.css': 'gcalflow/styles/loader.css',
+
+                    // PHP Forecast:
+                    'php/forecast/styles.min.css': 'php/forecast/styles.css',
+
+                    // Responsive Tabbed Navigation:
+                    'responsive-tabbed-navigation/styles.min.css': 'responsive-tabbed-navigation/styles.css',
+
+
+                    // Xibo Modules files
+                    'xibo/embedded/header.min.css': 'xibo/embedded/header.css',
+                    'xibo/embedded/youtube.min.css': 'xibo/embedded/youtube.css',
+
+                    'xibo/forecast/5days.min.css': 'xibo/forecast/5days.css',
+                    'xibo/forecast/current.min.css': 'xibo/forecast/current.css',
+                    'xibo/forecast/table/table.min.css': 'xibo/forecast/table/table.css',
+
+                    'xibo/ticker/media-rss-with-left-hand-text/full_width.min.css': 'xibo/ticker/media-rss-with-left-hand-text/full_width.css',
+                    'xibo/ticker/media-rss-with-title/flickr.min.css': 'xibo/ticker/media-rss-with-title/flickr.css',
+                    'xibo/ticker/media-rss-with-title/with_desc.min.css': 'xibo/ticker/media-rss-with-title/with_desc.css',
+                    'xibo/ticker/title-only/with_logo.min.css': 'xibo/ticker/title-only/with_logo.css',
+                    'xibo/ticker/title-only/with_name.min.css': 'xibo/ticker/title-only/with_name.css',
+
+                    'xibo/twitter/tweet-with-profileimage-left/marqueeLeft.min.css': 'xibo/twitter/tweet-with-profileimage-left/marqueeLeft.css',
+                }
+            },
+        },
         
         xibo: {
             forecast: {
@@ -281,9 +370,12 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
 
     // Build task
-    grunt.registerTask('build', ['xibo', 'copy']);
+    grunt.registerTask('css_build', ['less', 'cssmin']);
+    grunt.registerTask('build', ['css_build', 'xibo', 'copy']);
 
     grunt.registerMultiTask('xibo', 'Build Xibo module templates to JSON', function (mod) {
         var data = this.data,

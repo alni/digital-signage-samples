@@ -1,4 +1,5 @@
-﻿@import "../../shared/styles.less";
+﻿// out: false
+@import "../../shared/styles.less";
 
 .forecast {
     @import "../../xibo/forecast/table/table.less";
@@ -6,4 +7,11 @@
 
 .current {
     @import "../../xibo/forecast/current.less";
+}
+
+.powered-by {
+    img {
+        width: auto;
+        height: @font-size * 1.5;
+    }
 }

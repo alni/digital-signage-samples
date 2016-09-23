@@ -11,6 +11,12 @@
 
 $API_KEY = "<change_me>";
 
+
+function safeHtml($text) {
+    return strip_tags($text, "<b><strong><i><em><small><mark><del><ins><sub><sup>");
+}
+
+
 $protocol = (isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["URL"])) {
@@ -24,6 +30,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["URL"])) {
         // If the "COUNT" URI query parameter is set, use it as the number of
         // entries to return from Feedly
         $count = intval($_GET["COUNT"]);
+    }
+
+    $safeHtml = FALSE;
+    if (isset($_GET["SAFE_HTML"])) {
+        $safeHtml = TRUE;
     }
 
     // The URI query parameters to include with the request to Feedly
@@ -49,6 +60,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["URL"])) {
             // Otherwise, if the item as a "summary" with content then use it
             // instead as the gCal event description
             $content = $item["summary"]["content"];
+        }
+        if ($safeHtml) {
+            $content = safeHtml($content);
         }
         $updated = null; // Default updated value
         if (isset($item["updated"])) {

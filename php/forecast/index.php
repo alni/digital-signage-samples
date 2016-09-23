@@ -12,6 +12,13 @@ $LANG = "en";
 $TITLE = "Weather Forecast";
 $poweredBy = "Powered by Dark Sky";
 
+$poweredByImageUrls = array(
+    "forecast" => "https://darksky.net/dev/img/attribution/poweredby-oneline.png",
+    "current" => "https://darksky.net/dev/img/attribution/poweredby.png"
+);
+
+$poweredByImageUrl = "";
+
 $TITLES = array(
     "en" => "Weather Forecast",
     "nb" => "Værvarsel"
@@ -71,6 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["LATITUDE"]) && isset($_
     if (isset($_GET["TYPE"]) && in_array($_GET["TYPE"], $TYPES)) {
         $TYPE = $_GET["TYPE"];
     }
+    $poweredByImageUrl = $poweredByImageUrls[$TYPE];
     $url = $base_url . "$API_KEY/$LATITUDE,$LONGITUDE?" . http_build_query($params);
 
     if (($content = @file_get_contents($url)) === FALSE) {
@@ -155,7 +163,9 @@ for ($i = 0; $i < 7; $i++) {
 </tbody>
     <tfoot>
         <tr>
-            <td colspan="5" class="powered-by"><?php echo $poweredBy; ?>.</td>
+            <td colspan="5" class="powered-by">
+                <img title="<?php echo $poweredBy; ?>" src="<?php echo $poweredByImageUrl; ?>" />
+            </td>
         </tr>
     </tfoot>
 </table>
@@ -171,7 +181,9 @@ $summary = $jsonObj["currently"]["summary"];
 <div class="container">
     <div class="icon"><i class="font-icon wi <?php echo $wicon ?>"></i> <?php echo $temperatureFloor ?><i class="wi wi-degrees"></i></div>
     <div class="desc"><?php echo $summary ?></div>
-    <div class="powered-by"><?php echo $poweredBy; ?></div>
+    <div class="powered-by">
+        <img title="<?php echo $poweredBy; ?>" src="<?php echo $poweredByImageUrl; ?>" />
+    </div>
 </div>
 <?php } ?>
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment-with-locales.min.js"></script>
