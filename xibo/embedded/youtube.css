@@ -23,7 +23,7 @@ body {
   top: 0;
   width: 51%;
   height: 100%;
-  background: #4c7597;
+  background: #727272;
   z-index: 1000;
 }
 #loader-wrapper .loader-section.section-left {
@@ -31,12 +31,6 @@ body {
 }
 #loader-wrapper .loader-section.section-right {
   right: 0;
-}
-#loader-wrapper.theme-green .loader-section {
-  background: #75974c;
-}
-#loader-wrapper.theme-red .loader-section {
-  background: #974c75;
 }
 #loader {
   display: block;

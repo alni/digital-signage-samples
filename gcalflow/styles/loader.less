@@ -43,7 +43,7 @@
         top: 0;
         width: 51%;
         height: 100%;
-        background: @_color_bg; //@main-color;
+        background: greyscale(@_color_bg); //@_color_bg; //@main-color;
         z-index: 1000;
 
         &.section-left {
@@ -55,17 +55,29 @@
         }
     }
 
-    &.theme-green {
-        .loader-section {
-            background: @_color_bg_green; 
-        }
-    }
+    // &.theme-green {
+    //     .loader-section {
+    //         background: @_color_bg_green; 
+    //     }
+    // }
 
-    &.theme-red {
-        .loader-section {
-            background: @_color_bg_red; 
-        }
-    }
+    // &.theme-red {
+    //     .loader-section {
+    //         background: @_color_bg_red; 
+    //     }
+    // }
+
+    // &.theme-variant-b {
+    //     .loader-section {
+    //         background: greyscale(@_color_bg_red); 
+    //     }
+    // }
+
+    // &.theme-variant-c {
+    //     .loader-section {
+    //         background: greyscale(@_color_bg_red); 
+    //     }
+    // }
 }
 
 #loader {

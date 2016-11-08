@@ -61,6 +61,15 @@ ul {
   content: "Laster...";
 }
 #gcf-custom-template.theme-green .gcf-header-block {
+  background: rgba(117, 151, 76, 0.7) !important;
+}
+#gcf-custom-template.theme-green .gcf-item-title {
+  color: #75974c !important;
+}
+#gcf-custom-template.theme-green ::-webkit-scrollbar-thumb {
+  background-color: rgba(117, 151, 76, 0.7) !important;
+}
+#gcf-custom-template.theme-green .gcf-header-block {
   background: rgba(117, 151, 76, 0.7);
 }
 #gcf-custom-template.theme-green .gcf-item-title {
@@ -77,6 +86,44 @@ ul {
 }
 #gcf-custom-template.theme-red ::-webkit-scrollbar-thumb {
   background-color: rgba(151, 76, 117, 0.7);
+}
+#gcf-custom-template.theme-variant-b .gcf-header-block {
+  background: #F5E2E6 !important;
+}
+#gcf-custom-template.theme-variant-b .gcf-item-title {
+  color: #000 !important;
+}
+#gcf-custom-template.theme-variant-b ::-webkit-scrollbar-thumb {
+  background-color: #F5E2E6 !important;
+}
+#gcf-custom-template.theme-variant-b .gcf-title-block .gcf-title,
+#gcf-custom-template.theme-variant-b .gcf-title-block .fa {
+  color: #5d5d5d !important;
+}
+#gcf-custom-template.theme-variant-b .gcf-item-daterange {
+  color: #000 !important;
+}
+#gcf-custom-template.theme-variant-b .gcf-item-title {
+  font-weight: bold;
+}
+#gcf-custom-template.theme-variant-c .gcf-header-block {
+  background: #e3f4e4 !important;
+}
+#gcf-custom-template.theme-variant-c .gcf-item-title {
+  color: #000 !important;
+}
+#gcf-custom-template.theme-variant-c ::-webkit-scrollbar-thumb {
+  background-color: #e3f4e4 !important;
+}
+#gcf-custom-template.theme-variant-c .gcf-title-block .gcf-title,
+#gcf-custom-template.theme-variant-c .gcf-title-block .fa {
+  color: #5d5d5d !important;
+}
+#gcf-custom-template.theme-variant-c .gcf-item-daterange {
+  color: #000 !important;
+}
+#gcf-custom-template.theme-variant-c .gcf-item-title {
+  font-weight: bold;
 }
 #gcf-custom-template:not(.ticker) .gcf-item-container-block {
   -moz-box-sizing: border-box;

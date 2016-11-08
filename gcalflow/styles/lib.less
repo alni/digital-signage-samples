@@ -1,8 +1,28 @@
 ﻿@import "../../shared/lib.less";
 
+.theme-mixin(@header-bgcolor, @accent-color) {
+    // Common styles for the green theme variant
+    .gcf-header-block {
+        // Set the Header Block background to a green color
+        background: @header-bgcolor !important;
+    }
+
+    .gcf-item-title {
+        // Set the Item Title text color to a green color
+        color: @accent-color !important;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        // Set the WebKit scrollbar thumb (button) to a green color
+        background-color: @header-bgcolor !important;
+    }
+}
+
 .color-mixin() {
     // Provide different color themes
+    
     &.theme-green {
+        .theme-mixin(@header-bgcolor-green, @accent-color-green);
         // Common styles for the green theme variant
         .gcf-header-block {
             // Set the Header Block background to a green color
@@ -35,6 +55,42 @@
         ::-webkit-scrollbar-thumb {
             // Set the WebKit scrollbar thumb (button) to a red color
             background-color: @header-bgcolor-red;
+        }
+    }
+
+    &.theme-variant-b {
+        .theme-mixin(#F5E2E6, #000);
+
+        .gcf-title-block {
+            .gcf-title, .fa {
+                color: rgb(93, 93, 93) !important;
+            }
+        }
+
+        .gcf-item-daterange {
+            color: #000 !important;
+        }
+
+        .gcf-item-title {
+            font-weight: bold;
+        }
+    }
+
+    &.theme-variant-c {
+        .theme-mixin(#e3f4e4, #000);
+
+        .gcf-title-block {
+            .gcf-title, .fa {
+                color: rgb(93, 93, 93) !important;
+            }
+        }
+
+        .gcf-item-daterange {
+            color: #000 !important;
+        }
+
+        .gcf-item-title {
+            font-weight: bold;
         }
     }
 }
@@ -180,7 +236,13 @@
     .gcf-item-block {
         // Display the Item Blocks all on the same line
         display: inline;
-        white-space: nowrap; // Keep all elements on the same line
+        white-space: nowrap; // Keep all elements on the same line 
+        
+        // &:not(:first-child) .gcf-item-daterange:before {
+        //     content: "\2022";
+        //     padding-right: @font-size * 2;
+        //     display: inline-block;
+        // }
     }
     .gcf-item-header-block {
         // Display the Item Header Block as inline and take up space
@@ -191,6 +253,9 @@
             // Separate the Item Blocks with 5 non-breaking white-spaces
             font-size: @font-size;
             content: "\00a0\00a0\00a0\00a0\00a0";
+            //content: "";
+            //padding-left: @font-size * 2;
+            //display: inline-block;
             .vertical-align-mixin(); // Align the them vertically
         }
     }

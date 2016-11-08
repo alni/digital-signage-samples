@@ -17,12 +17,24 @@
   color: #fff;
   font-size: 48px;
   border-bottom: 1.2px solid #313131;
+  padding: 5px 4px 5px 4px;
+  text-align: left;
 }
 .forecast .container.theme-green caption {
   background: rgba(117, 151, 76, 0.5);
 }
 .forecast .container.theme-red caption {
   background: rgba(151, 76, 117, 0.5);
+}
+.forecast .container.theme-dark td {
+  color: #fff;
+}
+.forecast .container.theme-variant-b {
+  color: #000;
+}
+.forecast .container.theme-variant-b caption {
+  background: #F5E2E6;
+  color: #5d5d5d;
 }
 .forecast .daily-forecast {
   display: table;
@@ -49,24 +61,8 @@
   font-size: 48px;
   min-width: 72px;
   height: 72px;
-  padding-bottom: 4.8px;
+  padding-bottom: 9.6px;
   padding-top: 9.6px;
-}
-.forecast .day .day-icon .wi:before {
-  /*
-        # Vertical align anything with just 3 lines of CSS #
-
-        Original author: Sebastian Ekström (http://twitter.com/seb_ekstrom)
-        http://zerosixthree.se/vertical-align-anything-with-just-3-lines-of-css/
-    */
-  position: relative;
-  top: 50%;
-  -moz-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  -o-transform: translateY(-50%);
-  -webkit-transform: translateY(-50%);
-  transform: translateY(-50%);
-  height: auto;
 }
 .forecast .day .day-icon-seperator {
   display: none;
@@ -87,6 +83,7 @@
 }
 .forecast .day .desc {
   padding-left: 38.83281573px;
+  padding-right: 38.83281573px;
   line-height: 1.25;
   text-align: left;
   width: 100%;
@@ -164,6 +161,16 @@
 }
 .current .theme-red.title {
   background: rgba(151, 76, 117, 0.7);
+}
+.current .theme-dark ~ .container {
+  color: #fff;
+}
+.current .theme-variant-b.title {
+  background: #F5E2E6;
+  color: #5d5d5d;
+}
+.current .theme-variant-b ~ .container {
+  color: #000;
 }
 .powered-by img {
   width: auto;

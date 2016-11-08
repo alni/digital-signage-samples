@@ -20,6 +20,9 @@ body {
         color: @header-fgcolor;
         font-size: @font-size;
         border-bottom: @font-size / 40 solid @main-color;
+        
+        padding: @header-padding;
+        text-align: left;
     }
 
     &.theme-green {
@@ -32,6 +35,24 @@ body {
         caption {
             background: @header-bgcolor-red;
         }
+    }
+
+    &.theme-dark {
+        td {
+            color: #fff;
+        }
+    }
+
+    &.theme-variant-b {
+        color: #000;
+        caption {
+            background: @header-bgcolor-variant-b;
+            color: @header-fgcolor-variant-b;
+        }
+    }
+
+    caption {
+        
     }
 }
 
@@ -69,7 +90,7 @@ body {
         min-width: @font-size * 1.5;
         height: @font-size * 1.5;
 
-        padding-bottom: @font-size / 10;
+        padding-bottom: @font-size / 5;
         padding-top: @font-size / 5;
         
         //line-height: @golden-ratio;
@@ -81,7 +102,7 @@ body {
             //display: inline;
 
             &:before {
-                .vertical-align-mixin();
+                //.vertical-align-mixin();
             }
         }
         //margin-top: -24px;
@@ -113,6 +134,7 @@ body {
 
     .desc {
         padding-left: (@font-size * 0.5) * @golden-ratio;
+        padding-right: (@font-size * 0.5) * @golden-ratio;
         line-height: 1.25; //@golden-ratio;
         text-align: left;
         width: 100%;

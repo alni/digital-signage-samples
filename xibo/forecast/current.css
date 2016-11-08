@@ -45,3 +45,13 @@ body {
 .theme-red.title {
   background: rgba(151, 76, 117, 0.7);
 }
+.theme-dark ~ .container {
+  color: #fff;
+}
+.theme-variant-b.title {
+  background: #F5E2E6;
+  color: #5d5d5d;
+}
+.theme-variant-b ~ .container {
+  color: #000;
+}

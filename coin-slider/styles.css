@@ -103,3 +103,6 @@ body #header:after {
   color: #fff;
   font-size: 12px;
 }
+#games .cs-title .content a {
+  color: #add8e6;
+}

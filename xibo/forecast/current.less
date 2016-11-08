@@ -72,3 +72,21 @@ body {
         background: @header-bgcolor-red;
     }
 }
+
+.theme-dark {
+    ~ .container {
+        color: #fff;
+    }
+}
+
+.theme-variant-b {
+    
+    &.title {
+        background: @header-bgcolor-variant-b;
+        color: @header-fgcolor-variant-b;
+    }
+
+    ~ .container {
+        color: #000;
+    }
+}
