@@ -1,3 +1,7 @@
+(function() {
+
+var currentlyOnTimedTab = false;
+
 jQuery(document).ready(function ($) {
 	var CONFIG = getParameterByName("CONFIG") || null;
 
@@ -66,7 +70,7 @@ jQuery(document).ready(function ($) {
 
 			
 			$(window).on("message", function (e) {
-				if (e.originalEvent.data == "next-tab") {
+				if (e.originalEvent.data == "next-tab" && !currentlyOnTimedTab) {
 					var selectedItem = $("ul.cd-tabs-navigation a.selected");
 					selectNextTab(selectedItem);
 				}
@@ -74,6 +78,7 @@ jQuery(document).ready(function ($) {
 		});
 	}
 });
+
 window.ResponsiveTabbedNavigation = true;
 var selectNextTab = function(selectedItem) {
 	var nextItem = selectedItem.next("a");
@@ -112,6 +117,7 @@ var init = function ($) {
 				}
 				if (!!selectedItem.data("keep_on_screen") 
 					&& +selectedItem.data("keep_on_screen") > 0) {
+					currentlyOnTimedTab = true;
 				    setTimeout(function () {
 				        /*var nextItem = selectedItem.next("a");
 				        if (nextItem.length < 1) {
@@ -119,6 +125,7 @@ var init = function ($) {
 				        }
 				        console.error(nextItem);
 				        nextItem.trigger("click");*/
+						currentlyOnTimedTab = false;
 						selectNextTab(selectedItem);
 					}, (+selectedItem.data("keep_on_screen")) * 1000);
 				}
@@ -154,3 +161,6 @@ var init = function ($) {
 		}
 	}
 };
+
+
+})();
