@@ -8,7 +8,7 @@
 
 $API_KEY = "<change_me>";
 
-$LANG = "en";
+$LANG = "en"; 
 $TITLE = "Weather Forecast";
 $poweredBy = "Powered by Dark Sky";
 
@@ -57,6 +57,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["LATITUDE"]) && isset($_
     if (isset($_GET["THEME"])) {
         $themeClass = "theme-" . $_GET["THEME"];
         $containerClasses = "$containerClasses $themeClass";
+    }
+
+    $days = 7;
+    if (isset($_GET["NUM_DAYS"])) {
+        $days = intval($_GET["NUM_DAYS"]);
+    }
+
+    if ($days < 1) {
+        $days = 1;
+    } else if ($days > 7) {
+        $days = 7;
     }
 
     $params = array(
@@ -119,7 +130,7 @@ $weather_icons = array(
     <link href='//fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link href='weather_icons/weather-icons.min.css' rel='stylesheet' type='text/css'>
+    <link href='weather-icons-2.0.10/css/weather-icons.min.css' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="styles.css" />
     <title><?php echo $TITLE ?></title>
 </head>
@@ -127,7 +138,7 @@ $weather_icons = array(
 <?php if ($TYPE == "forecast") { ?>
 <table class="<?php echo $containerClasses ?>">
 
-    <caption><?php echo $TITLE ?></caption>
+    <caption>&nbsp;<i class="fa fa-sun-o">&nbsp;</i> <?php echo $TITLE ?></caption>
     <tbody class="daily-forecast">
 <?php 
 $weekdays_short_num = array(
@@ -139,12 +150,18 @@ $weekdays_long_num = array(
 );
 
 for ($i = 0; $i < 7; $i++) {
+    if ($i > $days) {
+        break;
+    }
     $dayData = $jsonObj["daily"]["data"][$i];
     $classes = "day";
     if ($i == 0) {
         $classes = "$classes currentDay";
     }
-    $wicon = $weather_icons[$dayData["icon"]];
+    $wicon = "wi-na";
+    if (isset($dayData["icon"]) && isset($weather_icons[$dayData["icon"]])) {
+        $wicon = $weather_icons[$dayData["icon"]];
+    }
     $dw = date( "w", $dayData["time"]);
 
     $dw_short = $weekdays_short_num[$dw];
@@ -172,8 +189,10 @@ for ($i = 0; $i < 7; $i++) {
 <?php } else if ($TYPE == "current") { ?>
 <?php
 
-
-$wicon = $weather_icons[$jsonObj["currently"]["icon"]];
+$wicon = "wi-na";
+if (isset($jsonObj["currently"]["icon"]) && isset($weather_icons[$jsonObj["currently"]["icon"]])) {
+    $wicon = $weather_icons[$jsonObj["currently"]["icon"]];
+}
 $temperatureFloor = floor($jsonObj["currently"]["temperature"]);
 $summary = $jsonObj["currently"]["summary"];
 ?>

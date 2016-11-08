@@ -6,3 +6,7 @@ node_modules/
 responsive-tabbed-navigation/config/_private/
 *.DS_Store
 sh-thd-1469318552
+php/forecast/weather-icons-2.0.10/_docs/
+php/forecast/weather-icons-2.0.10/_builder/
+php/forecast/weather-icons-2.0.10/less/
+php/forecast/weather-icons-2.0.10/sass/
