@@ -178,7 +178,7 @@
           * @param {Number} refresh - the number of minutes to wait before
           *     reloading the page
           */
-        function loadComplete($items, refresh) {
+        function loadComplete($items, refresh, scroll_end_wait) {
             $("body").addClass("loaded"); // hide the loading screen
             if (!!window.navigator.userAgent.match(/MSIE|Trident|Edge/)) {
                 // Internet Explorer found!
@@ -201,7 +201,13 @@
             }
             hideScrollButtons($items.length <= 1);
             $('.gcf-item-container-block').on("autoscroll:end", function(e) {
-                ResponsiveTabbedNavigation_NextTab();
+                if (!!scroll_end_wait && +scroll_end_wait > 0) {
+                    setTimeout(function() {
+                        ResponsiveTabbedNavigation_NextTab();
+                    }, parseInt(+scroll_end_wait * 1000));
+                } else {
+                    ResponsiveTabbedNavigation_NextTab();
+                }
             });
             if (!!refresh && refresh >= 1) {
                 setTimeout(function () {
@@ -445,7 +451,7 @@
                             }
                         });
                         
-                        loadComplete($items);
+                        loadComplete($items, null, SCROLL_INTERVAL);
                         //$("body").addClass("loaded"); // hide the loading screen
                         //hideScrollButtons($items.length <= 1);
                     };
@@ -501,7 +507,7 @@
                             }
                         });
 
-                        loadComplete($items);
+                        loadComplete($items, null, SCROLL_INTERVAL);
                         //$("body").addClass("loaded"); // hide the loading screen
                         //hideScrollButtons($items.length <= 1);
                     };
@@ -677,7 +683,7 @@
                                 $desc.html($.parseHTML($desc.text()));
                             }
                         });
-                        loadComplete($items);
+                        loadComplete($items, null, SCROLL_INTERVAL);
                         //$("body").addClass("loaded");
                         //hideScrollButtons($items.length <= 1);
                     };
@@ -859,8 +865,12 @@
                             $desc.html($.parseHTML($desc.text()));
                         }
                     });
-                    loadComplete($items);
+                    loadComplete($items, null, SCROLL_INTERVAL);
                     //$("body").addClass("loaded");
+                },
+                error_callback: function(textStatus, errorThrown) {
+                    $("#loader").addClass("hidden");
+                    ResponsiveTabbedNavigation_NextTab();
                 }
             });
 

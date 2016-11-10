@@ -167,7 +167,8 @@
     };
 
     gCalFlow.prototype.fetch = function() {
-      var success_handler;
+      var success_handler,
+          error_handler; // Added by @alni
       log.debug("Starting ajax call for " + (this.gcal_url()));
       if (this.opts.apikey === this.constructor.demo_apikey) {
         log.warn("You are using built-in demo API key! This key is provided for tiny use or demo only. Your access may be limited.");
@@ -175,13 +176,29 @@
       }
       success_handler = (function(_this) {
         return function(data) {
-          log.debug("Ajax call success. Response data:", data);
-          return _this.render_data(data, _this);
+          if (data.error) {
+            // Added by @alni
+            if ($.isFunction(_this.opts.error_callback)) {
+              _this.opts.error_callback(data.error.message);
+            }
+          } else {
+            log.debug("Ajax call success. Response data:", data);
+            return _this.render_data(data, _this);
+          }
+        };
+      })(this);
+      error_handler = (function(_this) {
+        return function(jqXHR, textStatus, errorThrown) {
+          log.debug("Ajax call failed. Response:", textStatus);
+          if ($.isFunction(_this.opts.error_callback)) {
+            _this.opts.error_callback(textStatus, errorThrown);
+          }
         };
       })(this);
       return $.ajax({
         type: 'GET',
         success: success_handler,
+        error: error_handler, // Added by @alni
         dataType: "jsonp",
         url: this.gcal_url()
       });
