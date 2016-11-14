@@ -1,0 +1,42 @@
+.theme-mixin(@header-bgcolor, @header-fgcolor, @accent-fgcolor1) {
+    .ownername {
+        span {
+            border-bottom-color: @header-fgcolor;
+        }
+    }
+
+    #header {
+        background-color: @header-bgcolor;
+        color: @header-fgcolor;
+    }
+
+    #games {
+
+        .cs-title {
+            background: @header-bgcolor;
+            color: @header-fgcolor;
+
+            .content {
+                a {
+                    color: @accent-fgcolor1;
+                }
+            }
+        }
+    }
+}
+
+.color-mixin() {
+    // Provide different color themes
+    
+    &.theme-green {
+        .theme-mixin(@header-bgcolor-green, @header-fgcolor, @accent-color-green);
+    }
+
+    &.theme-red {
+        .theme-mixin(@header-bgcolor-red, @header-fgcolor, @accent-color-red);
+    }
+
+    &.theme-variant-b {
+        .theme-mixin(fade(@header-bgcolor-variant-b, 70%), @header-fgcolor-variant-b, @accent-color-variant-b);
+    }
+}

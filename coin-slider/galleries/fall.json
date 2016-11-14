@@ -3,5 +3,6 @@
   "INTERVAL": 20,
   "NUM_ITEMS": 50,
   "TITLE": "Høst",
-  "LANG": "nb"
+  "LANG": "nb",
+  "THEME_COLOR": "variant-b"
 }

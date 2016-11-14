@@ -75,6 +75,48 @@ body #header:before,
 body #header:after {
   font-weight: normal;
 }
+body.theme-green .ownername span {
+  border-bottom-color: #fff;
+}
+body.theme-green #header {
+  background-color: rgba(117, 151, 76, 0.5);
+  color: #fff;
+}
+body.theme-green #games .cs-title {
+  background: rgba(117, 151, 76, 0.5);
+  color: #fff;
+}
+body.theme-green #games .cs-title .content a {
+  color: #75974c;
+}
+body.theme-red .ownername span {
+  border-bottom-color: #fff;
+}
+body.theme-red #header {
+  background-color: rgba(151, 76, 117, 0.5);
+  color: #fff;
+}
+body.theme-red #games .cs-title {
+  background: rgba(151, 76, 117, 0.5);
+  color: #fff;
+}
+body.theme-red #games .cs-title .content a {
+  color: #974c75;
+}
+body.theme-variant-b .ownername span {
+  border-bottom-color: #5d5d5d;
+}
+body.theme-variant-b #header {
+  background-color: rgba(245, 226, 230, 0.7);
+  color: #5d5d5d;
+}
+body.theme-variant-b #games .cs-title {
+  background: rgba(245, 226, 230, 0.7);
+  color: #5d5d5d;
+}
+body.theme-variant-b #games .cs-title .content a {
+  color: #000;
+}
 .coin-slider {
   z-index: 0;
   height: 100%;
