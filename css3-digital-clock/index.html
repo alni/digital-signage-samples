@@ -6,9 +6,25 @@
     <link rel="stylesheet" type="text/css" href="styles.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script type="text/javascript" src="../shared/lib/moment-with-locales.min.js" charset="UTF-8"></script>
+    <script src="../shared/code.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            moment.locale("nb");
+            var LANG = getParameterByName("LANG") || "nb";
+            var DATE_FORMAT = getParameterByName("DATE_FORMAT") || "ddd, DD MMM";
+            var THEME_COLOR = getParameterByName("THEME_COLOR") || "";
+            moment.locale(LANG); // Use the current LANG as the moment locale
+            if (THEME_COLOR) {
+                switch (THEME_COLOR) {
+                    case "green":
+                    case "red":
+                    case "dark":
+                    case "variant-b":
+                    case "variant-c":
+                        $(".container").addClass("theme-" + THEME_COLOR);
+                        break;
+                }
+            }
+            //moment.locale("nb");
             var monthNames = [ 
                 "January", "February", "March", "April", "May", "June", "July",
                 "August", "September", "October", "November", "December"
@@ -24,7 +40,7 @@
                 dayNames[newDate.getDay()] + " " + newDate.getDate() + " " +
                 monthNames[newDate.getMonth()] + " " + newDate.getFullYear()
             );*/
-            $("#date").text(moment().format("ddd, DD MMM"));
+            $("#date").text(moment().format(DATE_FORMAT));
 
             setInterval(function() {
                 var now = new Date();

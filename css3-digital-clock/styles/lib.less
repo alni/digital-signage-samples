@@ -1,0 +1,38 @@
+.theme-mixin(@header-bgcolor, @header-fgcolor, @text-shadow-color) {
+    .clock {
+        color: @header-fgcolor;
+
+        #date {
+            text-shadow: 0 0 5px @text-shadow-color;
+        }
+
+        ul {
+            li {
+                text-shadow: 0 0 5px @text-shadow-color;
+            }
+        }
+    }
+}
+
+.color-mixin() {
+    // Provide different color themes
+    
+    &.theme-green {
+        .theme-mixin(@header-bgcolor-green, @header-fgcolor, @accent-color-green);
+    }
+
+    &.theme-red {
+        .theme-mixin(@header-bgcolor-red, @header-fgcolor, @accent-color-red);
+    }
+
+    &.theme-variant-b {
+        .theme-mixin(fade(@header-bgcolor-variant-b, 70%), @header-fgcolor-variant-b, @accent-color-variant-b);
+
+        .clock {
+            margin: auto 0 !important;
+            ul, #date {
+                text-align: left;
+            }
+        }
+    }
+}

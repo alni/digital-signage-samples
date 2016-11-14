@@ -50,6 +50,40 @@ html {
   padding-left: 10px;
   padding-right: 10px;
 }
+.container.theme-green .clock {
+  color: #fff;
+}
+.container.theme-green .clock #date {
+  text-shadow: 0 0 5px #75974c;
+}
+.container.theme-green .clock ul li {
+  text-shadow: 0 0 5px #75974c;
+}
+.container.theme-red .clock {
+  color: #fff;
+}
+.container.theme-red .clock #date {
+  text-shadow: 0 0 5px #974c75;
+}
+.container.theme-red .clock ul li {
+  text-shadow: 0 0 5px #974c75;
+}
+.container.theme-variant-b .clock {
+  color: #5d5d5d;
+}
+.container.theme-variant-b .clock #date {
+  text-shadow: 0 0 5px #000;
+}
+.container.theme-variant-b .clock ul li {
+  text-shadow: 0 0 5px #000;
+}
+.container.theme-variant-b .clock {
+  margin: auto 0 !important;
+}
+.container.theme-variant-b .clock ul,
+.container.theme-variant-b .clock #date {
+  text-align: left;
+}
 @keyframes mymove {
   0% {
     opacity: 1.0;
