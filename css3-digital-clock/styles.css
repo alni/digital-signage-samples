@@ -49,6 +49,7 @@ html {
   -webkit-animation: mymove 2s ease infinite;
   padding-left: 10px;
   padding-right: 10px;
+  text-shadow: 0 0 20px #4c7597;
 }
 .container.theme-green .clock {
   color: #fff;
@@ -59,6 +60,9 @@ html {
 .container.theme-green .clock ul li {
   text-shadow: 0 0 5px #75974c;
 }
+.container.theme-green .clock ul li.point {
+  text-shadow: 0 0 20px #75974c;
+}
 .container.theme-red .clock {
   color: #fff;
 }
@@ -68,14 +72,20 @@ html {
 .container.theme-red .clock ul li {
   text-shadow: 0 0 5px #974c75;
 }
+.container.theme-red .clock ul li.point {
+  text-shadow: 0 0 20px #974c75;
+}
 .container.theme-variant-b .clock {
   color: #5d5d5d;
 }
 .container.theme-variant-b .clock #date {
-  text-shadow: 0 0 5px #000;
+  text-shadow: 0 0 5px transparent;
 }
 .container.theme-variant-b .clock ul li {
-  text-shadow: 0 0 5px #000;
+  text-shadow: 0 0 5px transparent;
+}
+.container.theme-variant-b .clock ul li.point {
+  text-shadow: 0 0 20px transparent;
 }
 .container.theme-variant-b .clock {
   margin: auto 0 !important;
@@ -87,7 +97,6 @@ html {
 @keyframes mymove {
   0% {
     opacity: 1.0;
-    text-shadow: 0 0 20px #4c7597;
   }
   50% {
     opacity: 0;
@@ -95,7 +104,6 @@ html {
   }
   100% {
     opacity: 1.0;
-    text-shadow: 0 0 20px #4c7597;
   }
 }
 @keyframes mymove2 {

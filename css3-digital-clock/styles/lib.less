@@ -9,6 +9,10 @@
         ul {
             li {
                 text-shadow: 0 0 5px @text-shadow-color;
+
+                &.point {
+                    text-shadow: 0 0 20px @text-shadow-color;
+                }
             }
         }
     }
@@ -26,7 +30,7 @@
     }
 
     &.theme-variant-b {
-        .theme-mixin(fade(@header-bgcolor-variant-b, 70%), @header-fgcolor-variant-b, @accent-color-variant-b);
+        .theme-mixin(fade(@header-bgcolor-variant-b, 70%), @header-fgcolor-variant-b, transparent);
 
         .clock {
             margin: auto 0 !important;

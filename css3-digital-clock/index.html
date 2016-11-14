@@ -12,6 +12,7 @@
             var LANG = getParameterByName("LANG") || "nb";
             var DATE_FORMAT = getParameterByName("DATE_FORMAT") || "ddd, DD MMM";
             var THEME_COLOR = getParameterByName("THEME_COLOR") || "";
+            var INTERVAL = getParameterByName("INTERVAL") || "10";
             moment.locale(LANG); // Use the current LANG as the moment locale
             if (THEME_COLOR) {
                 switch (THEME_COLOR) {
@@ -23,6 +24,11 @@
                         $(".container").addClass("theme-" + THEME_COLOR);
                         break;
                 }
+            }
+            if (!!INTERVAL && +INTERVAL > 0) {
+                INTERVAL = parseInt(+INTERVAL);
+            } else {
+                INTERVAL = 10;
             }
             //moment.locale("nb");
             var monthNames = [ 
@@ -75,7 +81,7 @@
                         }, "slow");
                     });
                 }
-            }, 10000);
+            }, INTERVAL * 1000);
         });
     </script>
 </head>
