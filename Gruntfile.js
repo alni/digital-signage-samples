@@ -48,8 +48,13 @@ module.exports = function (grunt) {
             }
         },
 
-        copy: {
+        //copy: {
+        sync: {
             dist: {
+                verbose: true, // Default: false 
+                compareUsing: "md5", /* compares via md5 hash of file contents, 
+                                        instead of file modification time. 
+                                        Default: "mtime" */
                 files: [{
                     expand: true,
                     cwd: '<%= dir.src %>',
@@ -139,6 +144,16 @@ module.exports = function (grunt) {
                         'forecast/weather_icons/*.ttf',
                         'forecast/weather_icons/*.woff',
 
+                        'forecast/weather-icons-2.0.10/css/*.css',
+                        'forecast/weather-icons-2.0.10/font/*.eot',
+                        'forecast/weather-icons-2.0.10/font/*.otf',
+                        'forecast/weather-icons-2.0.10/font/*.svg',
+                        'forecast/weather-icons-2.0.10/font/*.ttf',
+                        'forecast/weather-icons-2.0.10/font/*.woff',
+                        'forecast/weather-icons-2.0.10/font/*.woff2',
+                        'forecast/weather-icons-2.0.10/bower.json',
+                        'forecast/weather-icons-2.0.10/README.md',
+
                         'rss2gcal/*.php',
 
                         '!test/**',
@@ -223,12 +238,37 @@ module.exports = function (grunt) {
                         'pollenvarsling/*.md'
                     ],
                     dest: '<%= dir.dist %>/gapps-script/'
-                }, {
+                }/*, {
+                    cwd: '<%= dir.src %>',
+                    src: "shared/lib/moment-with-locales.min.js",
+                    dest: "<%= dir.dist %>/gapps-script/calendar-task-list/MomentJS.gs.js"
+                }*/, {
+                    expand: true,
+                    cwd: '<%= dir.src %>/domoticz',
+                    src: [ // Domoticz files
+                        // On/Off Actions:
+                        'actions/*.ahk',
+                        'actions/*.bat',
+
+                        // Lua Event Scripts:
+                        'lua/*.lua',
+                        // Temperature Alert:
+                        'lua/temperature-alert/main.lua',
+                        'lua/temperature-alert/*.md',
+                    ],
+                    dest: '<%= dir.dist %>/domoticz/'
+                }]
+            },
+        },
+
+        copy: {
+            dist: {
+                files: [{
                     cwd: '<%= dir.src %>',
                     src: "shared/lib/moment-with-locales.min.js",
                     dest: "<%= dir.dist %>/gapps-script/calendar-task-list/MomentJS.gs.js"
                 }]
-            },
+            }
         },
 
         less: {
@@ -372,10 +412,12 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-sync');
 
     // Build task
     grunt.registerTask('css_build', ['less', 'cssmin']);
-    grunt.registerTask('build', ['css_build', 'xibo', 'copy']);
+    //grunt.registerTask('build', ['css_build', 'xibo', 'copy']);
+    grunt.registerTask('build', ['css_build', 'xibo', 'sync', 'copy']);
 
     grunt.registerMultiTask('xibo', 'Build Xibo module templates to JSON', function (mod) {
         var data = this.data,
