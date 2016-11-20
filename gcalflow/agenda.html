@@ -222,26 +222,30 @@
                 console.error("    ");
                 $item = $root.find(".gcf-item-block").filter(function () {
                     console.error($(this).position().top);
-                    return parseInt($(this).position().top) < 0;
+                    return parseInt($(this).position().top) + 10 < 0;
                 }).last();
                 console.error("    ");
-                console.error($item.position().top);
-                $root.scrollTo($item[0].offsetTop, {
-                    offsetTop: 0,
-                    duration: 250
-                });
+                if ($item && $item[0]) {
+                    console.error($item.position().top);
+                    $root.scrollTo($item[0].offsetTop, {
+                        offsetTop: 0,
+                        duration: 250
+                    });
+                }
             } else {
                 console.error("    ");
                 $item = $root.find(".gcf-item-block").filter(function () {
                     console.error($(this).position().top);
-                    return parseInt($(this).position().top) > 0;
+                    return parseInt($(this).position().top) - 10 > 0;
                 }).first();
                 console.error("    ");
-                console.error($item.position().top);
-                $root.scrollTo($item[0].offsetTop, {
-                    offsetTop: 0,
-                    duration: 250
-                });
+                if ($item && $item[0]) {
+                    console.error($item.position().top);
+                    $root.scrollTo($item[0].offsetTop, {
+                        offsetTop: 0,
+                        duration: 250
+                    });
+                }
             }
             
             //$root.scrollTop($item.find(".gcf-item-header-block").offset().top);
