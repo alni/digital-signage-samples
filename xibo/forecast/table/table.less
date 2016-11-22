@@ -52,8 +52,19 @@ body {
         }
     }
 
-    caption {
-        
+    &.theme-variant-c {
+        color: @accent-color-variant-c;
+        caption {
+            background: @header-bgcolor-variant-c;
+            color: @header-fgcolor-variant-c;
+        }
+        td {
+            color: @accent-color-variant-c;
+        }
+
+        .day {
+            border-bottom-color: @accent-color-variant-c !important;
+        }
     }
 }
 
@@ -118,6 +129,7 @@ body {
         font-size: @font-size;
         display: none;
         text-transform: uppercase;
+        padding-left: 20px;
     }
 
     .maxTemp {
@@ -135,7 +147,8 @@ body {
 
     .desc {
         padding-left: (@font-size * 0.5) * @golden-ratio;
-        padding-right: (@font-size * 0.5) * @golden-ratio;
+        //padding-right: (@font-size * 0.5) * @golden-ratio;
+        padding-right: 20px;
         line-height: 1.25; //@golden-ratio;
         text-align: left;
         width: 100%;

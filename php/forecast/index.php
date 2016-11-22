@@ -56,6 +56,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["LATITUDE"]) && isset($_
     $themeClass = "";
     if (isset($_GET["THEME"])) {
         $themeClass = "theme-" . $_GET["THEME"];
+        if (in_array($_GET["THEME"], array("dark", "variant-c"))) {
+            $poweredByImageUrls["forecast"] = "https://darksky.net/dev/img/attribution/poweredby-oneline-darkbackground.png";
+            $poweredByImageUrls["current"] = "https://darksky.net/dev/img/attribution/poweredby-darkbackground.png";
+        }
         $containerClasses = "$containerClasses $themeClass";
     }
 

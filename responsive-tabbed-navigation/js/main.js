@@ -9,6 +9,12 @@ jQuery(document).ready(function ($) {
 		$.getJSON(CONFIG).done(function (data) {
 			console.log(data);
 			if (!!data && data.pages && data.pages.length > 0) {
+                if (!!data.theme) {
+                    switch (data.theme) {
+                        case "dark":
+                            $("body").addClass("theme-" + data.theme);
+                    }
+                }
 			    if (!!data.hide_tab_bar) {
 			        $(".cd-tabs").addClass("tab-bar-hidden");
 			    }
@@ -25,6 +31,10 @@ jQuery(document).ready(function ($) {
 							// and continue to the next
 							return true; // continue
 						}
+					} else if (!!page.disabled) {
+						// If "disabled" is a truthful value, then skip the page
+						// and continue to the next
+						return true; // continue
 					}
 					var url = page.embed + "";
 					if ("params" in page) {
@@ -60,6 +70,16 @@ jQuery(document).ready(function ($) {
 					if ($tabs_nav.outerWidth() < $tabs_nav.get(0).scrollWidth) {
 						//$tabs_nav.addClass("overflows");
 					}
+
+                    if (!!page.zoom && +page.zoom > 0) {
+                        var zoom = +page.zoom;
+                        $content.css({
+                            "transform": "scale(" + zoom + ")",
+                            "transform-origin": "0 0",
+                            "width": (100 / zoom) + "%",
+                            "height": (100 / zoom + "%")
+                        });
+                    }
 					
 					$(".cd-tabs-content").append($content);
 					// <li><a data-content="inbox" class="selected" href="#0">Inbox</a></li>

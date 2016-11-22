@@ -101,6 +101,27 @@ body .cd-tabs .cd-tabs-content li {
   padding: 0;
   border-bottom: 48px solid transparent;
 }
+body.theme-dark nav {
+  height: auto;
+  position: relative;
+  float: none;
+  background: transparent;
+}
+body.theme-dark nav .cd-tabs-navigation a {
+  color: #fff;
+}
+body.theme-dark nav .cd-tabs-navigation a:hover:not(.selected) {
+  color: #313131;
+  background: #fff;
+  color: #fff;
+  background-color: #313131 !important;
+  opacity: 0.25;
+}
+body.theme-dark nav .cd-tabs-navigation a.selected {
+  box-shadow: inset 0 0 #4c7597;
+  color: #fff;
+  background-color: #313131 !important;
+}
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
   ::-webkit-scrollbar {
     width: 9.6px;

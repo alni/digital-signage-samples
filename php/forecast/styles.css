@@ -37,6 +37,19 @@
   background: #F5E2E6;
   color: #5d5d5d;
 }
+.forecast .container.theme-variant-c {
+  color: #fffacd;
+}
+.forecast .container.theme-variant-c caption {
+  background: #56313f;
+  color: #fffacd;
+}
+.forecast .container.theme-variant-c td {
+  color: #fffacd;
+}
+.forecast .container.theme-variant-c .day {
+  border-bottom-color: #fffacd !important;
+}
 .forecast .daily-forecast {
   display: table;
   width: 100%;
@@ -72,6 +85,7 @@
   font-size: 48px;
   display: none;
   text-transform: uppercase;
+  padding-left: 20px;
 }
 .forecast .day .maxTemp {
   padding-left: 12px;
@@ -84,7 +98,7 @@
 }
 .forecast .day .desc {
   padding-left: 38.83281573px;
-  padding-right: 38.83281573px;
+  padding-right: 20px;
   line-height: 1.25;
   text-align: left;
   width: 100%;
@@ -172,6 +186,13 @@
 }
 .current .theme-variant-b ~ .container {
   color: #000;
+}
+.current .theme-variant-c.title {
+  background: #56313f;
+  color: #fffacd;
+}
+.current .theme-variant-c ~ .container {
+  color: #fffacd;
 }
 .powered-by img {
   width: auto;

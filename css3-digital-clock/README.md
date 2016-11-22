@@ -22,4 +22,5 @@ The Digital Clock supports the following URI Query Parameters:
     * `green` : a green-like color variant
     * `red` : a red-like color variant
     * `variant-b` : a nice pink-like color variant
+    * `variant-c` : a nice dark pink-like color variant
     * Default : none (a blue-like color variant)

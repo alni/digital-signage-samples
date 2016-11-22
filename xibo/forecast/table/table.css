@@ -37,6 +37,19 @@ body {
   background: #F5E2E6;
   color: #5d5d5d;
 }
+.container.theme-variant-c {
+  color: #fffacd;
+}
+.container.theme-variant-c caption {
+  background: #56313f;
+  color: #fffacd;
+}
+.container.theme-variant-c td {
+  color: #fffacd;
+}
+.container.theme-variant-c .day {
+  border-bottom-color: #fffacd !important;
+}
 .daily-forecast {
   display: table;
   width: 100%;
@@ -72,6 +85,7 @@ body {
   font-size: 48px;
   display: none;
   text-transform: uppercase;
+  padding-left: 20px;
 }
 .day .maxTemp {
   padding-left: 12px;
@@ -84,7 +98,7 @@ body {
 }
 .day .desc {
   padding-left: 38.83281573px;
-  padding-right: 38.83281573px;
+  padding-right: 20px;
   line-height: 1.25;
   text-align: left;
   width: 100%;

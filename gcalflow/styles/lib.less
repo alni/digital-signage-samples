@@ -77,16 +77,29 @@
     }
 
     &.theme-variant-c {
-        .theme-mixin(#e3f4e4, #000);
+        .theme-mixin(@header-bgcolor-variant-c, @accent-color-variant-c);
 
         .gcf-title-block {
             .gcf-title, .fa {
-                color: rgb(93, 93, 93) !important;
+                color: @accent-color-variant-c !important;
             }
         }
 
         .gcf-item-daterange {
-            color: #000 !important;
+            color: @accent-color-variant-c !important;
+        }
+
+        .gcf-item-location {
+            color: @accent-color-variant-c !important;
+        }
+
+        .gcf-item-description {
+            color: @accent-color-variant-c !important;
+        }
+
+        hr {
+            color: @accent-color-variant-c !important;
+            background-color: @accent-color-variant-c !important;
         }
 
         .gcf-item-title {

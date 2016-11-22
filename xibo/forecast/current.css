@@ -55,3 +55,10 @@ body {
 .theme-variant-b ~ .container {
   color: #000;
 }
+.theme-variant-c.title {
+  background: #56313f;
+  color: #fffacd;
+}
+.theme-variant-c ~ .container {
+  color: #fffacd;
+}

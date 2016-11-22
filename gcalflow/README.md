@@ -65,6 +65,7 @@ The Agenda supports the following URI Query Parameters:
     * `dark` : a dark color variant of the default `blue` theme (only supported
       by the `ticker-marquee` type)
     * `variant-b` : a nice pink-like color variant
+    * `variant-c` : a nice dark pink-like color variant
     * Default : none (a blue-like color variant)
 * `FA_ICON` : (optional) the Font Awesome icon to use together with the 
   Title/Header block. This could be any name or alias of an icon that is 

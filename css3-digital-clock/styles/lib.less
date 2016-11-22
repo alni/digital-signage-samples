@@ -39,4 +39,15 @@
             }
         }
     }
+
+    &.theme-variant-c {
+        .theme-mixin(fade(@header-bgcolor-variant-c, 70%), @header-fgcolor-variant-c, transparent);
+
+        .clock {
+            margin: auto 0 !important;
+            ul, #date {
+                text-align: left;
+            }
+        }
+    }
 }
