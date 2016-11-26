@@ -1,0 +1,9 @@
+﻿{
+  "CAL_ID": "no.norwegian#holiday@group.v.calendar.google.com",
+  "TYPE": "grouped-alt",
+  "HIDE": "enddate,description",
+  "NUM_DAYS": 90,
+  "FA_ICON": "calendar",
+  "THEME_COLOR": "variant-c",
+  "INTERVAL": 0
+}

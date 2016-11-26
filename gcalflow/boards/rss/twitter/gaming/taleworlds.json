@@ -1,0 +1,13 @@
+﻿{
+  "DATA_URL": "http://localhost/rss2gcal/feed.php",
+  "DATA_URL_PARAMS": {
+    "URL": "https://twitrss.me/twitter_user_to_rss/?user=Mount_and_Blade&replies=on",
+    "COUNT": 30,
+    "CUSTOM_TITLE": "TaleWorlds (Twitter)"
+  },
+  "INTERVAL": 5,
+  "CAL_ID": "null",
+  "TYPE": "ticker-marquee",
+  "CUSTOM_ICON": "https://pbs.twimg.com/profile_images/786486359401824256/Yl1wpVrg.jpg",
+  "HIDE": "enddate,title"
+}
