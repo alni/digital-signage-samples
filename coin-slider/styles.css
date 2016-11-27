@@ -25,6 +25,12 @@ body {
   /* non-prefixed version, currently
                                     not supported by any browser */
 }
+body .hidden {
+  display: none !important;
+}
+body.feed #games {
+  width: auto !important;
+}
 body .ownername span {
   border-bottom: 1px solid #fff;
 }
@@ -116,6 +122,20 @@ body.theme-variant-b #games .cs-title {
 }
 body.theme-variant-b #games .cs-title .content a {
   color: #000;
+}
+body.theme-variant-c .ownername span {
+  border-bottom-color: #fffacd;
+}
+body.theme-variant-c #header {
+  background-color: rgba(86, 49, 63, 0.7);
+  color: #fffacd;
+}
+body.theme-variant-c #games .cs-title {
+  background: rgba(86, 49, 63, 0.7);
+  color: #fffacd;
+}
+body.theme-variant-c #games .cs-title .content a {
+  color: #fffacd;
 }
 .coin-slider {
   z-index: 0;

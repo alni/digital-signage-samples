@@ -1,0 +1,397 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!--
+        # Flickr image slide show #
+
+        ## Supported URI Query Parameters ##
+
+        Supports the following URI Query Parameters:
+        * TAGS : (required) the tags to use to search for images (separated by
+          commas ("%2C" when URI encoded)
+            * Default : "wild"
+        * INTERVAL : (optional) the slide interval in seconds
+            * Default : 3
+        * NUM_ITEMS : (optional) the number of images to include with the
+          slide show
+            * Default : 10
+        * TITLE : (optional) the title to use for the slide show
+        * LANG : (optional) the language to use for slide show text (like the
+          "Images from Flickr" and "by {ownername}" texts)
+            * "en" - English (Default)
+            * "nb" - Norwegian Bokmål
+            * "nn" - Norwegian Nynorsk
+        * API_KEY : (optional) a Flickr API Key. Specify this if more fine-
+          grained filtering is required (like only "Commercial use allowed")
+            * Uses the "flickr.photos.search" API instead of the Feed Service
+
+        Examples:
+            flickr.html?TAGS=national%2Cday%2Cnorway&INTERVAL=10&MAX_ITEMS=10
+              * Slide show with 10 items with the tags national, day, norway
+                (Norway National Day) shown with an 10 seconds interval
+            flickr.html?TAGS=easter%2Choliday%2Ccelebration&MAX_ITEMS=20
+              * Slide show with 20 items with the tags easter, holiday,
+                celebration (Easter Holiday Celebration) shown with the default
+                3 seconds interval
+    -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="coin-slider/coin-slider.js"></script>
+    <script type="text/javascript" src="../shared/lib/moment-with-locales.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../shared/lib/jquery.transit.min.js" charset="UTF-8"></script>
+    <link rel="stylesheet" href="coin-slider/coin-slider-styles.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+
+
+    <title>Coin Slider: jQuery Image Slider Plugin with Unique Effects</title>
+</head>
+<body class="feed" data-lang="en">
+    <div id="header"></div>
+    <div id="games" style="background-size: 1920px auto;"></div>
+    <script>
+        jQuery.fn.animate = jQuery.fn.transit;
+        /**
+          * <http://stackoverflow.com/a/5158301>
+          */
+        function getParameterByName(name) {
+            var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+            return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+        }
+
+        /**
+         * Get the current screen orientation
+         * 
+         * @returns {string} a Flickr-compatible orientation string
+         */
+        function getOrientation() {
+            var h = window.innerHeight,
+                w = window.innerWidth;
+            if (h < w) {
+                return "landscape";
+            }
+            if (h > w) {
+                return "portrait";
+            }
+            return "square";
+        }
+
+        var PROXY_URL = getParameterByName("PROXY_URL");
+        var FEED_URL = getParameterByName("FEED_URL");
+        var NUM_ITEMS = getParameterByName("NUM_ITEMS") || 10;
+        var INTERVAL = getParameterByName("INTERVAL") || 30;
+        var API_KEY = getParameterByName("API_KEY");
+        var TITLE = getParameterByName("TITLE");
+        var LANG = getParameterByName("LANG") || "en";
+        var THEME_COLOR = getParameterByName("THEME_COLOR") || "";
+        var HIDE = (getParameterByName("HIDE") || "").split(",");
+        if (THEME_COLOR) {
+            switch (THEME_COLOR) {
+                case "green":
+                case "red":
+                case "dark":
+                case "variant-b":
+                case "variant-c":
+                    $("body").addClass("theme-" + THEME_COLOR);
+                    break;
+            }
+        }
+        moment.locale(LANG); // Use the current LANG as the moment locale
+        // Use the current LANG as the preferred language of the commonly 
+        // used texts
+        $("body").attr("data-lang", LANG);
+
+        // The base URL of the Flickr API Services
+        var baseUrl = "http://cloud.feedly.com/v3/streams/contents",
+            baseHeight = 270, // The base slide show height
+            baseWidth = 480, // The base slide show width
+            sliderHeight = baseHeight + 0, // The slide show height
+            sliderWidth = baseWidth + 0, // The slide show width
+            orientation = getOrientation(), // The current screen orientation
+            imageOrientation = [orientation], // The preferred image orientations
+            initCoinSlider = null;
+        if (orientation == "square") {
+            // If orientation is "square" include both "landscape" and 
+            // "portrait" with image orientations
+            imageOrientation.push("landscape", "portrait");
+            // Also set the slider width to the same as base height
+            sliderWidth = baseHeight + 0;
+        } else if (orientation == "portrait") {
+            // If orientation is "portrait", calcluate the correct slider width
+            // and slider height based on the window aspect ratio (window width
+            // divided by window height)
+            sliderWidth = baseHeight * (window.innerWidth / window.innerHeight);
+            sliderHeight = baseWidth * (window.innerWidth / window.innerHeight);
+        } else {
+            // Otherwise, we assume the orientation is "landscape" and set the
+            // slider width and height to their base width and height
+            sliderWidth = baseWidth;
+            sliderHeight = baseHeight;
+        }
+
+        /**
+         * Create a Coin Slider Item
+         * @param {URI} src - the image URI source
+         * @param {string} title - the title of the image
+         * @param {string|Date} datetaken - the date when the image was taken
+         * @param {string} ownername - the name of the owner of the image
+         */
+        var createItem = function (src, title, datetaken, content) {
+            // Create a MomentJS Calendar string from "datetaken"
+            var sDate = moment(datetaken).calendar();
+            // Create a heading consisting of the "title" and the date string
+            var heading = "<b>" + title + "</b> <span>(" + sDate + ")</span>";
+            // Create a description of the "ownername"
+            var desc = "<div class=\"content\"><span>" + content + "<span></div>"; //"by " +ownername;
+            var $elem = $("<a/>"); // The item element to use
+            // Append a IMG element to the item element with its "src" attribute
+            // set to the image URI source
+            $("<img/>").attr({ src: src }).css({
+                height: "100%"
+            }).appendTo($elem);
+            // Append the heading and the description to the item element
+            // separated by a BR (hard break) element
+            $elem.append("<span>" + heading + "<br /> " + desc + "</span>");
+
+            $.each(HIDE, function (index, hide) {
+                // Loop through each item of the HIDE parameter
+                switch (hide) {
+                    case "title":
+                        // Hide the title of the items
+                        $elem.find("> span > b").addClass("hidden");
+                        break;
+                    case "description":
+                        // Hide the description of the items
+                        $elem.find("> span > .content").addClass("hidden");
+                        break;
+                }
+            });
+            // And at last append the item element to the slide show element
+            $elem.appendTo("#games");
+        };
+
+        /**
+         * Called when the window is resized
+         */
+        var onResizeWindow = function () {
+            var h = window.innerHeight,
+                w = window.innerWidth;
+
+            function getMozTransform(scale) {
+                var translateX = "translateX(-50%)",
+                    scale = "scale(" + scale + ")";
+                return {
+                    "-moz-transform": translateX + " " + scale
+                };
+            }
+            //if (h < w) {
+
+            // Set the zoom level of the slide show element from the window/base
+            // height ratio
+            $("#games").css("zoom", h / baseHeight)
+                .css(getMozTransform(h / baseHeight));
+
+            //} else {
+            //$("#games").css("zoom", w / baseWidth);
+            //}
+        };
+
+        var createPlaceholderImages = function (num, lang) {
+            var placeholders = {
+                "en": "no-images-en.jpg",
+                "nb": "no-images-nb.jpg",
+                "nn": "no-images-nb.jpg"
+            }
+            var placeholder = placeholders[lang] || placeholders["en"];
+            console.log(placeholder);
+            $("body").css("background-image", 'url("' + placeholder + '")');
+            $("body").css("background-size", "100%");
+            //$("body").css("height", window.innerHeight + "px");
+            //$("body").css("width", window.innerWidth + "px");
+            //for (var i = 0; i < num; i++) {
+            //    createItem(placeholder, "", new Date(), "-no-name-");
+            //}
+        };
+
+        // Add "on resize" event listener to the window
+        $(window).on("resize", onResizeWindow);
+
+        
+
+        /**
+         * Inits the Coin Slider slide show with the preferred options.
+         * Also triggers the resize event of the window
+         */
+        initCoinSlider = function () {
+            $(window).trigger("resize");
+            //$("#games").css("zoom", document.documentElement.clientHeight / 270);
+            $('#games').coinslider({
+                hoverPause: false,
+                navigation: false,
+                opacity: 1.0, // opacity of title and navigation
+                delay: +INTERVAL * 1000,
+                sDelay: 50, // delay beetwen squares in ms
+                //delay: 3000 * 1000,
+                width: sliderWidth, //baseWidth, // width of slider panel
+                height: sliderHeight, //baseHeight, // height of slider panel
+                //spw: 7, // squares per width
+                //sph: 5, // squares per height
+                //width: document.documentElement.clientWidth,
+                //height: document.documentElement.clientHeight
+            });
+        }
+
+        /**
+         * Calls the Flicker API Service and creates a Coin Slider silde show
+         * from the data from Flickr.
+         * 
+         * @param {string} API_KEY (optional) - The Flickr API Key to use with
+         *     the Flickr API Service. If specified the "flickr.photos.search" 
+         *     API will be used instead of the Feed Service.
+         *     Also only photos marked as "Commercial use allowed" will be 
+         *     included with the results.
+         */
+        var createGallery = function(API_KEY) {
+            if (!!API_KEY) {
+                $.getJSON(baseUrl + "rest/?jsoncallback=?", {
+                    method: "flickr.photos.search",
+                    api_key: API_KEY,
+                    tags: TAGS,
+                    tag_mode: "all",
+                    format: "json",
+                    orientation: imageOrientation.join(","),
+                    content_type: '1', // photos only
+                    media: 'photos', // Do not include videos
+                    license: [ // Commercial use allowed
+                        4, // Attribution License
+                        5, // Attribution-ShareAlike License
+                        6, // Attribution-NoDerivs License
+                        9, // Public Domain Dedication (CC0)
+                        10 // Public Domain Mark
+                    ].join(","),
+                    sort: "date-posted-desc",
+                    extras: "owner_name,date_taken"
+                }, function (data) {
+                    $("#header").text(TITLE || "");
+                    if (data.photos.photo.length > 0) {
+                        // If the API returned any photos, then loop through
+                        // each one of them and add them to slide show gallery
+                        $.each(data.photos.photo, function (i, item) {
+                            console.log(item)
+                            // Create a URI from the item properties
+                            var src = [
+                                "https://farm", item.farm,
+                                ".staticflickr.com/", item.server,
+                                "/", item.id, "_", item.secret,
+                                "_b.jpg" // Use "_b" to display large photos
+                            ].join("");
+                            // Create a title from the "title" or fall back to
+                            // the "id" wrapped inside "-" ("-{id}-")
+                            var title = item.title || ("-" + item.id + "-");
+                            // Create and add the item to the slide show gallery
+                            createItem(src, title, item.datetaken, item.ownername);
+                            if (i == NUM_ITEMS || i + 1 == data.photos.photo.length) {
+                                // If the current index is the same as NUM_ITEMS
+                                // _or_ we are at the last item, then initialize
+                                // the slide show gallery and break out of the
+                                // loop
+                                initCoinSlider(); // Initialize slide show
+                                return false; // Break out of the loop
+                            }
+                        });
+                    } else {
+                        $("#games").addClass("no-images");
+                        //createPlaceholderImages(NUM_ITEMS, LANG);
+                        //setTimeout(createGallery, 30000);
+                        //initCoinSlider();
+                    }
+                }).fail(function() {
+                    $("#games").addClass("no-images");
+                });
+            } else {
+                $.getJSON(PROXY_URL + "?callback=?", {
+                    URL: FEED_URL,
+                    COUNT: NUM_ITEMS
+                }
+                /*$.getJSON(baseUrl + "feeds/photos_public.gne?jsoncallback=?", {
+                    tags: TAGS || "wild",
+                    tagmode: "all",
+                    format: "json"
+                }*/, function (data) {
+                    $("#header").text(TITLE || data.title);
+                    if (data.items.length > 0) {
+                        // If the API returned any photos, then loop through
+                        // each one of them and add them to slide show gallery
+                        $.each(data.items, function (i, item) {
+                            //console.log(item)
+                            // Replace "_m." with "_b." to display large photos
+                            //var src = item.media.m.replace("_m.", "_b.");
+                            var src = item.visual && item.visual.url;
+                            var content = "";
+                            if (item.content && item.content.content) {
+                                content = item.content.content + "";
+                            } else if (item.summary && item.summary.content) {
+                                content = item.summary.content + "";
+                            }
+
+                            if (src == "none") {
+                                src = null;
+                            }
+                            if (!src && item.enclosure && item.enclosure.length > 0) {
+                                $.each(item.enclosure, function(k, media) {
+                                    if (media.type.indexOf("image") === 0) {
+                                        src = media.href + "";
+                                        return false; // break;
+                                    }
+                                });
+                            }
+                            
+                            if (!!content) {
+                                var $content = $("<div/>");
+                                $content.html(content);
+                                if (!src) {
+                                    src = $content.find("img").attr("src");
+                                }
+                                console.log(src);
+                                if (src && $content.find("img") && $content.find("img").length > 0) {
+                                    var alt = $content.find("img").attr("alt");
+                                    //console.log(alt);
+                                    $content.find("img").remove();
+                                    if (!!alt) {
+                                        content = alt + "";
+                                    } else if (!!$content.text()) {
+                                        console.log($content.text());
+                                        var $_content = $("<div />");
+                                        $_content.append($content);
+                                        content = $content.text();
+                                    }
+                                }
+                            }
+                            // Create and add the item to the slide show gallery
+                            createItem(src, item.title, item.updated, content);
+                            if (i == NUM_ITEMS || i + 1 == data.items.length) {
+                                // If the current index is the same as NUM_ITEMS
+                                // _or_ we are at the last item, then initialize
+                                // the slide show gallery and break out of the
+                                // loop
+                                initCoinSlider(); // Initialize slide show
+                                return false; // Break out of the loop
+                            }
+                        });
+                    } else {
+                        $("#games").addClass("no-images");
+                        //createPlaceholderImages(NUM_ITEMS, LANG);
+                        //setTimeout(createGallery, 30000);
+                        //initCoinSlider();
+                    }
+                }).fail(function () {
+                    $("#games").addClass("no-images");
+                });
+            }
+        }
+        createGallery(API_KEY);
+        //$('#games').coinslider();
+    </script>
+
+</body>
+
+</html>

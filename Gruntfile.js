@@ -76,6 +76,7 @@ module.exports = function (grunt) {
                         'coin-slider/galleries/styles.css',
                         'coin-slider/galleries/styles.min.css',
 
+                        'coin-slider/feed.html',
                         'coin-slider/flickr.html',
                         'coin-slider/no-images-en.jpg',
                         'coin-slider/no-images-nb.jpg',
@@ -130,6 +131,8 @@ module.exports = function (grunt) {
                     expand: true,
                     cwd: '<%= dir.src %>/php',
                     src: [ // Web Server files
+                        'feedly/*.php',
+
                         'flickr/*.php',
 
                         'forecast/*.php',
