@@ -367,7 +367,7 @@
                                 }
                             }
                             // Create and add the item to the slide show gallery
-                            createItem(src, item.title, item.updated, content);
+                            createItem(src, item.title, item.updated || item.published, content);
                             if (i == NUM_ITEMS || i + 1 == data.items.length) {
                                 // If the current index is the same as NUM_ITEMS
                                 // _or_ we are at the last item, then initialize
