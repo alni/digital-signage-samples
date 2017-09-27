@@ -31,7 +31,8 @@ hr {
 html, body {
     background-color: transparent;
 }
-ul {
+ul.gcf-item-container-block {
+    /* Only applied to the Container Block List */
     /* Display & Box Model */
     margin: 0;
     padding: 0 20px;
@@ -47,6 +48,7 @@ ul {
     width: 100%;
     height: 100%;
     background: transparent !important;
+    overflow: hidden;
     border: none;
     border-radius: 0 !important;
     padding-bottom: 0 !important;
@@ -62,6 +64,14 @@ ul {
             border-bottom: solid 80px transparent;
             height: 100%;
             overflow-y: auto;
+        }
+
+        .gcf-item-description {
+            white-space: normal; /* Wrap the content inside normally */
+
+            ul {
+                list-style-type: disc; /* Display list as a normal list */
+            }
         }
     }
 
@@ -160,7 +170,7 @@ ul {
         font-family: @font-family;
         color: @accent-color;
         font-size: @font-size;
-        font-weight: 400;
+        font-weight: bold;
         font-style: normal;
         text-decoration: none;
         background-color: transparent;
@@ -238,6 +248,23 @@ ul {
         .gcf-item-container-block {
             //overflow: hidden; // Hide the overflow of the Container Block
         }
+        .gcf-item-block {
+            &.week-header {
+                overflow: visible !important;
+                hr {
+                    margin: (@font-size / 2) 0;
+                    //height: (@font-size / 8);
+                    position: relative;
+                    //margin-left: -20px;
+                    //padding-right: 40px;
+                    width: 100%;
+                }
+                .gcf-item-daterange {
+                    display: block;
+                    border-bottom: (@font-size / 8) solid @accent-color;
+                }
+            }
+        }
     }
 
     &.ticker {
@@ -247,6 +274,24 @@ ul {
         &.marquee {
             // Common styles for the "ticker-marquee" type */
             .ticker-marquee-mixin;
+        }
+    }
+
+    &.table {
+        .gcf-item-container-block {
+            display: table;
+        }
+        .gcf-item-block {
+            display: table-row;
+        }
+        .gcf-item-daterange {
+            display: table-cell;
+        }
+        .gcf-item-title {
+            display: table-cell;
+        }
+        .gcf-item-location {
+            display: table-cell;
         }
     }
 }

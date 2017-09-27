@@ -69,6 +69,7 @@
         _gCalFlow_debug = true;
     </script>
     <script type="text/javascript" src="../shared/lib/moment-with-locales.min.js" charset="UTF-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js"></script>
     <script type="text/javascript" src="private.js" charset="utf-8"></script>
     <!--<script type="text/javascript" src="jquery-gcal-flow-3.0.1/jquery.gcal_flow.js"></script>-->
     <script type="text/javascript" src="jquery.gcal_flow_custom.js"></script>
@@ -276,6 +277,7 @@
             var ICON_ONLY = getParameterByName("ICON_ONLY") || false;
             var HIDE = (getParameterByName("HIDE") || "description").split(",");
             var REFRESH_AFTER = getParameterByName("REFRESH_AFTER") || null;
+            var USE_MARKDOWN = getParameterByName("USE_MARKDOWN") || false;
             var GAS_ID = getParameterByName("GAS_ID") || null;
             var GAS_DEV_ID = getParameterByName("GAS_DEV_ID") || null;
             var GAS_SECRET = getParameterByName("GAS_SECRET") || null;
@@ -406,9 +408,13 @@
                                 $prev_title = $prev.find('.gcf-item-title'),
                                 $prev_location = $prev.find('.gcf-item-location');
                             if (!$desc.hasClass("hidden") && $desc.text()) {
-                                // Convert description text to HTML. But only
-                                // when the Description is not hidden.
-                                $desc.html($.parseHTML($desc.text()));
+                                // Convert description text to HTML/Markdown.
+                                // But only when the Description is not hidden.
+                                if (USE_MARKDOWN) {
+                                    $desc.html(marked($desc.text()));
+                                } else {
+                                   $desc.html($.parseHTML($desc.text()));
+                                }
                             }
                             if (found_dates.indexOf(_date) > -1) {
                                 // If the date of the current item is already
@@ -477,9 +483,13 @@
                                 $desc = $this.find(".gcf-item-description"),
                                 $prev = $this.prev();
                             if (!$desc.hasClass("hidden") && $desc.text()) {
-                                // Convert description text to HTML. But only
-                                // when the Description is not hidden.
-                                $desc.html($.parseHTML($desc.text()));
+                                // Convert description text to HTML/Markdown.
+                                // But only when the Description is not hidden.
+                                if (USE_MARKDOWN) {
+                                    $desc.html(marked($desc.text()));
+                                } else {
+                                   $desc.html($.parseHTML($desc.text()));
+                                }
                             }
                             // Remove the BR elements to keep all elements on
                             // the same line within the item
@@ -491,6 +501,9 @@
                                 $prev.append($header_block.detach());
                                 $this.remove();
                             } else {
+                                if ($this.find(".gcf-item-daterange .week").length > 0) {
+                                    $this.addClass("week-header");
+                                }
                                 // Otherwise, add the date/time as a new entry
                                 // with the found_dates array
                                 found_dates.push(_date);
@@ -503,6 +516,67 @@
                                 $this.find(".gcf-item-daterange").after("<br />");
                                 // and add another at the top of the element
                                 $this.prepend("<hr />"); // Add at top
+                            }
+                            if (NUM_DAYS == 1) {
+                                $date.addClass("hidden");
+                                $this.find("hr").remove();
+                                $this.find("br:first").remove();
+                            }
+                        });
+
+                        loadComplete($items, null, SCROLL_INTERVAL);
+                        //$("body").addClass("loaded"); // hide the loading screen
+                        //hideScrollButtons($items.length <= 1);
+                    };
+                    break;
+                case "table":
+                    // an alternative `grouped` type with similar
+                    // grouping behaviour and styles as the "tasks"
+                    // type
+                    $('#gcf-custom-template').addClass("tasks")
+                        .addClass("grouped-alt table");
+                    callback = function () {
+                        var found_dates = [];
+                        var $items = this.find(".gcf-item-block");
+                        $items.each(function (index) {
+                            var $this = $(this),
+                                $date = $this.find(".gcf-item-daterange"),
+                                _date = $date.text(),
+                                $header_block = $this.find(".gcf-item-header-block"),
+                                $desc = $this.find(".gcf-item-description"),
+                                $prev = $this.prev();
+                            if (!$desc.hasClass("hidden") && $desc.text()) {
+                                // Convert description text to HTML. But only
+                                // when the Description is not hidden.
+                                $desc.html($.parseHTML($desc.text()));
+                            }
+                            // Remove the BR elements to keep all elements on
+                            // the same line within the item
+                            $this.find("br").remove();
+                            if (found_dates.indexOf(_date) > -1) {
+                                // If the date of the current item is already
+                                // found, then group it with the previous
+                                $this.find(".gcf-item-daterange").addClass("hidden");
+                                //$prev.append($header_block.detach());
+                                $this.remove();
+                            } else {
+                                if ($this.find(".gcf-item-daterange .week").length > 0) {
+                                    //$this.addClass("week-header");
+                                }
+                                // Otherwise, add the date/time as a new entry
+                                // with the found_dates array
+                                found_dates.push(_date);
+
+                                // Use this element as a daterange group header
+                                // for other elements
+
+                                // Remove the bottom HR element
+                                $this.find("hr").remove(); // Remove bottom
+                                //$this.find(".gcf-item-daterange").after("<br />");
+                                // and add another at the top of the element
+                                //$this.prepend("<hr />"); // Add at top
+
+                                $this.html($this.find(".gcf-item-header-block").detach().html());
                             }
                             if (NUM_DAYS == 1) {
                                 $date.addClass("hidden");

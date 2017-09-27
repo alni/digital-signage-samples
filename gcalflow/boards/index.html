@@ -9,6 +9,7 @@
 </head>
 <body>
     <iframe id="agenda" allowtransparency="true"></iframe>
+    <footer id="extraInfo" class="hidden"></footer>
 
     <script>
         var BOARD = getParameterByName("BOARD");
@@ -17,6 +18,12 @@
             if (params.DATA_URL && params.DATA_URL_PARAMS) {
                 params.DATA_URL += "?" + $.param(params.DATA_URL_PARAMS);
                 delete params.DATA_URL_PARAMS;
+            }
+            if (!!params.EXTRA_INFO) {
+                $("#extraInfo").text(params.EXTRA_INFO)
+                $("#extraInfo").removeClass("hidden");
+
+                delete params.EXTRA_INFO;
             }
             $("#agenda").attr("src", "../agenda.html?" + $.param(params));
         });

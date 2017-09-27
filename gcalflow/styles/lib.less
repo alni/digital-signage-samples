@@ -12,6 +12,17 @@
         color: @accent-color !important;
     }
 
+    &.grouped-alt {
+        .gcf-item-block {
+            &.week-header {
+                .gcf-item-daterange {
+                    display: block;
+                    border-bottom-color: @accent-color !important;
+                }
+            }
+        }
+    }
+
     ::-webkit-scrollbar-thumb {
         // Set the WebKit scrollbar thumb (button) to a green color
         background-color: @header-bgcolor !important;
@@ -61,7 +72,7 @@
     &.theme-variant-b {
         .theme-mixin(#F5E2E6, #000);
 
-        .gcf-title-block {
+        .gcf-header-block {
             .gcf-title, .fa {
                 color: rgb(93, 93, 93) !important;
             }
@@ -79,7 +90,7 @@
     &.theme-variant-c {
         .theme-mixin(@header-bgcolor-variant-c, @accent-color-variant-c);
 
-        .gcf-title-block {
+        .gcf-header-block {
             .gcf-title, .fa {
                 color: @accent-color-variant-c !important;
             }
@@ -244,7 +255,14 @@
         // * This is is the same color as seen on screen with the Header 
         //   Background Color with an Opacity of the Header BG Color Opacity on
         //   a white background
-        background: mix(fade(@header-bgcolor, 100%), #fff, @header-bgcolor-opacity);
+        //background: mix(fade(@header-bgcolor, 100%), #fff, @header-bgcolor-opacity);
+
+        &::after {
+            filter: blur(10px);
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
     }
     .gcf-item-block {
         // Display the Item Blocks all on the same line
