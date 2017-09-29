@@ -1,0 +1,84 @@
+@import "../../shared/styles.less";
+@import "styles/lib.less";
+
+/*********************************************
+ * GLOBAL STYLES
+ *********************************************/
+html, body {
+  background: transparent;
+  background-color: transparent; 
+}
+
+.reveal {
+  font-family: @font-family;
+  color: @main-color;
+
+/*********************************************
+ * HEADERS
+ *********************************************/
+  h1, h2, h3, h4, h5, h6 {
+      color: @main-color;
+      font-family: @font-family;
+  }
+  .gcf-item-title {
+      color: @accent-color !important;
+      font-family: @font-family;
+  }
+
+  &[data-lang="nb"] {
+      .week:before {
+          content: "Uke ";
+      }
+  }
+
+  &[data-lang="en"], & {
+      .week:before {
+          content: "Week ";
+      }
+  }
+
+   .progress {
+       height: @font-size / 6;
+       span {
+           background: @accent-color;
+       }
+   }
+
+   section {
+       .day-header {
+           background: @header-bgcolor !important;
+           color: @header-fgcolor !important;
+           font-size: @font-size;
+           line-height: 1.2;
+           text-align: left;
+           padding-left: @font-size * 0.2;
+           //margin: 0;
+           //padding: 0;
+
+           .fa {
+               font-size: @font-size * 0.75;
+               line-height: @font-size * 1.2;
+               vertical-align: top;
+           }
+       }
+   }
+
+  .color-mixin();
+}
+
+.hidden {
+    visibility: hidden !important;
+    display: none !important;
+    opacity: 0 !important;
+}
+
+::selection {
+  color: #fff;
+  background: #98bdef;
+  text-shadow: none; 
+}
+
+::-moz-selection {
+  color: #fff;
+  background: #98bdef;
+  text-shadow: none; }

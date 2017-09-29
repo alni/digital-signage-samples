@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="../boards/styles.css" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="../../shared/code.js"></script>
+</head>
+<body>
+    <iframe id="agenda" allowtransparency="true"></iframe>
+
+    <script>
+        var BOARD = getParameterByName("BOARD");
+        var ZOOM = getParameterByName("ZOOM");
+        $.getJSON(BOARD).done(function (params) {
+            if (params.DATA_URL && params.DATA_URL_PARAMS) {
+                params.DATA_URL += "?" + $.param(params.DATA_URL_PARAMS);
+                delete params.DATA_URL_PARAMS;
+            }
+            $("#agenda").attr("src", "./demo.html?" + $.param(params));
+        });
+        if (!!ZOOM && +ZOOM > 0) {
+            var zoom = +ZOOM;
+            $("#agenda").css({
+                "transform": "scale(" + zoom + ")",
+                "transform-origin": "0 0",
+                "width": (100 / zoom) + "%",
+                "height": (100 / zoom + "%")
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+.theme-mixin(@header-bgcolor, @header-fgcolor, @accent-color) {
+    // Common styles for the green theme variant
+    .gcf-header-block {
+        // Set the Header Block background to a green color
+        background: @header-bgcolor !important;
+    }
+
+    section {
+       .day-header {
+           background: @header-bgcolor !important;
+           color: @header-fgcolor !important;
+       }
+   }
+
+    .gcf-item-title {
+        // Set the Item Title text color to a green color
+        color: @accent-color !important;
+    }
+
+    &.grouped-alt {
+        .gcf-item-block {
+            &.week-header {
+                .gcf-item-daterange {
+                    display: block;
+                    border-bottom-color: @accent-color !important;
+                }
+            }
+        }
+    }
+
+    .progress span {
+        background: @accent-color;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        // Set the WebKit scrollbar thumb (button) to a green color
+        background-color: @header-bgcolor !important;
+    }
+}
+
+.color-mixin() {
+    // Provide different color themes
+    
+    &.theme-green {
+        .theme-mixin(@header-bgcolor-green, @header-fgcolor, @accent-color-green);
+        // Common styles for the green theme variant
+        .gcf-header-block {
+            // Set the Header Block background to a green color
+            background: @header-bgcolor-green;
+        }
+
+        .gcf-item-title {
+            // Set the Item Title text color to a green color
+            color: @accent-color-green;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            // Set the WebKit scrollbar thumb (button) to a green color
+            background-color: @header-bgcolor-green;
+        }
+    }
+
+    &.theme-red {
+        .theme-mixin(@header-bgcolor-red, @header-fgcolor, @accent-color-red);
+        // Common styles for the red theme variant
+        .gcf-header-block {
+            // Set the Header Block background to a red color
+            background: @header-bgcolor-red;
+        }
+
+        .gcf-item-title {
+            // Set the Item Title text color to a red color
+            color: @accent-color-red;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            // Set the WebKit scrollbar thumb (button) to a red color
+            background-color: @header-bgcolor-red;
+        }
+    }
+
+    &.theme-variant-b {
+        .theme-mixin(#F5E2E6, rgb(93, 93, 93), #000);
+
+        .gcf-header-block {
+            .gcf-title, .fa {
+                color: rgb(93, 93, 93) !important;
+            }
+        }
+
+        .gcf-item-daterange {
+            color: #000 !important;
+        }
+
+        .gcf-item-title {
+            font-weight: bold;
+        }
+    }
+
+    &.theme-variant-c {
+        .theme-mixin(@header-bgcolor-variant-c, @accent-color-variant-c, @accent-color-variant-c);
+
+        .gcf-header-block {
+            .gcf-title, .fa {
+                color: @accent-color-variant-c !important;
+            }
+        }
+
+        .gcf-item-daterange {
+            color: @accent-color-variant-c !important;
+        }
+
+        .gcf-item-location {
+            color: @accent-color-variant-c !important;
+        }
+
+        .gcf-item-description {
+            color: @accent-color-variant-c !important;
+        }
+
+        hr {
+            color: @accent-color-variant-c !important;
+            background-color: @accent-color-variant-c !important;
+        }
+
+        .gcf-item-title {
+            font-weight: bold;
+        }
+    }
+}

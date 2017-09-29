@@ -1,0 +1,45 @@
+<html>
+    <body>
+        <style>
+            @import "../../shared/config_tester/styles.css";
+        </style>
+        <form target="_blank" method="GET" action="demo.html">
+            <label for="CAL_ID">
+                CAL_ID <input id="CAL_ID" name="CAL_ID" type="text">
+            </label>
+            <label for="THEME_COLOR">
+                THEME_COLOR
+                <select id="THEME_COLOR" name="THEME_COLOR">
+                    <option value="blue">blue</option>
+                    <option value="green">green</option>
+                    <option value="red">red</option>
+                    <option value="dark" disabled="disabled">dark</option>
+                    <option value="variant-b">variant-b</option>
+                    <option value="variant-c">variant-c</option>
+                </select>
+            </label>
+            <label for="LANG">
+                LANG
+                <select id="LANG" name="LANG">
+                    <option value="en">English</option>
+                    <option value="nb">Norwegian Bokmaal</option>
+                    <option value="nn">Norwegian Nynorsk</option>
+                </select>
+            </label>
+            <label for="INTERVAL">
+                INTERVAL <input id="INTERVAL" name="INTERVAL" type="number" value="10" min="0" max="3600" step="1">
+            </label>
+            <label for="MAX_ITEMS">
+                MAX_ITEMS <input id="MAX_ITEMS" name="MAX_ITEMS" type="number" value="50" min="1" max="100" step="1">
+            </label>
+            <label for="NUM_DAYS">
+                NUM_DAYS <input id="NUM_DAYS" name="NUM_DAYS" type="number" value="1" min="1" max="365" step="1">
+            </label>
+            <label for="FA_ICON">
+                FA_ICON <input id="FA_ICON" name="FA_ICON" type="text">
+            </label>
+
+            <input type="submit" value="Submit">
+        </form>
+    </body>
+</html>

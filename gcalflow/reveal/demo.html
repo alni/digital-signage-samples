@@ -1,0 +1,1032 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>reveal.js – The HTML Presentation Framework</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+		<link rel="stylesheet" href="reveal.js-3.4.1/css/reveal.css">
+		<link rel="stylesheet" href="reveal.js-3.4.1/css/theme/white.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="reveal.js-3.4.1/lib/css/zenburn.css">
+
+        <link rel="stylesheet" href="styles.css">
+
+        <style>
+            html, body {
+                background-color: transparent;
+            }
+        </style>
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script type="text/javascript" src="../../shared/lib/moment-with-locales.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../private.js" charset="utf-8"></script>
+    <!--<script type="text/javascript" src="jquery-gcal-flow-3.0.1/jquery.gcal_flow.js"></script>-->
+    <script type="text/javascript" src="../jquery.gcal_flow_custom.js"></script>
+
+        <script type="text/javascript">
+        /**
+         * <http://stackoverflow.com/a/5158301>
+         */
+        function getParameterByName(name) {
+            var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+            return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+        }
+
+        /**
+         * <https://stackoverflow.com/a/37369700>
+         */
+        function plaintext(html) {
+            return $("<div/>").html(html).text();
+        }
+
+        var $ = jQuery;
+        $(function () {
+            var THEME_COLOR = getParameterByName("THEME_COLOR") || null;
+            if (THEME_COLOR) {
+                switch (THEME_COLOR) {
+                    case "green":
+                    case "red":
+                    case "dark":
+                    case "variant-b":
+                    case "variant-c":
+                        $("#loader-wrapper, #gcf-custom-template")
+                            .addClass("theme-" + THEME_COLOR);
+                        break;
+                }
+            }
+            var API_KEY = window.GOOGLE_CALENDAR_API_KEY || null;
+
+            var CAL_ID = getParameterByName("CAL_ID");
+            if (!!CAL_ID) {
+                initAgenda(CAL_ID, API_KEY);
+            }
+        });
+        function hideScrollButtons(hide) {
+            if (!!hide) {
+                $(".scroll_btns").addClass("hidden");
+            }
+        }
+        function ResponsiveTabbedNavigation_NextTab() {
+            var _parent = window.parent;
+            //console.error(_parent.top == _parent.self);
+            if (_parent.top != _parent.self) {
+                // Only loop through parents if the current parent is not the
+                // top window (not in an iframe)
+                while (!("ResponsiveTabbedNavigation" in _parent)) {
+                    try {
+                        // Check has access to the properties of the parent of
+                        // _parent (If no error is thrown, then it is on the
+                        // same domain, otherwise it is on a different domain)
+                        if ("document" in _parent.parent) {
+                            // We have access!
+                            _parent = _parent.parent; // Set as its own parent!
+                        }
+                        if (_parent.top == _parent.self) {
+                            // Break out of the loop if the current _parent is
+                            // the top window (not in a frame)
+                            break;
+                        }
+                    } catch (ex) {
+                        // If an error is thrown then the parent of _parent is
+                        // on a different domain!
+                        break; // Break out of the loop
+                    }
+                    
+                }
+            }
+            if ("ResponsiveTabbedNavigation" in _parent) {
+                // If the _parent has "ResponsiveTabbedNavigation" then post a 
+                // message to it to notify it to change to the next tab
+                _parent.postMessage("next-tab", window.location.origin);
+            }
+        }
+        /**
+          * Called when the calendar events has been added and the events has
+          * been processed. Also Set the refresh timer (if any) to reload the
+          * page after a set amount of minutes.
+          * @param {Number} refresh - the number of minutes to wait before
+          *     reloading the page
+          */
+        function loadComplete($items, refresh, scroll_end_wait) {
+            $("body").addClass("loaded"); // hide the loading screen
+            if (!!window.navigator.userAgent.match(/MSIE|Trident|Edge/)) {
+                // Internet Explorer found!
+                /* < IE11 = "MSIE"
+                 *   IE11 = "Trident"
+                 * > IE11 = "Edge" (IE12 (Edge), Edge 13 etc...)
+                 */
+
+                // IE 11 does not fire the ease-out animation of the Loader
+                // Wrapper (with "transform: translateY(-100%)") correctly, so
+                // we need to do this with JS instead
+                $("#loader-wrapper").transition({
+                    y: "-100%",
+                }, 300, "ease", function() {
+                    $(this).hide(0); // Finally, hide the element
+                });
+                /*$(".loader-section").transition({
+                    opacity: 0.0
+                }, 300, "ease");*/
+            }
+            hideScrollButtons($items.length <= 1);
+            $('.gcf-item-container-block').on("autoscroll:end", function(e) {
+                if (!!scroll_end_wait && +scroll_end_wait > 0) {
+                    setTimeout(function() {
+                        ResponsiveTabbedNavigation_NextTab();
+                    }, parseInt(+scroll_end_wait * 1000));
+                } else {
+                    ResponsiveTabbedNavigation_NextTab();
+                }
+            });
+            if (!!refresh && refresh >= 1) {
+                setTimeout(function () {
+                    window.location.reload();
+                }, refresh * 60000);
+            }
+
+            
+
+            // More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: false,
+				progress: true,
+				history: false,
+				center: true,
+
+                // Enable keyboard shortcuts for navigation
+                keyboard: true,
+
+                // Enable the slide overview mode
+                overview: false,
+
+                // Loop the presentation
+                loop: true,
+
+                autoSlide: +scroll_end_wait * 1000,
+                
+                // Stop auto-sliding after user input
+                autoSlideStoppable: false, // Also hides play/pause button
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'reveal.js-3.4.1/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'reveal.js-3.4.1/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'reveal.js-3.4.1/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'reveal.js-3.4.1/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'reveal.js-3.4.1/plugin/zoom-js/zoom.js', async: true },
+					{ src: 'reveal.js-3.4.1/plugin/notes/notes.js', async: true }
+				]
+			});
+
+            Reveal.addEventListener( 'slidechanged', function( event ) {
+                // event.previousSlide, event.currentSlide, event.indexh, event.indexv
+                if (Reveal.isLastSlide()) {
+                    if (!!scroll_end_wait && +scroll_end_wait > 0) {
+                        setTimeout(function() {
+                            ResponsiveTabbedNavigation_NextTab();
+                        }, parseInt(+scroll_end_wait * 1000));
+                    } else {
+                        ResponsiveTabbedNavigation_NextTab();
+                    }
+                }
+            } );
+
+            var $root = $('#gcf-custom-template .gcf-item-container-block');
+            var root_height = parseInt($root.height());
+            root_height -= $('#gcf-custom-template .gcf-header-block').height();
+            console.error(root_height);
+
+            $root.css("height", "-=" + $('#gcf-custom-template .gcf-header-block').height() + "px");
+
+            /*setInterval(function() {
+                scrollList();
+            }, +scroll_end_wait * 1000);*/
+        }
+        function scrollList(bUp) {
+            var $root = $('#gcf-custom-template .gcf-item-container-block');
+            var $item;
+            if (bUp) {
+                console.error("    ");
+                $item = $root.find(".gcf-item-block").filter(function () {
+                    console.error($(this).position().top);
+                    return parseInt($(this).position().top) + 10 < 0;
+                }).last();
+                console.error("    ");
+                if ($item && $item[0]) {
+                    console.error($item.position().top);
+                    $root.scrollTo($item[0].offsetTop, {
+                        offsetTop: 0,
+                        duration: 250
+                    });
+                }
+            } else {
+                console.error("    ");
+                $item = $root.find(".gcf-item-block").filter(function () {
+                    console.error($(this).position().top - $root[0].offsetTop);
+                    return parseInt($(this).position().top) - $root[0].offsetTop > 0;
+                }).first();
+                console.error("    ");
+                if ($item && $item[0]) {
+                    var $last_item = $root.find(".gcf-item-block").last();
+                    console.error($item.position().top);
+                    console.error(($last_item.position().top + $last_item.height()) - ($root[0].offsetTop + $root.height()));
+                    if (($last_item.position().top + $last_item.height()) - ($root[0].offsetTop + $root.height()) > 0) {
+                        var margin = parseFloat($item.css("margin-top") || 0);
+                        console.error(($item.position().top + 10) - $root[0].offsetTop);
+                        $root.scrollTo(($item[0].offsetTop - $root[0].offsetTop) - margin, {
+                            offsetTop: 0,
+                            duration: 250
+                        });
+                    } else {
+                        $item = $root.find(".gcf-item-block").first();
+                        var margin = parseFloat($item.css("margin-top") || 0);
+                        $root.scrollTo(($item[0].offsetTop - $root[0].offsetTop) - margin, {
+                            offsetTop: 0,
+                            duration: 250
+                        });
+                    }
+                }
+            }
+            
+            //$root.scrollTop($item.find(".gcf-item-header-block").offset().top);
+            //$root.scrollTop($root.scrollTop() - 42);
+            /*var _gcalflow = $("#gcf-custom-template").data('gCalFlow').obj;
+            var idx = _gcalflow._tmpIdx || 0;
+            if (bUp) {
+                idx -= 1;
+            } else {
+                idx += 1;
+            }
+            if (idx < 0 ) {
+                idx = 0;
+            }
+            console.error(idx);
+            _gcalflow._tmpIdx = _gcalflow.bind_scroll(true, bUp, idx);*/
+        }
+        function initAgenda(CAL_ID, API_KEY) {
+            var DATA_URL = getParameterByName("DATA_URL");
+            var DATE_FORMAT = getParameterByName("DATE_FORMAT") || "ddd, ll";
+            var LANG = getParameterByName("LANG") || "nb";
+            var TYPE = getParameterByName("TYPE") || null;
+            var SCROLL_INTERVAL = getParameterByName("INTERVAL") || 10;
+            var MAX_ITEMS = getParameterByName("MAX_ITEMS") || 50;
+            var NUM_DAYS = getParameterByName("NUM_DAYS") || null;
+            var FA_ICON = getParameterByName("FA_ICON") || null;
+            var CUSTOM_ICON = getParameterByName("CUSTOM_ICON") || null;
+            var ICON_ONLY = getParameterByName("ICON_ONLY") || false;
+            var HIDE = (getParameterByName("HIDE") || "description").split(",");
+            var REFRESH_AFTER = getParameterByName("REFRESH_AFTER") || null;
+            var GAS_ID = getParameterByName("GAS_ID") || null;
+            var GAS_DEV_ID = getParameterByName("GAS_DEV_ID") || null;
+            var GAS_SECRET = getParameterByName("GAS_SECRET") || null;
+            var dtstart = new Date();
+            var dtend = null;
+            var autoscroll = true;
+            var show_enddate = true;
+            var callback = null;
+            if (+SCROLL_INTERVAL <= 0) {
+                // If the numeric value of SCROLL_INTERVAL is less than or equal
+                // to "0" then disable auto scrolling
+                autoscroll = false;
+            }
+            if (NUM_DAYS !== null && +NUM_DAYS < 1) {
+                // If NUM_DAYS is set to a value, but the numeric value is less
+                // than "1", then set it to the minimum value of "1"
+                NUM_DAYS = 1;
+            }
+            if (REFRESH_AFTER !== null && +REFRESH_AFTER < 1) {
+                // If REFRESH_AFTER is set to a value, but the numeric value is
+                // less than "1", then disable automatic refresh by setting it
+                // to a value of "null"
+                REFRESH_AFTER = null;
+            } else {
+                // Otherwise, set REFRESH_AFTER to its numeric value
+                REFRESH_AFTER = +REFRESH_AFTER; // minutes
+            }
+            if (NUM_DAYS == 1 && MAX_ITEMS == 1) {
+
+            }
+            var $fa_stack = $("<span/>");
+            if (CUSTOM_ICON) {
+                // If CUSTOM_ICON is defined, then use it as a title block icon
+                if (ICON_ONLY) {
+                    // If ICON_ONLY is defined, then hide the title text element
+                    $(".gcf-title").addClass("hidden");
+                    $(".gcf-title-block").prepend("&nbsp;")
+                }
+                // Add an Image element, with the custom icon as Source with a
+                // CSS class of "custom-icon", to the title block
+                $(".gcf-title-block").prepend("&nbsp;<img src=\"" + CUSTOM_ICON + "\" class=\"custom-icon\" />&nbsp;");
+            } else if (FA_ICON) {
+                // Otherwise, if FA_ICON is defined, then use it as a title
+                // block icon
+                if (ICON_ONLY) {
+                    // If ICON_ONLY is defined, then hide the title text element
+                    $(".gcf-title").addClass("hidden");
+                    $(".gcf-title-block").prepend("&nbsp;")
+                }
+                FA_ICON = FA_ICON.split(","); // Split the FA_ICON into a list
+                
+                if (FA_ICON.length > 1) {
+                    // If it contains more than 1 element, then create a Font
+                    // Awesome icon stack out of them
+                    
+                    $fa_stack.addClass("fa-stack"); // add icon stack class
+                    $.each(FA_ICON, function (index, icon) {
+                        // Loop through each icon and add a icon stack size in
+                        // reversed order (first = largest, last = smallest)
+                        var fa_stack_class = "fa-stack-" + (FA_ICON.length - index) + "x";
+                        if (index === 0) {
+                            // If it is the first icon, then add a Large icon
+                            // CSS class
+                            fa_stack_class += " fa-lg";
+                        }
+                        // Append the icon, with classes, to the icon stack
+                        $fa_stack.append("<i class=\"fa fa-" + icon + " " + fa_stack_class + "\"></i>");
+                    });
+                    // Add a SPAN element with "icon" class as the first element
+                    // of the title block
+                    $(".gcf-title-block").prepend($("<span/>").addClass("icon")).prepend("&nbsp;");
+                    // Add the icon stack to the "SPAN" with the "icon" class
+                    //$(".gcf-title-block span.icon").append($fa_stack);
+                    $(".gcf-title-block .zmdi").append($fa_stack);
+                } else {
+                    // Otherwise, if the it contains only 1 element, then set
+                    // FA_ICON as the first (only) element
+                    FA_ICON = FA_ICON[0];
+                    $fa_stack.append("<i class=\"fa fa-" + FA_ICON + "\"></i>");
+                    // Add the icon, with classes, as the first element of the
+                    // title block
+                    //$(".gcf-title-block").prepend("&nbsp;<i class=\"fa fa-" + FA_ICON + " fa-fw\">&nbsp;</i>");
+                    //$(".gcf-header-block .zmdi").parent().addClass("icon").html("&nbsp;<i class=\"fa fa-" + FA_ICON + " fa-fw\">&nbsp;</i>");
+                }
+            }
+            $.each(HIDE, function (index, hide) {
+                // Loop through each item of the HIDE parameter
+                switch (hide) {
+                    case "scrollbars":
+                        // Hide the scroll bars
+                        $("body").addClass("hide-scrollbars");
+                        break;
+                    case "title":
+                        // Hide the title of the items
+                        $(".gcf-item-title").addClass("hidden");
+                        break;
+                    case "location":
+                        // Hide the location of the items
+                        $(".gcf-item-location").addClass("hidden");
+                        // Remove the BR before location to move the elements
+                        // following a bit upwards
+                        $(".gcf-item-location").prev("br").remove();
+                        break;
+                    case "daterange":
+                        // Hide the start and end dates (daterange) of the items
+                        $(".gcf-item-daterange").addClass("hidden");
+                        break;
+                    case "description":
+                        // Hide the description of the items
+                        $(".gcf-item-description").addClass("hidden");
+                        break;
+                    case "enddate":
+                        // Hide only the end date of the items
+                        show_enddate = false;
+                        break;
+                }
+            });
+
+            moment.locale(LANG); // Use the current LANG as the moment locale
+            // Use the current LANG as the preferred language of the commonly
+            // used texts
+            $("#gcf-custom-template").attr("data-lang", LANG);
+            if (!!NUM_DAYS && +NUM_DAYS > 0) {
+                // If NUM_DAYS is set to a value AND it is greater than 0, then
+                // Set "dtend" to the end of day of "NUM_DAYS - 1"
+                dtend = moment().endOf('day').add(+NUM_DAYS - 1, 'days');
+            }
+            $('#gcf-custom-template').gCalFlow({
+                apikey: API_KEY, // Defined in "private.js" (not included)
+                auto_scroll: false,
+                scroll_interval: +SCROLL_INTERVAL * 1000,
+                link_title: false, // Do not use links with title
+                link_item_title: false, // Do not use links with item title
+                data_url: DATA_URL,
+                dtstart: dtstart, // Custom option
+                dtend: dtend, // Custom option
+                calid: encodeURIComponent(CAL_ID || '2dpnd6bnab0bsih2f7fkn45l8o@group.calendar.google.com'),
+                maxitem: +MAX_ITEMS,
+                date_formatter: function (d, allday_p) {
+                    if (allday_p) {
+                        // If the event is all day, then return a date formatted
+                        // string
+                        return moment(d).format(DATE_FORMAT);
+                    } else if (moment(d).diff(moment(), 'days') >= 6) {
+                        // If the event is NOT all day, but the date is greater
+                        // than 5 days in the future, then return a date
+                        // formatted string
+                        return moment(d).format(DATE_FORMAT);
+                    } else {
+                        // Otherwise return a calendar formatted date time
+                        return moment(d).calendar();
+                    }
+                },
+                daterange_formatter: function (start_d, end_d, allday_p) {
+                    var start, end;
+                    if (allday_p) {
+                        start = moment(start_d); //.format("ddd, ll");
+                        if (show_enddate &&
+                            moment(end_d).diff(start, 'days') > 1) {
+                            // If the end_d is more than a day after start,
+                            // then initialize end from end_d and subtract 1
+                            // day from it (prevents overflow)
+                            end = moment(end_d).subtract(1, 'days'); //.format("ddd, ll");
+                        }
+                        // Check if event spans from the start of week to the
+                        // end of week (locale-aware)
+                        if (start.weekday() == 0 && (end && end.weekday() == 6)) {
+                            // If the start is at the first weekday and the end
+                            // is initialized and at the last weekday then
+                            // return a string with the current (locale aware)
+                            // week number
+                            return "<span class=\"week\">" + start.week() + "</span>"; //"Uke " + start.week();
+                        } else {
+                            // Otherwise format the start and the end
+                            start = start.format(DATE_FORMAT);
+                            // Only format the end if it is actually initialized
+                            end = end && end.format(DATE_FORMAT);
+                        }
+                        // Return a string in the format "<start> - <end>" if
+                        // both start and end is set to a value.
+                        // If end is not set to a value only return "<start>"
+                        return start + (end ? " - " + end : "");
+                        //+ " - " + moment(end_d).subtract(1, 'days').format("ddd, ll");
+                    } else if (moment(start_d).diff(moment(), 'days') >= 6) {
+                        // If the event is not all day and the start_d is more
+                        // than 5 days in the future, then return a formatted
+                        // date string
+                        return moment(start_d).format(DATE_FORMAT);
+                    } else {
+                        if (show_enddate) {
+                            end = moment(end_d).format("LT");
+                        }
+                        // Otherwise return a calendar formatted start_d + a
+                        // locale aware time formatted end_d in the form of
+                        // "<start_d> - <end>"
+                        return moment(start_d).calendar()
+                            + (end ? " - " + end : "");
+                    }
+                },
+                callback: function () {
+                    var $items = this.find(".gcf-item-block"),
+                        $items_count = $items.length;
+                    var item_days = [];
+                    var found_dates = [];
+                    $items.each(function (index) {
+                        var $this = $(this),
+                            $prev = $this.prev(),
+                            $prev_title = $prev.find('.gcf-item-title'),
+                            $prev_date = $prev.find(".gcf-item-daterange"),
+                            $prev_location = $prev.find('.gcf-item-location'),
+                            $desc = $this.find(".gcf-item-description"),
+                            $title = $this.find('.gcf-item-title'),
+                            $location = $this.find('.gcf-item-location'),
+                            $date = $this.find(".gcf-item-daterange"),
+                            _date = $date.text();
+                        if (!$desc.hasClass("hidden") && $desc.text()) {
+                            // Convert description text to HTML. But only
+                            // when the Description is not hidden.
+                            $desc.html($.parseHTML($desc.text()));
+                        }
+                        if (found_dates.indexOf(_date) > -1) {
+                            //$prev.append($this.detach().html());
+
+                            if ($prev_title.text() != $title.text() &&
+                                $location.text() == $prev_location.text()) {
+                                // The title is different from previous,
+                                // but the location is the same:
+                                // - append the title to the previous
+                                $prev_title.append('<br/>')
+                                    .append($title.text());
+                                $this.remove();
+                            } else if ($prev_title.text() == $title.text() &&
+                                $location.text() != $prev_location.text()) {
+                                // The location is different from previous,
+                                // but the title is the same:
+                                // - append the location to the previous
+                                $prev_location.append('<br/>')
+                                    .append($location.text());
+                                $this.remove();
+                            } else {
+                                // Both title AND location is different
+                                // from the previous - Do nothing...
+                            }
+                        } else {
+                            // If the date of the current item is not already
+                            // found, then add it as a new entry to the
+                            // "found_dates" array
+                            found_dates.push(_date);
+                            if (item_days.length < 1) {
+                                item_days.push([$this]);
+                            } else if (moment($prev.data("start")).isSame($this.data("start"), "day")) {
+                                if (($date.find("> span").hasClass("week") && $prev_date.find("> span").hasClass("week")) ||
+                                    (!$date.find("> span").hasClass("week") && !$prev_date.find("> span").hasClass("week"))) {
+                                    item_days[item_days.length-1].push($this);
+                                } else {
+                                    item_days.push([$this]);
+                                }
+                                //item_days[item_days.length-1].push($this);
+                                //$prev.wrap("<section></section>");
+                                //$prev.parent().append($this.detach());
+                            } else {
+                                item_days.push([$this]);
+                                //$prev.wrap("<section></section>");
+                            }
+                        }
+                    });
+                    var calendarFormats = {
+                        sameDay : '[Today]',
+                        nextDay : '[Tomorrow]',
+                        nextWeek : 'dddd',
+                        lastDay : '[Yesterday]',
+                        lastWeek : '[Last] dddd',
+                        sameElse : 'L'
+                    };
+                    switch(moment.locale()) {
+                        case "nb":
+                            calendarFormats = {
+                                sameDay: '[i dag]',
+                                nextDay: '[i morgen]',
+                                nextWeek: 'dddd',
+                                lastDay: '[i går]',
+                                lastWeek: '[forrige] dddd',
+                                sameElse: 'L'
+                            };
+                            break;
+                        case "nn":
+                            calendarFormats = {
+                                sameDay: '[I dag]',
+                                nextDay: '[I morgon]',
+                                nextWeek: 'dddd ',
+                                lastDay: '[I går]',
+                                lastWeek: '[Føregåande] dddd',
+                                sameElse: 'L'
+                            };
+                            break;
+                    }
+                    var $tmp = $("<div/>");
+                    $.each(item_days, function(i) {
+                        var day = this;
+                        $tmp_section = $("<section/>");
+                        $.each(day, function(j) {
+                            if (j == 0) {
+                                var date_header = "";
+                                
+                                if ($items_count > 1) {
+                                    if (day[j].find(".gcf-item-daterange span.week").length > 0) {
+                                        date_header = day[j].find(".gcf-item-daterange").html();
+                                    } else {
+                                        date_header = moment(day[j].data("start")).calendar(null, calendarFormats);
+                                    }
+                                } else {
+                                    date_header = $(".gcf-title").text();
+                                }
+                                $tmp_section.append("<h1 class='day-header'>" + $fa_stack.html() + "&nbsp;<span>" + date_header + "</span></h1>");
+                            }
+                            if (day[j].find('.gcf-item-title br').length > 0) {
+                                day[j].find('.gcf-item-title').wrapInner("<small></small>");
+                            }
+                            $tmp_section.append(day[j].detach());
+                        });
+                        $tmp.append($tmp_section);
+                    });
+                    $(".gcf-item-container-block").html($tmp.html());
+                    loadComplete($items, null, SCROLL_INTERVAL);
+                    //$("body").addClass("loaded");
+                },
+                error_callback: function(textStatus, errorThrown) {
+                    $("#loader").addClass("hidden");
+                    ResponsiveTabbedNavigation_NextTab();
+                }
+            });
+
+            $('#gcf-custom-template').on("click", "#scroll_up", function (e) {
+                e.preventDefault();
+                //$root = $('#gcf-custom-template .gcf-item-container-block');
+                //$root.scrollTop($root.scrollTop() - 42);
+                scrollList(true);
+            });
+            $('#gcf-custom-template').on("click", "#scroll_dn", function (e) {
+                e.preventDefault();
+                //$root = $('#gcf-custom-template .gcf-item-container-block');
+                //$root.scrollTop($root.scrollTop() + 42);
+                scrollList(false);
+            });
+        }
+    </script>
+	</head>
+
+	<body>
+
+        
+
+		<div class="reveal" id="gcf-custom-template">
+            <span class="gcf-title hidden"></span>
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides gcf-item-container-block">
+				<section class="gcf-item-block">
+					<h1><span class="gcf-item-title"></span></h1>
+					<h3><span class="gcf-item-location"></span></h3>
+					<p>
+						<span class="gcf-item-daterange"></span>
+					</p>
+                    <p class="gcf-item-description"></p>
+				</section>
+
+				<section>
+					<h2>Hello There</h2>
+					<p>
+						reveal.js enables you to create beautiful interactive slide decks using HTML. This presentation will show you examples of what it can do.
+					</p>
+				</section>
+
+				<!-- Example of nested vertical slides -->
+				<section>
+					<section>
+						<h2>Vertical Slides</h2>
+						<p>Slides can be nested inside of each other.</p>
+						<p>Use the <em>Space</em> key to navigate through all slides.</p>
+						<br>
+						<a href="#" class="navigate-down">
+							<img width="178" height="238" data-src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
+						</a>
+					</section>
+					<section>
+						<h2>Basement Level 1</h2>
+						<p>Nested slides are useful for adding additional detail underneath a high level horizontal slide.</p>
+					</section>
+					<section>
+						<h2>Basement Level 2</h2>
+						<p>That's it, time to go back up.</p>
+						<br>
+						<a href="#/2">
+							<img width="178" height="238" data-src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Up arrow" style="transform: rotate(180deg); -webkit-transform: rotate(180deg);">
+						</a>
+					</section>
+				</section>
+
+				<section>
+					<h2>Slides</h2>
+					<p>
+						Not a coder? Not a problem. There's a fully-featured visual editor for authoring these, try it out at <a href="http://slides.com" target="_blank">http://slides.com</a>.
+					</p>
+				</section>
+
+				<section>
+					<h2>Point of View</h2>
+					<p>
+						Press <strong>ESC</strong> to enter the slide overview.
+					</p>
+					<p>
+						Hold down alt and click on any element to zoom in on it using <a href="http://lab.hakim.se/zoom-js">zoom.js</a>. Alt + click anywhere to zoom back out.
+					</p>
+				</section>
+
+				<section>
+					<h2>Touch Optimized</h2>
+					<p>
+						Presentations look great on touch devices, like mobile phones and tablets. Simply swipe through your slides.
+					</p>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Markdown support
+
+						Write content using inline or external Markdown.
+						Instructions and more info available in the [readme](https://github.com/hakimel/reveal.js#markdown).
+
+						```
+						<section data-markdown>
+						  ## Markdown support
+
+						  Write content using inline or external Markdown.
+						  Instructions and more info available in the [readme](https://github.com/hakimel/reveal.js#markdown).
+						</section>
+						```
+					</script>
+				</section>
+
+				<section>
+					<section id="fragments">
+						<h2>Fragments</h2>
+						<p>Hit the next arrow...</p>
+						<p class="fragment">... to step through ...</p>
+						<p><span class="fragment">... a</span> <span class="fragment">fragmented</span> <span class="fragment">slide.</span></p>
+
+						<aside class="notes">
+							This slide has fragments which are also stepped through in the notes window.
+						</aside>
+					</section>
+					<section>
+						<h2>Fragment Styles</h2>
+						<p>There's different types of fragments, like:</p>
+						<p class="fragment grow">grow</p>
+						<p class="fragment shrink">shrink</p>
+						<p class="fragment fade-out">fade-out</p>
+						<p class="fragment fade-up">fade-up (also down, left and right!)</p>
+						<p class="fragment current-visible">current-visible</p>
+						<p>Highlight <span class="fragment highlight-red">red</span> <span class="fragment highlight-blue">blue</span> <span class="fragment highlight-green">green</span></p>
+					</section>
+				</section>
+
+				<section id="transitions">
+					<h2>Transition Styles</h2>
+					<p>
+						You can select from different transitions, like: <br>
+						<a href="?transition=none#/transitions">None</a> -
+						<a href="?transition=fade#/transitions">Fade</a> -
+						<a href="?transition=slide#/transitions">Slide</a> -
+						<a href="?transition=convex#/transitions">Convex</a> -
+						<a href="?transition=concave#/transitions">Concave</a> -
+						<a href="?transition=zoom#/transitions">Zoom</a>
+					</p>
+				</section>
+
+				<section id="themes">
+					<h2>Themes</h2>
+					<p>
+						reveal.js comes with a few themes built in: <br>
+						<!-- Hacks to swap themes after the page has loaded. Not flexible and only intended for the reveal.js demo deck. -->
+						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/black.css'); return false;">Black (default)</a> -
+						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/white.css'); return false;">White</a> -
+						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/league.css'); return false;">League</a> -
+						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/sky.css'); return false;">Sky</a> -
+						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/beige.css'); return false;">Beige</a> -
+						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/simple.css'); return false;">Simple</a> <br>
+						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/serif.css'); return false;">Serif</a> -
+						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/blood.css'); return false;">Blood</a> -
+						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/night.css'); return false;">Night</a> -
+						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/moon.css'); return false;">Moon</a> -
+						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/solarized.css'); return false;">Solarized</a>
+					</p>
+				</section>
+
+				<section>
+					<section data-background="#dddddd">
+						<h2>Slide Backgrounds</h2>
+						<p>
+							Set <code>data-background="#dddddd"</code> on a slide to change the background color. All CSS color formats are supported.
+						</p>
+						<a href="#" class="navigate-down">
+							<img width="178" height="238" data-src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
+						</a>
+					</section>
+					<section data-background="https://s3.amazonaws.com/hakim-static/reveal-js/image-placeholder.png">
+						<h2>Image Backgrounds</h2>
+						<pre><code class="hljs">&lt;section data-background="image.png"&gt;</code></pre>
+					</section>
+					<section data-background="https://s3.amazonaws.com/hakim-static/reveal-js/image-placeholder.png" data-background-repeat="repeat" data-background-size="100px">
+						<h2>Tiled Backgrounds</h2>
+						<pre><code class="hljs" style="word-wrap: break-word;">&lt;section data-background="image.png" data-background-repeat="repeat" data-background-size="100px"&gt;</code></pre>
+					</section>
+					<section data-background-video="https://s3.amazonaws.com/static.slid.es/site/homepage/v1/homepage-video-editor.mp4,https://s3.amazonaws.com/static.slid.es/site/homepage/v1/homepage-video-editor.webm" data-background-color="#000000">
+						<div style="background-color: rgba(0, 0, 0, 0.9); color: #fff; padding: 20px;">
+							<h2>Video Backgrounds</h2>
+							<pre><code class="hljs" style="word-wrap: break-word;">&lt;section data-background-video="video.mp4,video.webm"&gt;</code></pre>
+						</div>
+					</section>
+					<section data-background="http://i.giphy.com/90F8aUepslB84.gif">
+						<h2>... and GIFs!</h2>
+					</section>
+				</section>
+
+				<section data-transition="slide" data-background="#4d7e65" data-background-transition="zoom">
+					<h2>Background Transitions</h2>
+					<p>
+						Different background transitions are available via the backgroundTransition option. This one's called "zoom".
+					</p>
+					<pre><code class="hljs">Reveal.configure({ backgroundTransition: 'zoom' })</code></pre>
+				</section>
+
+				<section data-transition="slide" data-background="#b5533c" data-background-transition="zoom">
+					<h2>Background Transitions</h2>
+					<p>
+						You can override background transitions per-slide.
+					</p>
+					<pre><code class="hljs" style="word-wrap: break-word;">&lt;section data-background-transition="zoom"&gt;</code></pre>
+				</section>
+
+				<section>
+					<h2>Pretty Code</h2>
+					<pre><code class="hljs" data-trim contenteditable>
+function linkify( selector ) {
+  if( supports3DTransforms ) {
+
+    var nodes = document.querySelectorAll( selector );
+
+    for( var i = 0, len = nodes.length; i &lt; len; i++ ) {
+      var node = nodes[i];
+
+      if( !node.className ) {
+        node.className += ' roll';
+      }
+    }
+  }
+}
+					</code></pre>
+					<p>Code syntax highlighting courtesy of <a href="http://softwaremaniacs.org/soft/highlight/en/description/">highlight.js</a>.</p>
+				</section>
+
+				<section>
+					<h2>Marvelous List</h2>
+					<ul>
+						<li>No order here</li>
+						<li>Or here</li>
+						<li>Or here</li>
+						<li>Or here</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Fantastic Ordered List</h2>
+					<ol>
+						<li>One is smaller than...</li>
+						<li>Two is smaller than...</li>
+						<li>Three!</li>
+					</ol>
+				</section>
+
+				<section>
+					<h2>Tabular Tables</h2>
+					<table>
+						<thead>
+							<tr>
+								<th>Item</th>
+								<th>Value</th>
+								<th>Quantity</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Apples</td>
+								<td>$1</td>
+								<td>7</td>
+							</tr>
+							<tr>
+								<td>Lemonade</td>
+								<td>$2</td>
+								<td>18</td>
+							</tr>
+							<tr>
+								<td>Bread</td>
+								<td>$3</td>
+								<td>2</td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
+
+				<section>
+					<h2>Clever Quotes</h2>
+					<p>
+						These guys come in two forms, inline: <q cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
+						&ldquo;The nice thing about standards is that there are so many to choose from&rdquo;</q> and block:
+					</p>
+					<blockquote cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
+						&ldquo;For years there has been a theory that millions of monkeys typing at random on millions of typewriters would
+						reproduce the entire works of Shakespeare. The Internet has proven this theory to be untrue.&rdquo;
+					</blockquote>
+				</section>
+
+				<section>
+					<h2>Intergalactic Interconnections</h2>
+					<p>
+						You can link between slides internally,
+						<a href="#/2/3">like this</a>.
+					</p>
+				</section>
+
+				<section>
+					<h2>Speaker View</h2>
+					<p>There's a <a href="https://github.com/hakimel/reveal.js#speaker-notes">speaker view</a>. It includes a timer, preview of the upcoming slide as well as your speaker notes.</p>
+					<p>Press the <em>S</em> key to try it out.</p>
+
+					<aside class="notes">
+						Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
+					</aside>
+				</section>
+
+				<section>
+					<h2>Export to PDF</h2>
+					<p>Presentations can be <a href="https://github.com/hakimel/reveal.js#pdf-export">exported to PDF</a>, here's an example:</p>
+					<iframe data-src="https://www.slideshare.net/slideshow/embed_code/42840540" width="445" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:3px solid #666; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
+				</section>
+
+				<section>
+					<h2>Global State</h2>
+					<p>
+						Set <code>data-state="something"</code> on a slide and <code>"something"</code>
+						will be added as a class to the document element when the slide is open. This lets you
+						apply broader style changes, like switching the page background.
+					</p>
+				</section>
+
+				<section data-state="customevent">
+					<h2>State Events</h2>
+					<p>
+						Additionally custom events can be triggered on a per slide basis by binding to the <code>data-state</code> name.
+					</p>
+					<pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
+Reveal.addEventListener( 'customevent', function() {
+	console.log( '"customevent" has fired' );
+} );
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Take a Moment</h2>
+					<p>
+						Press B or . on your keyboard to pause the presentation. This is helpful when you're on stage and want to take distracting slides off the screen.
+					</p>
+				</section>
+
+				<section>
+					<h2>Much more</h2>
+					<ul>
+						<li>Right-to-left support</li>
+						<li><a href="https://github.com/hakimel/reveal.js#api">Extensive JavaScript API</a></li>
+						<li><a href="https://github.com/hakimel/reveal.js#auto-sliding">Auto-progression</a></li>
+						<li><a href="https://github.com/hakimel/reveal.js#parallax-background">Parallax backgrounds</a></li>
+						<li><a href="https://github.com/hakimel/reveal.js#keyboard-bindings">Custom keyboard bindings</a></li>
+					</ul>
+				</section>
+
+				<section style="text-align: left;">
+					<h1>THE END</h1>
+					<p>
+						- <a href="http://slides.com">Try the online editor</a> <br>
+						- <a href="https://github.com/hakimel/reveal.js">Source code &amp; documentation</a>
+					</p>
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="reveal.js-3.4.1/lib/js/head.min.js"></script>
+		<script src="reveal.js-3.4.1/js/reveal.js"></script>
+
+		<script>
+
+			// More info https://github.com/hakimel/reveal.js#configuration
+			/*Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'reveal.js-3.4.1/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'reveal.js-3.4.1/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'reveal.js-3.4.1/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'reveal.js-3.4.1/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'reveal.js-3.4.1/plugin/zoom-js/zoom.js', async: true },
+					{ src: 'reveal.js-3.4.1/plugin/notes/notes.js', async: true }
+				]
+			});*/
+
+		</script>
+
+	</body>
+</html>
