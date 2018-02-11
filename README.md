@@ -5,6 +5,8 @@ projects. This includes code for
 
 * [`gcalflow/`](gcalflow/) - a customizable scrolling Agenda that uses data 
   from Google Calendar,
+    * [`gcalflow/reveal/`](gcalflow/reveal/) - a customizable Agenda presentation
+      slideshow that uses data from Google Calendar
 * [`coin-slider/`](coin-slider/) - a customizable, nice, Slide show gallery 
   that uses images from Flickr,
 * [`gapps-script/pollenvarsling/`](gapps-script/pollenvarsling/) - a project 
@@ -13,6 +15,10 @@ projects. This includes code for
   Google Calendar,
 * [`php/flickr/`](php/flickr/) - a project that returns a filtered photos 
   result from Flickr as a Feed,
+* [`responsive-tabbed-navigation/`](responsive-tabbed-navigation/) - Provides a
+  responsive tabbed multi-view navigation container for other pages.
+    * Original work from article by CodyHouse (<http://codyhouse.co/?p=346>).
+      Please see their terms at <http://codyhouse.co/terms/>.
 * [`xibo/`](xibo/) - custom templates for the modules of the Xibo Digital 
   Signage project
 
@@ -50,22 +56,24 @@ Install the required NodeJS packages with (from the project root folder):
 ## Links ##
 
 * [Xibo](http://xibo.org.uk/) Open Source Digital Signage
-  ([Github Repository](https://github.com/xibosignage/xibo-cms))
+  ([GitHub Repository](https://github.com/xibosignage/xibo-cms))
 * [Rise Vision](https://www.risevision.com/) Digital Signage Content Management
-  ([Github Repository](https://github.com/Rise-Vision/rise-vision-apps))
+  ([GitHub Repository](https://github.com/Rise-Vision/rise-vision-apps))
 * [Domoticz](http://www.domoticz.com/) Open Source Home Automation System
-  ([Github Repository](https://github.com/domoticz/domoticz))
+  ([GitHub Repository](https://github.com/domoticz/domoticz))
 * [Coin Slider](http://workshop.rs/projects/coin-slider/): jQuery Image Slider 
   with Unique Effects
-  ([Github Repository](https://github.com/kopipejst/coin-slider))
+  ([GitHub Repository](https://github.com/kopipejst/coin-slider))
 * [gCalFlow](http://sugi.github.io/jquery-gcal-flow/): jQuery Google Calendar 
   Event List Plug-in
-  ([Github Repository](https://github.com/sugi/jquery-gcal-flow))
+  ([GitHub Repository](https://github.com/sugi/jquery-gcal-flow))
+* [reveal.js](http://lab.hakim.se/reveal-js) - The HTML Presentation Framework
+  ([GitHub Repository](https://github.com/hakimel/reveal.js))
 * [Moment.js](http://momentjs.com/) JavaScript library
-  ([Github Repository](https://github.com/moment/moment))
+  ([GitHub Repository](https://github.com/moment/moment))
 * [jQuery Transit](http://ricostacruz.com/jquery.transit/) JavaScript library
-  ([Github Repository](https://github.com/rstacruz/jquery.transit/))
+  ([GitHub Repository](https://github.com/rstacruz/jquery.transit/))
 * [Color Safe](http://colorsafe.co/) - beautiful, accessible colors
-  ([Github Repository](https://github.com/donnieberg/accessible-color-palette))
+  ([GitHub Repository](https://github.com/donnieberg/accessible-color-palette))
 * [Google Apps Script](https://www.google.com/script/start/) JavaScript cloud 
   scripting language

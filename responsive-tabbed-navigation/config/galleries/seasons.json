@@ -1,0 +1,57 @@
+﻿{
+  "hide_tab_bar": true,
+  "pages": [
+    {
+      "keep_on_screen": 0,
+      "preload": true,
+      "enabled_between": [
+        "2016-09-01", "2016-11-30"
+      ],
+      "id": "fall",
+      "title": "Høst",
+      "embed": "../coin-slider/galleries/flickr.html",
+      "params": {
+        "GALLERY": "fall.json"
+      }
+    },
+    {
+      "keep_on_screen": 0,
+      "preload": true,
+      "enabled_between": [
+        "2016-12-01", "2017-02-28"
+      ],
+      "id": "winter",
+      "title": "Vinter",
+      "embed": "../coin-slider/galleries/flickr.html",
+      "params": {
+        "GALLERY": "winter.json"
+      }
+    },
+    {
+      "keep_on_screen": 0,
+      "preload": true,
+      "enabled_between": [
+        "2017-03-01", "2017-05-31"
+      ],
+      "id": "spring",
+      "title": "Vår",
+      "embed": "../coin-slider/galleries/flickr.html",
+      "params": {
+        "GALLERY": "spring.json"
+      }
+    },
+    {
+      "keep_on_screen": 0,
+      "preload": true,
+      "enabled_between": [
+        "2017-06-01", "2017-08-31"
+      ],
+      "id": "summer",
+      "title": "Sommer",
+      "embed": "../coin-slider/galleries/flickr.html",
+      "params": {
+        "GALLERY": "summer.json"
+      }
+    }
+  ]
+}

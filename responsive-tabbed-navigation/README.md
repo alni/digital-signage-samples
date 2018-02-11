@@ -1,5 +1,12 @@
 ﻿# Responsive Tabbed Navigation #
 
+## Credits ##
+
+Original work from article by CodyHouse (<http://codyhouse.co/?p=346>). Please
+see their terms at <http://codyhouse.co/terms/>.
+
+## Description ##
+
 Provides a responsive tabbed multi-view navigation container for other pages.
 
 Each tab & view can be customized with

@@ -1,0 +1,96 @@
+﻿{
+  "hide_tab_bar": true,
+  "pages": [
+    {
+      "keep_on_screen": 150,
+      "preload": true,
+      "enabled_between": [
+        "2016-05-16", "2016-09-18"
+      ],
+      "id": "gallery-summer",
+      "title": "Summer images",
+      "embed": "../coin-slider/galleries/flickr.html",
+      "params": {
+        "GALLERY": "summer.json"
+      }
+    },
+    {
+      "keep_on_screen": 150,
+      "preload": true,
+      "enabled_between": [
+        "2016-09-19", "2016-11-20"
+      ],
+      "id": "gallery-fall",
+      "title": "Autumn images",
+      "embed": "../coin-slider/galleries/flickr.html",
+      "params": {
+        "GALLERY": "fall.json"
+      }
+    },
+    {
+      "keep_on_screen": 150,
+      "preload": true,
+      "enabled_between": [
+        "2016-11-21", "2017-03-19"
+      ],
+      "id": "gallery-winter",
+      "title": "Winter images",
+      "embed": "../coin-slider/galleries/flickr.html",
+      "params": {
+        "GALLERY": "winter.json"
+      }
+    },
+    {
+      "keep_on_screen": 150,
+      "preload": true,
+      "enabled_between": [
+        "2017-03-20", "2017-05-14"
+      ],
+      "id": "gallery-spring",
+      "title": "Spring images",
+      "embed": "../coin-slider/galleries/flickr.html",
+      "params": {
+        "GALLERY": "spring.json"
+      }
+    },
+    {
+      "keep_on_screen": 150,
+      "preload": true,
+      "enabled_between": [
+        "2017-04-09", "2017-04-17"
+      ],
+      "id": "gallery-easter",
+      "title": "Easter images",
+      "embed": "../coin-slider/galleries/flickr.html",
+      "params": {
+        "GALLERY": "spring.json"
+      }
+    },
+    {
+      "keep_on_screen": 150,
+      "preload": true,
+      "enabled_between": [
+        "2017-05-15", "2017-09-17"
+      ],
+      "id": "gallery-summer-17",
+      "title": "Summer images",
+      "embed": "../coin-slider/galleries/flickr.html",
+      "params": {
+        "GALLERY": "summer.json"
+      }
+    },
+    {
+      "keep_on_screen": 150,
+      "preload": true,
+      "enabled_between": [
+        "2017-09-18", "2017-11-19"
+      ],
+      "id": "gallery-fall-17",
+      "title": "Autumn images",
+      "embed": "../coin-slider/galleries/flickr.html",
+      "params": {
+        "GALLERY": "fall.json"
+      }
+    }
+  ]
+}

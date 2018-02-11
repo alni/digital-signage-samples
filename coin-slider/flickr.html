@@ -41,11 +41,18 @@
     <script type="text/javascript" src="../shared/lib/jquery.transit.min.js" charset="UTF-8"></script>
     <link rel="stylesheet" href="coin-slider/coin-slider-styles.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="styles.css" />
+    <link rel="stylesheet" type="text/css" href="../gcalflow/styles/loader.css" />
 
 
     <title>Coin Slider: jQuery Image Slider Plugin with Unique Effects</title>
 </head>
 <body class="flickr" data-lang="en">
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+    </div>
     <div id="header"></div>
     <div id="games"></div>
     <script>
@@ -270,6 +277,7 @@
                             // Create and add the item to the slide show gallery
                             createItem(src, title, item.datetaken, item.ownername);
                             if (i == NUM_ITEMS || i + 1 == data.photos.photo.length) {
+                                $("body").addClass("loaded");
                                 // If the current index is the same as NUM_ITEMS
                                 // _or_ we are at the last item, then initialize
                                 // the slide show gallery and break out of the
@@ -280,12 +288,14 @@
                         });
                     } else {
                         $("#games").addClass("no-images");
+                        $("body").addClass("loaded");
                         //createPlaceholderImages(NUM_ITEMS, LANG);
                         //setTimeout(createGallery, 30000);
                         //initCoinSlider();
                     }
                 }).fail(function() {
                     $("#games").addClass("no-images");
+                    $("body").addClass("loaded");
                 });
             } else {
                 $.getJSON(baseUrl + "feeds/photos_public.gne?jsoncallback=?", {
@@ -304,6 +314,7 @@
                             // Create and add the item to the slide show gallery
                             createItem(src, item.title, item.date_taken, item.author);
                             if (i == NUM_ITEMS || i + 1 == data.items.length) {
+                                $("body").addClass("loaded");
                                 // If the current index is the same as NUM_ITEMS
                                 // _or_ we are at the last item, then initialize
                                 // the slide show gallery and break out of the
@@ -314,12 +325,14 @@
                         });
                     } else {
                         $("#games").addClass("no-images");
+                        $("body").addClass("loaded");
                         //createPlaceholderImages(NUM_ITEMS, LANG);
                         //setTimeout(createGallery, 30000);
                         //initCoinSlider();
                     }
                 }).fail(function () {
                     $("#games").addClass("no-images");
+                    $("body").addClass("loaded");
                 });
             }
         }
